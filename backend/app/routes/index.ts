@@ -5,7 +5,7 @@ import forestController from "../controllers/forestController";
 const routes = express.Router();
 
 // AUTHENTICATION
-routes.get("/login", authController.login);
+routes.post("/login", authController.login);
 routes.get("/register", authController.register);
 
 
