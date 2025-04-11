@@ -19,9 +19,9 @@ routes.delete("/trees/:id", treeController.deleteTree);
 //FORESTS
 routes.get("/forests", forestController.forests);
 routes.get("/forests/:id", forestController.forestById);
-routes.post("/forests", forestController.addTree);
-routes.patch("/forests/:id", forestController.updateTree);
-routes.delete("/forests/:id", forestController.deleteTree);
+routes.post("/forests", forestController.addForest);
+routes.patch("/forests/:id", forestController.updateForest);
+routes.delete("/forests/:id", forestController.deleteForest);
 
 
 //USERS (utilisateurs)

@@ -11,18 +11,31 @@ const forestController = {
         const forests = await forestMapper.findAll();
         res.json(forests);
     },
-    forestById: (req:Request, res:Response) => {
-        res.send("→ Récupérer une forêt par son ID");
+    forestById: async (req:Request, res:Response) => {
+        const id = parseInt(req.params.id, 10);
+        const forest = await forestMapper.findById(id);
+        if (forest) {
+            res.json(forest);
+        } else {
+            res.status(404).send(`Forêt avec l'ID ${id} non trouvée`);
+        }
     },
-    addTree: (req:Request, res:Response) => {
-        res.send("→ Ajouter une fôret");
+    addForest: async (req:Request, res:Response) => {
+        const newForestData = req.body; 
+        const newForest = await forestMapper.create(newForestData);
+        res.status(201).json(newForest);
     },
-    updateTree: (req:Request, res:Response) => {
-        res.send("→ Mettre à jour une forêt");
+    updateForest: async (req:Request, res:Response) => {
+        const id = parseInt(req.params.id, 10);
+        const updatedForestData = req.body; 
+        const updatedForest = await forestMapper.update(id, updatedForestData);
+        res.json(updatedForest);
     }
     ,
-    deleteTree: (req:Request, res:Response) => {
-        res.send("→ Supprimer une forêt");
+    deleteForest: async (req:Request, res:Response) => {
+        const id = parseInt(req.params.id, 10);
+        const deletedForest = await forestMapper.delete(id);
+        res.send("Forêt supprimée");
     }
 }
 export default forestController;
