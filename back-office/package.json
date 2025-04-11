@@ -1,0 +1,30 @@
+{
+  "name": "back-office",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.ts",
+    
+  
+  "scripts": {    
+    "start": "ts-node app.ts",
+    "dev": "nodemon -L app.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.6.4",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.0",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
