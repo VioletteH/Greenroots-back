@@ -34,10 +34,10 @@ INSERT INTO "forest" (name, association, image, description, country, location_x
 ('Zones de Reforestation à Haïti', 'GreenRoots', 'imageforet7.jpg', 'Pays ayant subi une déforestation sévère avec un besoin urgent de reforestation.', 'Haïti', 19.0000, -72.0000);
 
 INSERT INTO "order" (user_id, total_price, status) VALUES
-(1, 100, 'premiers fruits !'),
-(1, 150, 'premiers fruits !'),
-(2, 200, 'en préparation'),
-(3, 900, 'planté !');
+(1, 100, 1),
+(1, 150, 1),
+(2, 200, 2),
+(3, 900, 3);
 
 INSERT INTO "order_item" (order_id, tree_id, name, quantity, price) VALUES
 (1, 1, 'Manguier Africain', 2, 50),  
