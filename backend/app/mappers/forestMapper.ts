@@ -8,17 +8,16 @@ export default class ForestMapper extends BaseMapper<any> {
         super('forest');
     }
 
-    async forestByTree(tree_id : number): Promise<Forest[]> {
+    async forestByTree(id : number): Promise<Forest[]> {
         const query = `
             SELECT *
             FROM forest f
             JOIN forest_tree ft ON ft.forest_id = f.forest_id
             WHERE ft.tree_id = $1
         `;
-        const { rows } = await pool.query(query, [tree_id]);
+        const { rows } = await pool.query(query, [id]);
         if (!rows) return []; 
         return rows.map(snakeToCamel) as Forest[];
     }
-
 
 }
