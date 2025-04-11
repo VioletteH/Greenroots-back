@@ -17,8 +17,5 @@ const treeController = {
     deleteTree: (req:Request, res:Response) => {
         res.send("→ Supprimer un arbre");
     }
-    // treesInForest: (req:Request, res:Response) => {
-    //     res.send("→ Récupérer les forêts dans lesquelles un arbre donné est présent");
-    // }
 }
 export default treeController;
