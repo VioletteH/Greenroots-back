@@ -1,6 +1,6 @@
 
 import { Request, Response } from 'express';
-import { loginSchema } from '../mappers/utils/shemasJoi';
+import { loginSchema } from '../utils/shemasJoi';
 import AuthMapper from '../mappers/authMapper';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';

@@ -1,6 +1,6 @@
 import { pool } from "./db";
 import debug from "debug";
-import {camelToSnake, snakeToCamel} from "./utils/toggleCase";
+import {camelToSnake, snakeToCamel} from "../utils/toggleCase";
 
 const debugBaseMapper = debug('baseMapper');
 
