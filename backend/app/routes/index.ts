@@ -2,6 +2,7 @@ import express from "express";
 import authController from "../controllers/authController";
 import treeController from "../controllers/treeController";
 import forestController from "../controllers/forestController";
+import userController from "../controllers/userController";
 const routes = express.Router();
 
 // AUTHENTICATION
@@ -25,11 +26,11 @@ routes.delete("/forests/:id", forestController.deleteForest);
 
 
 //USERS (utilisateurs)
-// GET /users
-// GET /users/:id
-// PATCH /users/:id
-// DELETE /users/:id
-// POST /users (BACKOFFICE)
+routes.get("/users", userController.users);
+routes.get("/users/:id", userController.userById);
+routes.post("/users", userController.addUser); //(BACKOFFICE)
+routes.patch("/users/:id", userController.updateUser);
+routes.delete("/users/:id", userController.deleteUser);
 
 
 //ORDERS (
