@@ -1,21 +1,39 @@
-
 import { Request, Response } from 'express';
+import BaseMapper from '../mappers/baseMapper';
+import { Tree } from '../types/index';
+
+const treeMapper = new BaseMapper<Tree>('tree');
 
 const treeController = {   
-    trees: (req:Request, res:Response) => {
-        res.send(" → Récupérer toutes les arbres");
+    trees: async (req:Request, res:Response) => {
+            const trees = await treeMapper.findAll();
+            res.json(trees);
+        },
+    treeById: async (req:Request, res:Response) => {
+        const id = parseInt(req.params.id, 10);
+        const tree = await treeMapper.findById(id);
+        if (tree) {
+            res.json(tree);
+        } else {
+            res.status(404).send(`Arbre avec l'ID ${id} non trouvé`);
+        }
     },
-    treesById: (req:Request, res:Response) => {
-        res.send("→ Récupérer un arbre par son ID");
+    addTree: async (req:Request, res:Response) => {
+        const newTreeData = req.body; 
+        const newTree = await treeMapper.create(newTreeData);
+        res.status(201).json(newTree);
     },
-    addTree: (req:Request, res:Response) => {
-        res.send("→ Ajouter un arbre");
-    },
-    updateTree: (req:Request, res:Response) => {
-        res.send("→ Mettre à jour un arbre");
-    },
-    deleteTree: (req:Request, res:Response) => {
-        res.send("→ Supprimer un arbre");
+    updateTree: async (req:Request, res:Response) => {
+        const id = parseInt(req.params.id, 10);
+        const updatedTreeData = req.body; 
+        const updatedTree = await treeMapper.update(id, updatedTreeData);
+        res.json(updatedTree);
+    }
+    ,
+    deleteTree: async (req:Request, res:Response) => {
+        const id = parseInt(req.params.id, 10);
+        const deletedTree = await treeMapper.delete(id);
+        res.send("Arbre supprimé");
     }
 }
 export default treeController;

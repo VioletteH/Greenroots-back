@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import BaseMapper from '../mappers/baseMapper';
 import { Forest } from '../types/index';
 
-
 const forestMapper = new BaseMapper<Forest>('forest');
 
 const forestController = {   
