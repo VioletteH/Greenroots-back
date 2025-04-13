@@ -3,6 +3,7 @@ import authController from "../controllers/authController";
 import treeController from "../controllers/treeController";
 import forestController from "../controllers/forestController";
 import userController from "../controllers/userController";
+import orderController from "../controllers/orderController";
 const routes = express.Router();
 
 // AUTHENTICATION
@@ -34,9 +35,9 @@ routes.delete("/users/:id", userController.deleteUser);
 
 
 //ORDERS (
-    // GET /orders
-    // GET /orders/:id
-    // POST /orders
-    // PATCH /orders
+routes.get("/orders", orderController.orders);
+routes.get("/orders/:id", orderController.orderById);
+routes.post("/orders", orderController.addOrder);
+routes.patch("/orders/:id", orderController.updateOrder);
     
 export default routes;
