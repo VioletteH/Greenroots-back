@@ -8,6 +8,6 @@ Content-Type: application/json
 
 {
   "email": "john.doe@example.com",
-  "password": "test"
+  "password": "t"
 }
 ### Test Register
