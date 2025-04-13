@@ -1,9 +1,10 @@
 
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { loginSchema } from '../utils/shemasJoi';
 import AuthMapper from '../mappers/authMapper';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
+import { AppError } from '../middlewares/errorHandler';
 
 
 
@@ -15,31 +16,28 @@ const userMapper = new AuthMapper();
 
 const authController = {   
     
-    login: async (req: Request, res: Response): Promise<void>  => {
+    login: async (req: Request, res: Response, next:NextFunction ): Promise<void>  => {
         try {
+            //step 1 - data validation
             console.log("🧪 Étape 1 - Validation Joi");
             const { error, value } = loginSchema.validate(req.body);
             if (error) {
-                console.log("❌ Joi error:", error);
-                res.status(400).json({ error: error.details[0].message });
-                return;
+                next(new AppError ("Password or email - invalid1", 400));
             }
-            const hash = await argon2.hash('test');
-            console.log("🔑 Hash mot de passe :", hash);
-            console.log("🧪 Étape 2 - Recherche user");
+
+            //step 2 - find user
             const user = await userMapper.findByEmail(value.email) as User;
             if (!user) {
-                console.log("❌ Aucun utilisateur trouvé pour :", value.email);
-                res.status(401).json({ error: 'Email ou mot de passe incorrect.' });
-                return;
+                next(new AppError ("Password or email - invalid2", 400));
             }
-            console.log("🧪 Étape 3 - Vérification mot de passe");
+
+            //step 3 - password verification
             const passwordValid = await argon2.verify(user.password, value.password);
             if (!passwordValid) {
-                console.log("❌ Mot de passe invalide");
-                res.status(401).json({ error: 'Email ou mot de passe incorrect.' });
-                return;
+                next(new AppError ("Password or email - invalid3", 400));
             }
+
+            //step 4 - generate JWT token
             const token = jwt.sign(
 
                 { id: user.id, role: user.role, email: user.email },
@@ -53,9 +51,7 @@ const authController = {
                 user: { id: user.id, email: user.email, role: user.role }
             });
         } catch (err) {
-            console.error('Login error:', err);
-            res.status(500).json({ error: 'Erreur serveur lors de la connexion.' });
-            return;
+            next(new AppError ("Server error during login.", 500));
         }
     },
     register: (req:Request, res:Response) => {
