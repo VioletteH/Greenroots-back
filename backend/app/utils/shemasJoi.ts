@@ -31,7 +31,7 @@ export const registerSchema = Joi.object({
   }),
   
   password: Joi.string()
-  .min(2)
+  .min(8)
   .required()
   .messages({
     'string.min': 'Password or email - invalid',
