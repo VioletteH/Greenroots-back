@@ -5,7 +5,7 @@
 
 # // TREES 
 # 🛠️ routes.get("/trees", treeController.trees);
-GET http://localhost:3000/trees
+GET http://localhost:3000/trees/?limit=2&offset=3
 
 ###
 # 🛠️ routes.get("/trees/:id", treeController.treesById);

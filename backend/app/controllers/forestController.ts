@@ -10,7 +10,9 @@ const forestMapper = new BaseMapper<Forest>('forest');
 const forestController = {   
 
     forests: catchAsync(async (req: Request, res: Response, next:NextFunction ): Promise<void>  => {
-        const forests = await forestMapper.findAll();
+        const limit = parseInt(req.query.limit as string, 10) || 10;
+        const offset = parseInt(req.query.offset as string, 10) || 0;
+        const forests = await forestMapper.findAll(limit, offset);
         if (forests.length === 0) {
             res.json("No forests found");
         }
