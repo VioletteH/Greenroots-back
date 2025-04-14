@@ -1,38 +1,71 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import BaseMapper from "../mappers/baseMapper";
 import { Order } from "../types/index";
+import { orderSchema } from "../utils/shemasJoi";
+import { AppError } from "../middlewares/errorHandler";
+import { catchAsync } from "../utils/catchAsync";
 
 const orderMapper = new BaseMapper<Order>("order");
 
 const orderController = {
-  orders: async (req: Request, res: Response) => {
+  orders: catchAsync(async (req: Request, res: Response) => {
     const orders = await orderMapper.findAll();
-    res.json(orders);
-  },
-  orderById: async (req: Request, res: Response) => {
+    if (orders.length === 0) {
+      res.status(200).json("ordders not found");
+    }
+    res.status(200).json(orders);
+  }),
+  orderById: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10);
     const order = await orderMapper.findById(id);
-    if (order) {
-      res.json(order);
-    } else {
-      res.status(404).send(`Commande avec l'ID ${id} non trouvée`);
+    if (!order) {
+      return next(new AppError(`Order ${id} already exists `, 400));
     }
-  },
-  addOrder: async (req: Request, res: Response) => {
-    const newOrderData = req.body;
-    const newOrder = await orderMapper.create(newOrderData);
+    res.status(200).json(order);
+  }),
+  addOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    // Validation
+    const { error, value } = orderSchema.validate(req.body);
+    if (error) {
+      return next(new AppError(`Invalid data`, 400));
+    }
+    // Order exist
+    const existingOrder = await orderMapper.findById(value.id);
+    if (existingOrder) {
+      return next(new AppError(`Order ${value.id} already exists`, 400));
+    }
+    // Create new order
+    const newOrder = await orderMapper.create(value);
     res.status(201).json(newOrder);
-  },
-  updateOrder: async (req: Request, res: Response) => {
+  }),
+  updateOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10);
-    const updatedOrderData = req.body;
-    const updatedOrder = await orderMapper.update(id, updatedOrderData);
-    res.json(updatedOrder);
-  },
-  deleteOrder: async (req: Request, res: Response) => {
+    // Validation
+    const { error, value } = orderSchema.validate(req.body);
+    if (error) {
+      next(new AppError(`Invalid data`, 400));
+      return res.status(400).json({ message: "Invalid data" });
+    }
+    // Order exist
+    const existingOrder = await orderMapper.findById(id);
+    if (!existingOrder) {
+      return next(new AppError(`Order ${id} not found`, 404));
+    }
+    // Update order
+    // TODO - check if the order is already paid
+    const updatedOrder = await orderMapper.update(id, value);
+    res.status(200).json(updatedOrder);
+  }),
+  deleteOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10);
+    // Order exist
+    const existingOrder = await orderMapper.findById(id);
+    if (!existingOrder) {
+      return next(new AppError(`Order ${id} not found`, 404));
+    }
+    // TODO - check if the order is already paid
     const deletedOrder = await orderMapper.delete(id);
-    res.send("Commande supprimée");
-  },
+    res.status(200).json(deletedOrder);
+  }),
 };
 export default orderController;
