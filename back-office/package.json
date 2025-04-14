@@ -1,30 +1,28 @@
 {
-  "name": "projet-greenroots-back",
+  "name": "back-office",
   "version": "1.0.0",
   "description": "",
   "main": "app.ts",
-  "scripts": {
+    
+  
+  "scripts": {    
     "start": "ts-node app.ts",
     "dev": "nodemon -L app.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "packageManager": "pnpm@10.6.4",
   "dependencies": {
-    "argon2": "^0.41.1",
-    "debug": "^4.4.0",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "joi": "^17.13.3",
-    "jsonwebtoken": "^9.0.2",
-    "pg": "^8.14.1"
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "pg": "^8.13.1"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.12",
     "@types/express": "^5.0.1",
-    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.14.0",
-    "@types/pg": "^8.11.11",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"

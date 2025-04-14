@@ -1,0 +1,13 @@
+#  ✅ Operational
+#  🟠 Controller to do
+
+# // AUTHENTICATION
+#  ✅ Test Login
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "t"
+}
+### Test Register

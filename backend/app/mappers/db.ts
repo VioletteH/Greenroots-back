@@ -2,6 +2,7 @@ import pg from "pg";
 import debug from "debug";
 import "dotenv/config";
 
+
 const { Pool } = pg;
 
 // Création d'un espace de log dédié à la BDD

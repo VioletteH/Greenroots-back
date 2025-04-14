@@ -1,4 +1,4 @@
-import { snakeToCamel } from './utils/toggleCase';
+import { snakeToCamel } from '../utils/toggleCase';
 import BaseMapper from './baseMapper';
 import { pool } from './db';
 import { Forest } from '../types/index';
