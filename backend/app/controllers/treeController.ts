@@ -9,9 +9,11 @@ const treeMapper = new BaseMapper<Tree>('tree');
 
 const treeController = {   
     trees: catchAsync(async (req:Request, res:Response) => {
-            const trees = await treeMapper.findAll();
+            const limit = parseInt(req.query.limit as string, 10) || 10;
+            const offset = parseInt(req.query.offset as string, 10) || 0; 
+            const trees = await treeMapper.findAll(limit, offset);
             if (trees.length === 0) {
-                res.json("trees not found");
+                res.status(200).json("trees not found");
             }
             res.status(200).json(trees);
         }),
