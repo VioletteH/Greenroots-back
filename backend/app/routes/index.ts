@@ -13,7 +13,7 @@ routes.get("/register", authController.register);
 
 // TREES 
 routes.get("/trees", treeController.trees);
-routes.get("/trees/:id", treeController.treesById);
+routes.get("/trees/:id", treeController.treeById);
 routes.post("/trees", treeController.addTree);
 routes.patch("/trees/:id", treeController.updateTree);
 routes.delete("/trees/:id", treeController.deleteTree);
