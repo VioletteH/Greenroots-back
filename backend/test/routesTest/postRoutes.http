@@ -10,4 +10,12 @@ Content-Type: application/json
   "email": "john.doe@example.com",
   "password": "test"
 }
-### Test Register
+
+### Test Register 
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+  "email": "john2.doe@example.com",
+  "password": "test"
+}
