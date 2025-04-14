@@ -1,0 +1,44 @@
+services:
+
+  greenroots-db:
+    container_name: greenroots-db
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./data:/docker-entrypoint-initdb.d
+      - pg-greenroots:/var/lib/postgresql/data
+
+  greenroots-backend:
+    container_name: greenroots-backend
+    build:
+      context: ./backend 
+      dockerfile: Dockerfile 
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - greenroots-db
+
+  greenroots-backoffice:
+    container_name: greenroots-backoffice
+    build:
+      context: ./backoffice 
+      dockerfile: Dockerfile 
+    ports:
+      - "3001:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./backoffice:/app
+      - /app/node_modules
+    depends_on:
+      - greenroots-db
+
