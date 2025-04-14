@@ -1,0 +1,44 @@
+#  ✅ Operational
+#  🛠️ Controller to do
+
+### TREES
+
+### ✅ Test updateTree
+PATCH http://localhost:3000/trees/11
+Content-Type: application/json
+
+{
+  "category": "Palmier"
+}
+
+### FOREST
+
+### ✅ Test updateForest
+PATCH http://localhost:3000/forests/9
+Content-Type: application/json
+
+{
+  "country": "Espagne"
+}
+
+### USER
+
+### ✅ Test updateUser
+
+PATCH http://localhost:3000/users/11
+Content-Type: application/json
+
+{
+  "zipcode": "32000"
+}
+
+### ORDER
+
+### 🛠️ Test updateOrder
+
+PATCH http://localhost:3000/orders/11
+Content-Type: application/json
+
+{
+  "status": 2
+}

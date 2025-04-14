@@ -29,8 +29,7 @@ const forestController = {
         const updatedForestData = req.body; 
         const updatedForest = await forestMapper.update(id, updatedForestData);
         res.json(updatedForest);
-    }
-    ,
+    },
     deleteForest: async (req:Request, res:Response) => {
         const id = parseInt(req.params.id, 10);
         const deletedForest = await forestMapper.delete(id);
