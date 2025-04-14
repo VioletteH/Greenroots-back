@@ -64,7 +64,7 @@ export const orderSchema = Joi.object({
 
 //JOI - treeShema
 
-const treeSchema = Joi.object({
+export const treeSchema = Joi.object({
   name: Joi.string().required(),
   scientific_name: Joi.string().required(),
   image: Joi.string().required(),
@@ -74,3 +74,28 @@ const treeSchema = Joi.object({
   o2: Joi.number().precision(2).positive().required(),
   price: Joi.number().precision(2).positive().required()
 });
+
+// JOI - userShema
+export const userSchema = Joi.object({
+  firstname: Joi.string().trim().max(255).required(),
+  lastname: Joi.string().trim().max(255).required(),
+  email: Joi.string()
+  .email()
+  .trim()
+  .lowercase()
+  .required()
+  .messages({
+    'string.email': 'Email invalide',
+    'string.empty': 'Email requis',
+    'any.required': 'Email requis',
+  }),
+  password: Joi.string()
+  .min(8)
+  .required()
+  .messages({
+    'string.min': 'Le mot de passe doit contenir au moins 8 caractères',
+    'string.empty': 'Mot de passe requis',
+    'any.required': 'Mot de passe requis',
+  }),
+})
+
