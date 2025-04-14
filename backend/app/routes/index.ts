@@ -8,7 +8,7 @@ const routes = express.Router();
 
 // AUTHENTICATION
 routes.post("/login", authController.login);
-routes.get("/register", authController.register);
+routes.post("/register", authController.register);
 
 
 // TREES 

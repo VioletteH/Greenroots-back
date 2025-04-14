@@ -19,8 +19,8 @@ const authController = {
     
     login: catchAsync(async (req: Request, res: Response, next:NextFunction ): Promise<void>  => {
             //step 1 - data validation
-            console.log("🧪 Étape 1 - Validation Joi");
             const { error, value } = loginSchema.validate(req.body);
+            //TODO - SANITIZE
             if (error) {
                return next(new AppError ("Password or email - invalid", 400));
             }
@@ -41,7 +41,6 @@ const authController = {
 
             //step 4 - generate JWT token
             const token = jwt.sign(
-
                 { id: user.id, role: user.role, email: user.email },
                 JWT_SECRET,
                 { expiresIn: '12h' }

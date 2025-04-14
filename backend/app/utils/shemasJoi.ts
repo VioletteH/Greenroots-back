@@ -12,10 +12,8 @@ export const loginSchema = Joi.object({
   }),
   
   password: Joi.string()
-  .min(2)
   .required()
   .messages({
-    'string.min': 'Password or email - invalid',
     'string.empty': 'Password - requiered',
     'any.required': 'Password - requiered',
   }),
