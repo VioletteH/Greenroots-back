@@ -11,8 +11,10 @@ export default class BaseMapper <T> {
         this.tableName = tableName;
     }
 
-    async findAll(): Promise<T[]> {
-        const { rows } = await pool.query(`SELECT * FROM "${this.tableName}"`);
+    async findAll(limit?:number, offset?:number) : Promise<T[]> {
+        const query = `SELECT * FROM "${this.tableName}" LIMIT $1 OFFSET $2`;
+        const values = [limit, offset];
+        const { rows } = await pool.query(query, values);
         const rowsCamel = rows.map(snakeToCamel)as T[];;
         debugBaseMapper('findAll');
         console.log("find",rowsCamel);

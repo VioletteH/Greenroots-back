@@ -1,39 +1,78 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import BaseMapper from '../mappers/baseMapper';
 import { Tree } from '../types/index';
+import { AppError } from '../middlewares/errorHandler';
+import { catchAsync } from '../utils/catchAsync';
+import { treeSchema } from '../utils/shemasJoi';
 
 const treeMapper = new BaseMapper<Tree>('tree');
 
 const treeController = {   
-    trees: async (req:Request, res:Response) => {
-            const trees = await treeMapper.findAll();
-            res.json(trees);
-        },
-    treeById: async (req:Request, res:Response) => {
+    trees: catchAsync(async (req:Request, res:Response) => {
+            const limit = parseInt(req.query.limit as string, 10) || 10;
+            const offset = parseInt(req.query.offset as string, 10) || 0; 
+            const trees = await treeMapper.findAll(limit, offset);
+            if (trees.length === 0) {
+                res.status(200).json("trees not found");
+            }
+            res.status(200).json(trees);
+        }),
+    treeById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
-        const tree = await treeMapper.findById(id);
-        if (tree) {
-            res.json(tree);
-        } else {
-            res.status(404).send(`Arbre avec l'ID ${id} non trouvé`);
+        // Validation
+        const { error, value } = treeSchema.validate({ id });
+        if (error) {
+            return next(new AppError("Invalid data", 400));
         }
-    },
-    addTree: async (req:Request, res:Response) => {
-        const newTreeData = req.body; 
-        const newTree = await treeMapper.create(newTreeData);
+        // Tree exist
+        const existingTree = await treeMapper.findById(id);
+        if (!existingTree) {
+            return next(new AppError(`Tree with ${id} not found`, 404));
+        }
+        res.status(200).json(existingTree);
+
+    }),
+    addTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        // Validation
+        const { error, value } = treeSchema.validate(req.body);
+        if (error) {
+            return next(new AppError("Invalid data", 400));
+        } 
+        // Tree exist
+        const existingTree = await treeMapper.findById(value.id);
+        if (existingTree) {
+            return next(new AppError(`Tree with ${value.id} already exists`, 400));
+        }
+        // Create new tree
+        const newTree = await treeMapper.create(value);
         res.status(201).json(newTree);
-    },
-    updateTree: async (req:Request, res:Response) => {
+    }),
+    updateTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
-        const updatedTreeData = req.body; 
-        const updatedTree = await treeMapper.update(id, updatedTreeData);
-        res.json(updatedTree);
-    }
-    ,
-    deleteTree: async (req:Request, res:Response) => {
+        // Validation
+        const { error, value } = treeSchema.validate(req.body);
+        if (error) {
+            return next(new AppError("Invalid data", 400));
+        }
+        // Tree exist
+        const existingTree = await treeMapper.findById(id);
+        if (!existingTree) {
+            return next(new AppError(`Tree with ${id} not found`, 404));
+        }
+        // Update tree
+        const updatedTree = await treeMapper.update(id, value);
+        res.status(200).json(updatedTree);
+    }),
+    deleteTree: catchAsync(async (req:Request, res:Response) => {
         const id = parseInt(req.params.id, 10);
+        // Tree exist
+        const existingTree = await treeMapper.findById(id);
+        if (!existingTree) {
+            return res.status(404).json({ message: "Tree not found" });
+        }
+        // Delete tree
         const deletedTree = await treeMapper.delete(id);
-        res.send("Arbre supprimé");
-    }
+        res.status(200).json(deletedTree);
+    })
 }
 export default treeController;
