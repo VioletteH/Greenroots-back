@@ -1,7 +1,14 @@
 BEGIN;
 
+DROP TABLE IF EXISTS "order_item";
+DROP TABLE IF EXISTS "order";
+DROP TABLE IF EXISTS "forest_tree";
+DROP TABLE IF EXISTS "forest";
+DROP TABLE IF EXISTS "tree";
+DROP TABLE IF EXISTS "user";
+
 CREATE TABLE "user" (
-    user_id GENERATED ALWAYS AS IDENTITY,
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     firstname TEXT,
     lastname TEXT,
     email TEXT UNIQUE NOT NULL,
@@ -14,7 +21,7 @@ CREATE TABLE "user" (
 );
 
 CREATE TABLE "tree" (
-    tree_id GENERATED ALWAYS AS IDENTITY,
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name TEXT NOT NULL,
     scientific_name TEXT NOT NULL,
     image TEXT NOT NULL,
@@ -26,7 +33,7 @@ CREATE TABLE "tree" (
 );
 
 CREATE TABLE "forest" (
-    forest_id GENERATED ALWAYS AS IDENTITY,
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name TEXT NOT NULL,
     association TEXT NOT NULL,
     image TEXT NOT NULL,
@@ -37,25 +44,25 @@ CREATE TABLE "forest" (
 );
 
 CREATE TABLE "order" (
-    order_id GENERATED ALWAYS AS IDENTITY,
-    user_id INT NOT NULL REFERENCES "user"(user_id),
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES "user"(id),
     total_price DECIMAL(10, 2) NOT NULL,
     status INT NOT NULL
 );
 
 CREATE TABLE "order_item" (
-    order_tree_id GENERATED ALWAYS AS IDENTITY,
-    order_id INT NOT NULL REFERENCES "order"(order_id),
-    tree_id INT NOT NULL REFERENCES "tree"(tree_id),
-    name TEXT NOT NULL REFERENCES "tree"(name),
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    order_id INT NOT NULL REFERENCES "order"(id),
+    tree_id INT NOT NULL REFERENCES "tree"(id),
+    name TEXT NOT NULL,
     quantity INT NOT NULL,
-    price DECIMAL(10, 2) NOT NULL REFERENCES "tree"(price),
+    price DECIMAL(10, 2) NOT NULL
 );
 
 CREATE TABLE "forest_tree" (
-    forest_tree_id GENERATED ALWAYS AS IDENTITY,
-    forest_id INT NOT NULL REFERENCES "forest"(forest_id),
-    tree_id INT NOT NULL REFERENCES "tree"(tree_id),
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    forest_id INT NOT NULL REFERENCES "forest"(id),
+    tree_id INT NOT NULL REFERENCES "tree"(id),
     stock INT NOT NULL
 );
 
