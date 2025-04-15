@@ -28,7 +28,7 @@ services:
       - "3000:3000"
     restart: always
     env_file:
-      - ./backend/.env
+      - ./docker.env
     volumes:
       - ./backend:/app/backend
     depends_on:
@@ -44,7 +44,7 @@ services:
       - "3001:3000"
     restart: unless-stopped
     env_file:
-      - ./back-office/.env
+      - ./docker.env
     volumes:
       - ./back-office:/app/backoffice
 
