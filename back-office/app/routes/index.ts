@@ -7,8 +7,8 @@ const routes = express.Router();
 // TREES
 routes.get("/trees", treeController.tree)
 routes.patch("/trees/:id", treeController.updateTree)
-// routes.delete("/trees/:id", treeController.deleteTree)
-// routes.post("/trees", treeController.addTree)
+routes.delete("/trees/:id", treeController.deleteTree)
+routes.post("/trees", treeController.addTree)
 
 // //FORESTS
 // routes.get("/forests", forestController.forests);

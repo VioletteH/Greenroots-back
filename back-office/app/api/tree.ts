@@ -10,6 +10,15 @@ export const getAllTrees = async (): Promise<Tree[]> => {
 };
 
 export const updateTree = async (id:string, updatedData: Partial<Tree>): Promise<Tree> => {
-    const response = await axios.put(`${api_url}/tree/${id}`, updatedData);
+    const response = await axios.patch(`${api_url}/trees/${id}`, updatedData);
     return response.data; 
+};
+
+export const deleteTree = async (id: string): Promise<void> => {
+    await axios.delete(`${api_url}/trees/${id}`);
+};
+
+export const addTree = async (newTreeData: Partial<Tree>): Promise<Tree> => {
+    const response = await axios.post(`${api_url}/trees`, newTreeData);
+    return response.data;
 };
