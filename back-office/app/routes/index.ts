@@ -5,8 +5,8 @@ import treeController from "../controllers/treeController";
 const routes = express.Router();
 
 // TREES
-routes.get("/tree", treeController.tree)
-routes.patch("/tree/:id", treeController.updateTree)
+routes.get("/trees", treeController.tree)
+routes.patch("/trees/:id", treeController.updateTree)
 // routes.delete("/trees/:id", treeController.deleteTree)
 // routes.post("/trees", treeController.addTree)
 

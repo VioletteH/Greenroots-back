@@ -6,7 +6,6 @@ const treeController = {
    tree: async (req: Request, res: Response): Promise<void> => {
       try {
          const data: Tree[] = await getAllTrees();
-         console.log('Coucou controlleur');
          res.render('trees', { data });
       } catch (error) {
          console.error('Erreur dans le contrôleur:', error);
