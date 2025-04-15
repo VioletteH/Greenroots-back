@@ -18,11 +18,6 @@ const userController = {
     }),
     userById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
-        // Validation
-        const { error, value } = userSchema.validate({ id });
-        if (error) {
-            return next(new AppError("Invalid data", 400));
-        }
         // User exist
         const existingUser = await userMapper.findById(id);
         if (!existingUser) {

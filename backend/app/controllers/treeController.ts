@@ -19,11 +19,6 @@ const treeController = {
         }),
     treeById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
-        // Validation
-        const { error, value } = treeSchema.validate({ id });
-        if (error) {
-            return next(new AppError("Invalid data", 400));
-        }
         // Tree exist
         const existingTree = await treeMapper.findById(id);
         if (!existingTree) {
