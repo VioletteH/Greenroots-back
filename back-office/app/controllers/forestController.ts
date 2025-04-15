@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Forest } from '../types/index';
 
-import { getAll, getOne, add } from '../api/forest';
+import { getAll, getOne, add, update } from '../api/forest';
 
 
 
