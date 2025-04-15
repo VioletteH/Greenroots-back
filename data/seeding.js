@@ -5,11 +5,11 @@ import dotenv from 'dotenv';
 dotenv.config();
 const { Pool } = pkg;
 const pool = new Pool({
-  user: process.env.PGUSER || 'greenroots',  
-  host: process.env.PGHOST || 'localhost',  
-  database: process.env.PGDATABASE || 'greenroots',  
-  password: process.env.PGPASSWORD || 'greenroots',  
-  port: process.env.PGPORT || 5432,
+  user: process.env.DB_USER || 'greenroots',  
+  host: process.env.DB_HOST || 'localhost',  
+  database: process.env.DB_NAME || 'greenroots',  
+  password: process.env.DB_PASSWORD || 'greenroots',  
+  port: process.env.DB_PORT || 5432,
 });
 
 function createUser() {

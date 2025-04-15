@@ -4,9 +4,8 @@ import "dotenv/config";
 import { errorHandler } from './app/middlewares/errorHandler';
 import cors from 'cors';
 
-
 const app = express()
-const port = process.env.PORT || 3000;
+const PORT = 3000;
 
 app.use(cors());
 
@@ -21,6 +20,6 @@ app.use(routes);
 app.use(errorHandler)
 
 
-app.listen(port, () => {
-  console.log(`Example app listening on port http://localhost:${port}`)
+app.listen(PORT, () => {
+  console.log(`Example app listening on port http://localhost:${PORT}`)
 })
