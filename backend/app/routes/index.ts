@@ -26,7 +26,7 @@ routes.patch("/forests/:id", authorizationController.admin, forestController.upd
 routes.delete("/forests/:id", authorizationController.admin, forestController.deleteForest);
 
 //USERS (utilisateurs)
-routes.get("/users", authorizationController.admin, userController.users);
+routes.get("/users", userController.users);
 routes.get("/users/:id", authorizationController.user, userController.userById);
 routes.post("/users", userController.addUser); //(BACKOFFICE)
 routes.patch("/users/:id", authorizationController.user, userController.updateUser);
