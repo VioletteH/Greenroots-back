@@ -9,3 +9,17 @@ export const getAll = async (): Promise<Forest[]> => {
   const data = response.data;
   return data;
 };
+
+export const getOne = async (id: string): Promise<Forest> => {
+  const response = await axios.get(`${api_url}/forests/${id}`);
+
+  const data = response.data;
+  return data;
+};
+
+export const add = async (forest: Forest): Promise<Forest> => {
+  const response = await axios.post(`${api_url}/forests`, forest);
+
+  const data = response.data;
+  return data;
+};

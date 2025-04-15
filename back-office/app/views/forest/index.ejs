@@ -1,7 +1,7 @@
 <%- include('../partials/header.ejs') %>
 
 <h1>Liste des forêts</h1>
-<a href="/forest/new" class="btn btn-primary mb-3">Ajouter une forêt</a>
+<a href="/forests/news" class="btn btn-primary mb-3">Ajouter une forêt</a>
 
 <table class="table table-bordered">
   <thead>
@@ -19,9 +19,9 @@
         <td><%= forest.association %></td>
         <td><%= forest.country %></td>
         <td>
-          <a href="/forest/<%= forest.id %>" class="btn btn-info btn-sm">Voir</a>
-          <a href="/forest/<%= forest.id %>/edit" class="btn btn-warning btn-sm">Modifier</a>
-          <form action="/forest/<%= forest.id %>?_method=DELETE" method="POST" style="display:inline;">
+          <a href="/forests/<%= forest.id %>" class="btn btn-info btn-sm">Voir</a>
+          <a href="/forests/<%= forest.id %>/edit" class="btn btn-warning btn-sm">Modifier</a>
+          <form action="/forests/<%= forest.id %>?_method=DELETE" method="POST" style="display:inline;">
             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer cette forêt ?')">Supprimer</button>
           </form>
         </td>

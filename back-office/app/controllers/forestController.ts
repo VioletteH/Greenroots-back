@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Forest } from '../types/index';
 
-import { getAll } from '../api/forest';
+import { getAll, getOne, add } from '../api/forest';
 
 
 
@@ -11,7 +11,43 @@ const forestController = {
          const forests: Forest[] = await getAll();
          res.render('forest/index', { forests });
       } catch (error) {
-         console.error('Erreur dans le contrôleur:', error);
+         console.error('Erreur dans getAllForests :', error);
+         res.status(500).send('Erreur interne');
+      }
+   },
+
+   getForest: async (req:Request, res:Response) => {
+      const id = req.params.id;
+      try {
+         const forest: Forest = await getOne(id);
+         res.render('forest/show', { forest });
+      } catch (error) {
+         console.error('Erreur dans getForest :', error);
+         res.status(500).send('Erreur en interne');
+      }
+   },
+
+   createForestView: (req:Request, res:Response) => {
+      res.render('forest/new');
+   },
+   createForestPost: async (req:Request, res:Response) => {
+      const forest: Forest = req.body;
+      try {
+         await add(forest);
+         res.redirect('/forests');
+      } catch (error) {
+         console.error('Erreur dans createForestPost :', error);
+         res.status(500).send('Erreur interne');
+      }
+   },
+
+   editForestView: async (req:Request, res:Response) => {
+      const id = req.params.id;
+      try {
+         const forest = await getOne(id);
+         res.render('forest/edit', {forest});
+      } catch (error) {
+         console.error('Erreur dans editForestView :', error);
          res.status(500).send('Erreur interne');
       }
    },

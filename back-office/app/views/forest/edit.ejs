@@ -2,7 +2,7 @@
 
 <h1>Modifier la forêt "<%= forest.name %>"</h1>
 
-<form action="/forest/<%= forest.id %>?_method=PUT" method="POST">
+<form action="/forests/<%= forest.id %>?_method=PUT" method="POST">
   <div class="mb-3">
     <label class="form-label">Nom</label>
     <input type="text" name="name" value="<%= forest.name %>" class="form-control" required>
@@ -25,11 +25,11 @@
   </div>
   <div class="mb-3">
     <label class="form-label">Coordonnées X</label>
-    <input type="number" name="locationX" value="<%= forest.locationX %>" class="form-control" step="any">
+    <input type="number" name="location_x" value="<%= forest.locationX %>" class="form-control" step="any">
   </div>
   <div class="mb-3">
     <label class="form-label">Coordonnées Y</label>
-    <input type="number" name="locationY" value="<%= forest.locationY %>" class="form-control" step="any">
+    <input type="number" name="location_y" value="<%= forest.locationY %>" class="form-control" step="any">
   </div>
   <button type="submit" class="btn btn-primary">Mettre à jour</button>
 </form>

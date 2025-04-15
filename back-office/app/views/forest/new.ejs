@@ -2,7 +2,7 @@
 
 <h1>Nouvelle forêt</h1>
 
-<form action="/forest" method="POST">
+<form action="/forests/news" method="POST">
   <div class="mb-3">
     <label class="form-label">Nom</label>
     <input type="text" name="name" class="form-control" required>
@@ -25,11 +25,11 @@
   </div>
   <div class="mb-3">
     <label class="form-label">Coordonnées X</label>
-    <input type="number" name="locationX" class="form-control" step="any">
+    <input type="number" name="location_x" class="form-control" step="any">
   </div>
   <div class="mb-3">
     <label class="form-label">Coordonnées Y</label>
-    <input type="number" name="locationY" class="form-control" step="any">
+    <input type="number" name="location_y" class="form-control" step="any">
   </div>
   <button type="submit" class="btn btn-success">Créer</button>
 </form>

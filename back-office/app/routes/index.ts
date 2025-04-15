@@ -12,9 +12,11 @@ routes.get("/trees", treeController.trees)
 
 //FORESTS
 routes.get("/forests", forestController.getAllForests);
-// routes.get("/forests/:id", forestController.forestById);
-// routes.post("/forests", forestController.addForest);
-// routes.patch("/forests/:id", forestController.updateForest);
+routes.get("/forests/news", forestController.createForestView);
+routes.post("/forests/news", forestController.createForestPost);
+routes.get("/forests/:id", forestController.getForest);
+routes.get("/forests/:id/edit", forestController.editForestView);
+// routes.put("/forests/:id/edit", forestController.updateForest);
 // routes.delete("/forests/:id", forestController.deleteForest);
 
 routes.get("/", (req, res) => {
