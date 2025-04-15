@@ -1,0 +1,21 @@
+{
+  "name": "data",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "init": "psql -U greenroots -d greenroots -f data/init.sql",
+    "seed": "node data/seeding.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^9.7.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "pg": "^8.14.1"
+  }
+}

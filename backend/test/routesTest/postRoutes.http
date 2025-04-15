@@ -1,8 +1,9 @@
 #  ✅ Operational
-#  🟠 Controller to do
+#  🛠️ Controller to do
 
-# // AUTHENTICATION
-#  ✅ Test Login
+### AUTHENTICATION
+
+###  🛠️ Test Login
 POST http://localhost:3000/login
 Content-Type: application/json
 
@@ -11,11 +12,74 @@ Content-Type: application/json
   "password": "test"
 }
 
-### Test Register 
+### 🛠️ Test Register
 POST http://localhost:3000/register
 Content-Type: application/json
 
 {
   "email": "john3.doe@example.com",
   "password": "test12858/8"
+}
+
+### TREES
+
+### ✅ Test addTree
+POST http://localhost:3000/trees
+Content-Type: application/json
+
+{
+    "name": "Figuier",
+    "scientific_name": "Figuerus",
+    "image": "figuier.jpg",
+    "category": "Fruitier",
+    "description": "Arbre a confiture",
+    "co2": 32,
+    "o2": 54,
+    "price": 75
+}
+
+### FOREST
+
+### ✅ Test addForest
+POST http://localhost:3000/forests
+Content-Type: application/json
+
+{
+    "name": "Forêt des Pyrénées Orientales",
+    "association": "GreenRoots",
+    "image": "imageforet9.jpg",
+    "description": "Une super forêt sur une super montagne",
+    "country": "France",
+    "locationX": 20.000000,
+    "locationY": -75.000000
+}
+
+### USERS
+
+### ✅ Test addUser
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "firstname": "Joe",
+    "lastname": "Biden",
+    "email": "joe.biden@gmail.com",
+    "password": "TrumpIHateYou",
+    "phone": "0788888888",
+    "address": "10 av du capitole",
+    "zipcode": "31000",
+    "city": "Washigton",
+    "role": "user"
+}
+
+### ORDERS
+
+### 🛠️ Test addOrder
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+    "user_id": 1,
+    "total_price": 100,
+    "status": 1,
 }

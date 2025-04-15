@@ -1,37 +1,40 @@
-# // AUTHENTICATION
 #  ✅ Operational
 #  🛠️ Controller to do
 
 
-# // TREES 
-# 🛠️ routes.get("/trees", treeController.trees);
-GET http://localhost:3000/trees/?limit=2&offset=3
+### TREES 
 
-###
-# 🛠️ routes.get("/trees/:id", treeController.treesById);
+### ✅ routes.get("/trees", treeController.trees);
+GET http://localhost:3000/trees
+
+### ✅ routes.get("/trees/:id", treeController.treesById);
 GET http://localhost:3000/trees/1
 
-###
-# //FORESTS
-# ✅ routes.get("/forests", forestController.forests);
+### 🛠️ routes.get("/trees", treeController.trees);
+GET http://localhost:3000/trees/?limit=2&offset=3
+
+### FORESTS
+
+### ✅ routes.get("/forests", forestController.forests);
 GET http://localhost:3000/forests
-###
-# ✅ routes.get("/forests/:id", forestController.forestById);
+
+### ✅ routes.get("/forests/:id", forestController.forestById);
 GET http://localhost:3000/forests/1
 
-###
-# //USERS (utilisateurs)
-# 🛠️ routes.get("/users", userController.users);
+### USERS
+
+### ✅ routes.get("/users", userController.users);
 GET http://localhost:3000/users
-###
-# 🛠️ routes.get("/users/:id", userController.userById);
+
+### ✅ routes.get("/users/:id", userController.userById);
 GET http://localhost:3000/users/1
 
-###
-# //ORDERS (
-# routes.get("/orders", orderController.orders);
+### ORDERS
+
+### routes.get("/orders", orderController.orders);
 GET 🛠️ http://localhost:3000/orders
-###
-# routes.get("/orders/:id", orderController.orderById);
+
+### routes.get("/orders/:id", orderController.orderById);
 GET 🛠️ http://localhost:3000/orders/1
-###
+
+
