@@ -4,12 +4,14 @@ import { Order } from "../types/index";
 import { orderSchema } from "../utils/shemasJoi";
 import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
+import { log } from "console";
 
 const orderMapper = new BaseMapper<Order>("order");
 
 const orderController = {
   orders: catchAsync(async (req: Request, res: Response) => {
     const orders = await orderMapper.findAll();
+    console.log("orders", orders);
     if (orders.length === 0) {
       res.status(200).json("ordders not found");
     }

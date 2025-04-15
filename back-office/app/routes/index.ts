@@ -17,6 +17,10 @@ routes.patch("/tree/:id", treeController.updateTree)
 // routes.patch("/forests/:id", forestController.updateForest);
 // routes.delete("/forests/:id", forestController.deleteForest);
 
+routes.get("/", (req, res) => {
+  res.send("OK")
+});
+
 //USERS
 
 //ORDERS
