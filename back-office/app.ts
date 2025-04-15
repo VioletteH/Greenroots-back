@@ -6,7 +6,7 @@ import cors from 'cors';
 
 const app = express();
 app.use(cors());
-const port = process.env.PORT || 3001;
+const PORT = 3000;
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -15,6 +15,6 @@ app.set('views', 'app/views');
 app.use(routes);
 //app.use(errorHandler);
 
-app.listen(port, () => {
-   console.log(`Example app listening on port http://localhost:${port}`)
- })
+app.listen(PORT, () => {
+   console.log(`Example app listening on port http://localhost:${PORT}`)
+ });
