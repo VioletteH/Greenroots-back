@@ -30,7 +30,7 @@ services:
     env_file:
       - ./docker.env
     volumes:
-      - ./backend:/app/backend
+      - ./backend:/app/
     depends_on:
       greenroots-db:
         condition: service_healthy
@@ -42,11 +42,11 @@ services:
       dockerfile: Dockerfile 
     ports:
       - "3001:3000"
-    restart: unless-stopped
+    restart: always
     env_file:
       - ./docker.env
     volumes:
-      - ./back-office:/app/backoffice
+      - ./back-office:/app/
 
 volumes:
   pg-greenroots:
