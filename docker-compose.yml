@@ -7,7 +7,9 @@ services:
       - "5432:5432"
     restart: unless-stopped
     env_file:
-      - .env
+      - ./data/.env
+    environment:
+      - POSTGRES_PASSWORD=ton_mot_de_passe
     volumes:
       - ./data:/docker-entrypoint-initdb.d
       - pg-greenroots:/var/lib/postgresql/data
@@ -20,7 +22,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - .env
+      - ./backend/.env
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -30,15 +32,18 @@ services:
   greenroots-backoffice:
     container_name: greenroots-backoffice
     build:
-      context: ./backoffice 
+      context: ./back-office 
       dockerfile: Dockerfile 
     ports:
       - "3001:3000"
     env_file:
-      - .env
+      - ./back-office/.env
     volumes:
-      - ./backoffice:/app
+      - ./back-office:/app
       - /app/node_modules
     depends_on:
       - greenroots-db
 
+volumes:
+  pg-greenroots:
+    driver: local
