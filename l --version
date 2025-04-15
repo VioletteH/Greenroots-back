@@ -1,0 +1,179 @@
+[33mcommit f4a8469d66f11584dbf73958d02cce87be35667d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mvincent1[m[33m)[m
+Author: vincent fouque <vnfouque@gmail.com>
+Date:   Mon Apr 14 11:07:00 2025 +0200
+
+    fix: install wsl and some routes/controller added
+
+[33mcommit c1a92543a34b7a448873fc62ae41c80f1561772f[m[33m ([m[1;32mdev[m[33m)[m
+Merge: 3de414d 3863a1c
+Author: Enzog <42619767+vfouque@users.noreply.github.com>
+Date:   Fri Apr 11 18:32:02 2025 +0200
+
+    Merge vincent1 avec dev
+    
+    chore:routes/controllers and architecture
+
+[33mcommit 3863a1caa13f4c237b2a674eb2f286f999f816a9[m[33m ([m[1;31morigin/vincent1[m[33m)[m
+Author: Vincent Fouque <vnfouque@gmail.com>
+Date:   Fri Apr 11 18:19:36 2025 +0200
+
+    chore:routes/controllers and architecture
+
+[33mcommit 3de414d0f5ab8e6241936ea4bfc2355bb9189024[m
+Merge: d102622 be8320f
+Author: VioletteH <71100279+VioletteH@users.noreply.github.com>
+Date:   Fri Apr 11 15:34:40 2025 +0200
+
+    Merge pull request #9 from O-clock-Sigyn/violette1
+    
+    feat: forestController
+
+[33mcommit be8320f53c447a7e867ca08bb968078a161e63e7[m
+Author: Violette Henquet <violettehenquet@gmail.com>
+Date:   Fri Apr 11 15:33:57 2025 +0200
+
+    feat: forestController
+
+[33mcommit d1026220c8374ce46219d4db7254f392b45f9dd5[m
+Merge: b4e941b 34c8f13
+Author: VioletteH <71100279+VioletteH@users.noreply.github.com>
+Date:   Fri Apr 11 14:28:49 2025 +0200
+
+    Merge pull request #8 from O-clock-Sigyn/violette1
+    
+    Violette1
+
+[33mcommit 34c8f13456250ffa746294009dbf60080be0b481[m
+Author: Violette Henquet <violettehenquet@gmail.com>
+Date:   Fri Apr 11 14:12:34 2025 +0200
+
+    datamapper ok
+
+[33mcommit 2c2ae7c37ef05028d814cf1464973095dfdeea50[m
+Author: Violette Henquet <violettehenquet@gmail.com>
+Date:   Fri Apr 11 13:20:41 2025 +0200
+
+    datamapper
+
+[33mcommit b4e941b1a0e3eec2433aea67e45dce705cf5094b[m
+Merge: 2f57fb5 649e4f5
+Author: VioletteH <71100279+VioletteH@users.noreply.github.com>
+Date:   Fri Apr 11 12:01:02 2025 +0200
+
+    Merge pull request #7 from O-clock-Sigyn/violette1
+    
+    chore : fichiers init / seeding
+
+[33mcommit 649e4f56988c84d7de2b1581037a8da8a0cbd965[m
+Author: Violette Henquet <violettehenquet@gmail.com>
+Date:   Fri Apr 11 11:55:29 2025 +0200
+
+    chore : fichiers init / seeding
+
+[33mcommit 2f57fb5f7b7733745e68acce5ec1efbaa98f7feb[m
+Merge: be4307a be70005
+Author: VioletteH <71100279+VioletteH@users.noreply.github.com>
+Date:   Fri Apr 11 11:38:05 2025 +0200
+
+    Merge pull request #6 from O-clock-Sigyn/violette1
+    
+    chore: renommer fichiers
+
+[33mcommit be700058bd139396ef0cc52ac4b5b33b31935f65[m
+Author: Violette Henquet <violettehenquet@gmail.com>
+Date:   Fri Apr 11 11:36:11 2025 +0200
+
+    chore: renommer fichiers
+
+[33mcommit be4307ae5116678d46abcab4b817396883a701ff[m
+Merge: c4dd41c 679dd1e
+Author: Thibaut-Frontori <thibaut.frontori@oclock.school>
+Date:   Fri Apr 11 11:21:13 2025 +0200
+
+    Merge pull request #5 from O-clock-Sigyn/thibaut
+    
+    Thibaut
+
+[33mcommit 679dd1eb12bf9a6720de930b27ae1192530627fc[m
+Author: Thibaut-Frontori <thibaut.frontori@oclock.school>
+Date:   Fri Apr 11 11:07:36 2025 +0200
+
+    feat: routes and controllers
+
+[33mcommit 8e5a88cedc3414c8d896d4eca9bffd7d7b8543f7[m
+Author: Thibaut-Frontori <thibaut.frontori@oclock.school>
+Date:   Fri Apr 11 08:52:35 2025 +0200
+
+    routes and controllers tree
+
+[33mcommit c0d239bd27a118f2ab372cfa4c93ff7e32fb40db[m
+Author: Thibaut-Frontori <thibaut.frontori@oclock.school>
+Date:   Fri Apr 11 08:45:37 2025 +0200
+
+    routes and controllers tree
+
+[33mcommit c4dd41cd4dd112b014549486e182ff17d5abe42c[m
+Merge: f0cd95b 6adf3f0
+Author: Thibaut-Frontori <thibaut.frontori@oclock.school>
+Date:   Fri Apr 11 00:33:57 2025 +0200
+
+    Merge pull request #4 from O-clock-Sigyn/thibaut
+    
+    fix: remove backend-service/.env from Git repo
+
+[33mcommit 6adf3f05b79fbeb393a3c3e82298c9c679247a04[m
+Author: Thibaut-Frontori <thibaut.frontori@oclock.school>
+Date:   Fri Apr 11 00:32:03 2025 +0200
+
+    fix: remove backend-service/.env from Git repo
+
+[33mcommit f0cd95b8e7e54ed3a27c51cbce4ef406c37168cd[m
+Author: Thibaut-Frontori <thibaut.frontori@oclock.school>
+Date:   Thu Apr 10 23:15:00 2025 +0200
+
+    first route and 1st controller
+
+[33mcommit dcf27a79b73f305e3df009bd1e418c8ff75f3f53[m
+Author: Thibaut-Frontori <thibaut.frontori@oclock.school>
+Date:   Thu Apr 10 22:31:29 2025 +0200
+
+    chore: supprime node_modules du suivi Git
+
+[33mcommit b4fc02f2f73c7c82a92b5a20addb4b02a78e28d4[m
+Author: Thibaut-Frontori <thibaut.frontori@oclock.school>
+Date:   Thu Apr 10 22:26:50 2025 +0200
+
+    fix: ajoute node_modules dans .gitignore
+
+[33mcommit 0c6fb299894d29f29e53dd9d00207c8cb74a3857[m
+Merge: 11b2e74 cc97419
+Author: Thibaut-Frontori <thibaut.frontori@oclock.school>
+Date:   Thu Apr 10 21:55:40 2025 +0200
+
+    Merge pull request #1 from O-clock-Sigyn/archi_back
+    
+    chore: archi back + gitignore
+
+[33mcommit cc97419dc0eab1341e8191579719dcff8356dd5f[m[33m ([m[1;31morigin/archi_back[m[33m)[m
+Author: Thibaut-Frontori <thibaut.frontori@oclock.school>
+Date:   Thu Apr 10 21:47:16 2025 +0200
+
+    chore: archi back + gitignore
+
+[33mcommit 11b2e74fad8a2da4192ad3b65d6f11856a493483[m
+Author: Vincent Fouque <vnfouque@gmail.com>
+Date:   Thu Apr 10 17:08:56 2025 +0200
+
+    chore:architecture/environnement
+
+[33mcommit 20029f6bdd2a2d7266b1e924ce47b2127b688566[m
+Author: Violette Henquet <violettehenquet@gmail.com>
+Date:   Thu Apr 10 16:20:56 2025 +0200
+
+    en cours d'installation
+
+[33mcommit bffcf55b1cc36f0161b34920b59f42d513f3a2fa[m
+Author: Violette Henquet <violettehenquet@gmail.com>
+Date:   Thu Apr 10 16:02:49 2025 +0200
+
+    initial

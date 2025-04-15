@@ -10,6 +10,9 @@ GET http://localhost:3000/trees
 ### ✅ routes.get("/trees/:id", treeController.treesById);
 GET http://localhost:3000/trees/1
 
+### 🛠️ routes.get("/trees", treeController.trees);
+GET http://localhost:3000/trees/?limit=2&offset=3
+
 ### FORESTS
 
 ### ✅ routes.get("/forests", forestController.forests);
