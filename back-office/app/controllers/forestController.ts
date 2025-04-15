@@ -8,8 +8,8 @@ import { getAll } from '../api/forest';
 const forestController = {
    getAllForests: async (req:Request, res:Response) => {
       try {
-         const data: Forest[] = await getAll();
-         res.render('forests', { data });
+         const forests: Forest[] = await getAll();
+         res.render('forest/index', { forests });
       } catch (error) {
          console.error('Erreur dans le contrôleur:', error);
          res.status(500).send('Erreur interne');

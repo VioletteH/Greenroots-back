@@ -18,7 +18,7 @@ routes.get("/forests", forestController.getAllForests);
 // routes.delete("/forests/:id", forestController.deleteForest);
 
 routes.get("/", (req, res) => {
-  res.send("OK")
+  res.render("index");
 });
 
 //USERS
