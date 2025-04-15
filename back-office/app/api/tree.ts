@@ -6,8 +6,10 @@ const api_url = 'http://localhost:3000';
 
 export const getAllTrees = async (): Promise<Tree[]> => {
     const response = await axios.get(`${api_url}/trees`);
+    return response.data; 
+};
 
-    const data = response.data; // Assertion de type ici
-    return data;
-    //return await response.json();
+export const updateTree = async (id:string, updatedData: Partial<Tree>): Promise<Tree> => {
+    const response = await axios.put(`${api_url}/tree/${id}`, updatedData);
+    return response.data; 
 };
