@@ -4,7 +4,7 @@ import { Forest } from "../types/index";
 const api_url = "http://greenroots-backend:3000";
 
 export const getAll = async (): Promise<Forest[]> => {
-  const response = await axios.get(`${api_url}/forests`);
+  const response = await axios.get(`${api_url}/forests?=limit=15&offset=0`);
 
   const data = response.data;
   return data;
