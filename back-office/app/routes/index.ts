@@ -9,7 +9,7 @@ const routes = express.Router();
 // TREES
 routes.get("/trees", treeController.getAllTrees);
 routes.get("/trees/news", treeController.createTreeView);
-// routes.post("/trees/news", treeController.createTreePost);
+routes.post("/trees/news", treeController.createTreePost);
 routes.get("/trees/:id", treeController.getTree);
 // routes.get("/trees/:id/edit", treeController.editTreeView);
 // routes.patch("/trees/:id", treeController.updateTree);

@@ -4,7 +4,7 @@ import { Tree } from '../types/index';
 const api_url = 'http://greenroots-backend:3000/trees';
 
 export const getAll = async (): Promise<Tree[]> => {
-    const response = await axios.get(`${api_url}`);
+    const response = await axios.get(`${api_url}?limit=20`);
     return response.data; 
 };
 
@@ -24,7 +24,7 @@ export const deleteTree = async (id: string): Promise<void> => {
     await axios.delete(`${api_url}/${id}`);
 };
 
-export const addTree = async (newTreeData: Partial<Tree>): Promise<Tree> => {
-    const response = await axios.post(`${api_url}`, newTreeData);
+export const add = async (tree: Tree): Promise<Tree> => {
+    const response = await axios.post(`${api_url}`, tree);
     return response.data;
 };

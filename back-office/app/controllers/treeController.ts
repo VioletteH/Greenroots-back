@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAll, getOne, deleteTree, addTree } from '../api/tree';
+import { getAll, getOne, deleteTree, add } from '../api/tree';
 import { Tree } from '../types/index';
 
 const treeController = {
@@ -39,9 +39,10 @@ const treeController = {
    createTreeView: (req:Request, res:Response) => {
       res.render('trees/new');
    },
-   createTree: async (req: Request, res: Response): Promise<void> => {
+   createTreePost: async (req: Request, res: Response) => {
+      const tree: Tree = req.body
       try {
-         const newTree = await addTree(req.body);
+         await add(tree);
          res.redirect('/trees');
       } catch (error) {
          console.error("Erreur lors de la création d'un arbre:", error);
