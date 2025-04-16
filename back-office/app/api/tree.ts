@@ -9,8 +9,7 @@ export const getAll = async (): Promise<Tree[]> => {
 };
 
 export const getOne = async (id: string): Promise<Tree> => {
-    const response = await axios.get(`${api_url}/${id}`);
-  
+    const response = await axios.get(`${api_url}/${id}`);  
     const data = response.data;
     return data;
 };
@@ -20,7 +19,7 @@ export const updateTree = async (id:string, updatedData: Partial<Tree>): Promise
     return response.data; 
 };
 
-export const deleteTree = async (id: string): Promise<void> => {
+export const remove = async (id: number): Promise<void> => {
     await axios.delete(`${api_url}/${id}`);
 };
 
@@ -30,8 +29,7 @@ export const add = async (tree: Tree): Promise<Tree> => {
 };
 
 export const update = async (id: number, tree: Tree): Promise<Tree> => {
-    const response = await axios.patch(`${api_url}/${id}`, tree);
-  
+    const response = await axios.patch(`${api_url}/${id}`, tree);  
     const data = response.data;
     return data;
 };

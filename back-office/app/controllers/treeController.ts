@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAll, getOne, deleteTree, add, update } from '../api/tree';
+import { getAll, getOne, remove, add, update } from '../api/tree';
 import { Tree } from '../types/index';
 
 const treeController = {
@@ -60,10 +60,11 @@ const treeController = {
          res.status(500).send('Erreur interne');
       }
    },
-   deleteTree: async (req: Request, res: Response): Promise<void> => {
+
+   deleteTree: async (req: Request, res: Response) => {
+      const id = req.params.id;
       try {
-          const id = req.params.id;
-          await deleteTree(id);
+          await remove(Number(id));
           res.redirect('/trees');
       } catch (error) {
           console.error('Erreur lors de la suppression de l\'arbre:', error);
