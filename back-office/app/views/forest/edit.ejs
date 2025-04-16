@@ -1,0 +1,37 @@
+<%- include('../partials/header.ejs') %>
+
+<h1>Modifier la forêt "<%= forest.name %>"</h1>
+
+<form method="POST" action="/forests/<%= forest.id %>?_method=PATCH">
+  <div class="mb-3">
+    <label class="form-label">Nom</label>
+    <input type="text" name="name" value="<%= forest.name %>" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Association</label>
+    <input type="text" name="association" value="<%= forest.association %>" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Pays</label>
+    <input type="text" name="country" value="<%= forest.country %>" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Description</label>
+    <textarea name="description" class="form-control"><%= forest.description %></textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Image (URL)</label>
+    <input type="text" name="image" value="<%= forest.image %>" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Coordonnées X</label>
+    <input type="number" name="location_x" value="<%= forest.locationX %>" class="form-control" step="any">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Coordonnées Y</label>
+    <input type="number" name="location_y" value="<%= forest.locationY %>" class="form-control" step="any">
+  </div>
+  <button type="submit" class="btn btn-primary">Mettre à jour</button>
+</form>
+
+<%- include('../partials/footer.ejs') %>
