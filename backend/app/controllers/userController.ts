@@ -6,6 +6,7 @@ import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
 import { userSchema, userUpdateSchema } from '../utils/shemasJoi';
 import argon2 from 'argon2';
+import { userLogged } from '../utils/userLogged';
 
 const userMapper = new BaseMapper<User>('user');
 const userAuthMapper = new AuthMapper();
@@ -19,16 +20,26 @@ const userController = {
         }
         res.status(200).json(users);
     }),
+
     userById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const id = parseInt(req.params.id, 10);
-        // User exist
+
+        // Check user id
+        const id = userLogged(req);
+
+        if (id === null) {
+            return next(new AppError("Invalid user ID", 400));
+        }
+
+        // Check if user exists
         const existingUser = await userMapper.findById(id);
         if (!existingUser) {
             return next(new AppError(`User with ${id} not found`, 404));
         }
+
         // Get user
         res.status(200).json(existingUser);
     }),
+
     addUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         // Validation
         const { error, value } = userSchema.validate(req.body);
@@ -51,6 +62,7 @@ const userController = {
         const newUser = await userMapper.create({ ...value, password: hashedPassword });
         res.status(201).json(newUser);
     }),
+
     updateUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
         // Validation
@@ -67,6 +79,7 @@ const userController = {
         const updatedUser = await userMapper.update(id, value);
         res.status(200).json(updatedUser);
     }),
+
     deleteUser: catchAsync(async (req:Request, res:Response) => {
         const id = parseInt(req.params.id, 10);
         // User exist

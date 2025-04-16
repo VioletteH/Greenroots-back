@@ -19,5 +19,4 @@ export default class ForestMapper extends BaseMapper<any> {
         if (!rows) return []; 
         return rows.map(snakeToCamel) as Forest[];
     }
-
 }

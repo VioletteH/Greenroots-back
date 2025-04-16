@@ -14,6 +14,7 @@ routes.post("/register", authController.register);
 // TREES 
 routes.get("/trees", treeController.trees);
 routes.get("/trees/:id", treeController.treeById);
+routes.get("/trees/:id/forests", forestController.forestsByTree);
 routes.post("/trees", authorizationController(['admin']), treeController.addTree);
 routes.patch("/trees/:id", authorizationController(['admin']), treeController.updateTree);
 routes.delete("/trees/:id", authorizationController(['admin']), treeController.deleteTree);
