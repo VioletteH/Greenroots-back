@@ -30,6 +30,7 @@ routes.delete("/forests/:id", authorizationController(['admin']), forestControll
 routes.get("/users", authorizationController(['admin']), userController.users);
 routes.get("/users/:id", authorizationController(['user', 'admin']), userController.userById);
 routes.post("/users", userController.addUser);
+routes.patch("/users/:id/backoffice", userController.updateUserBackOffice) //(BACKOFFICE)
 routes.patch("/users/:id", authorizationController(['user', 'admin']), userController.updateUser);
 routes.delete("/users/:id", authorizationController(['user', 'admin']), userController.deleteUser);
 
