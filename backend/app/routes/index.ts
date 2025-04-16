@@ -4,7 +4,7 @@ import treeController from "../controllers/treeController";
 import forestController from "../controllers/forestController";
 import userController from "../controllers/userController";
 import orderController from "../controllers/orderController";
-import authorizationController from "../controllers/authorizationController";
+// import authorizationController from "../controllers/authorizationController";
 const routes = express.Router();
 
 // AUTHENTICATION
@@ -14,28 +14,28 @@ routes.post("/register", authController.register);
 // TREES 
 routes.get("/trees", treeController.trees);
 routes.get("/trees/:id", treeController.treeById);
-routes.post("/trees", authorizationController.admin, treeController.addTree);
-routes.patch("/trees/:id", authorizationController.admin, treeController.updateTree);
-routes.delete("/trees/:id", authorizationController.admin, treeController.deleteTree);
+routes.post("/trees", treeController.addTree);
+routes.patch("/trees/:id", treeController.updateTree);
+routes.delete("/trees/:id", treeController.deleteTree);
 
 //FORESTS
 routes.get("/forests", forestController.forests);
 routes.get("/forests/:id", forestController.forestById);
-routes.post("/forests", authorizationController.admin, forestController.addForest);
-routes.patch("/forests/:id", authorizationController.admin, forestController.updateForest);
-routes.delete("/forests/:id", authorizationController.admin, forestController.deleteForest);
+routes.post("/forests", forestController.addForest);
+routes.patch("/forests/:id",forestController.updateForest);
+routes.delete("/forests/:id", forestController.deleteForest);
 
 //USERS (utilisateurs)
 routes.get("/users", userController.users);
-routes.get("/users/:id", authorizationController.user, userController.userById);
+routes.get("/users/:id", userController.userById);
 routes.post("/users", userController.addUser); //(BACKOFFICE)
-routes.patch("/users/:id", authorizationController.user, userController.updateUser);
-routes.delete("/users/:id", authorizationController.user, userController.deleteUser);
+routes.patch("/users/:id", userController.updateUser);
+routes.delete("/users/:id", userController.deleteUser);
 
 //ORDERS (
-routes.get("/orders", authorizationController.user, orderController.orders);
-routes.get("/orders/:id", authorizationController.user, orderController.orderById);
-routes.post("/orders", authorizationController.user, orderController.addOrder);
-routes.patch("/orders/:id", authorizationController.admin, orderController.updateOrder);
+routes.get("/orders", orderController.orders);
+routes.get("/orders/:id", orderController.orderById);
+routes.post("/orders", orderController.addOrder);
+routes.patch("/orders/:id", orderController.updateOrder);
     
 export default routes;

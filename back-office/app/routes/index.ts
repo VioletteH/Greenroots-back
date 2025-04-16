@@ -2,6 +2,7 @@ import express from "express";
 
 import treeController from "../controllers/treeController";
 import forestController from "../controllers/forestController";
+import userController from "../controllers/userController";
 const routes = express.Router();
 
 // TREES
@@ -24,6 +25,13 @@ routes.get("/", (req, res) => {
 });
 
 //USERS
+routes.get("/users", userController.getAllUsers);
+routes.get("/users/news", userController.createUserView);
+routes.post("/users/news", userController.createUserPost);
+routes.get("/users/:id", userController.getUser);
+routes.get("/users/:id/edit", userController.editUserView);
+routes.patch("/users/:id", userController.updateUser);
+routes.delete("/users/:id", userController.deleteUser);
 
 //ORDERS
 
