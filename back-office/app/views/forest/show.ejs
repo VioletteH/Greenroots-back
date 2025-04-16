@@ -1,0 +1,16 @@
+<%- include('../partials/header.ejs') %>
+
+<h1><%= forest.name %></h1>
+<p><strong>Association :</strong> <%= forest.association %></p>
+<p><strong>Pays :</strong> <%= forest.country %></p>
+<p><strong>Description :</strong> <%= forest.description %></p>
+<p><strong>Coordonnées :</strong> X: <%= forest.locationX %>, Y: <%= forest.locationY %></p>
+<p><strong>Image :</strong></p>
+<% if (forest.image) { %>
+  <img src="<%= forest.image %>" class="img-fluid" style="max-width: 300px;">
+<% } %>
+
+<a href="/forests" class="btn btn-secondary mt-3">Retour à la liste</a>
+<a href="/forests/<%= forest.id %>/edit" class="btn btn-warning mt-3">Modifier</a>
+
+<%- include('../partials/footer.ejs') %>
