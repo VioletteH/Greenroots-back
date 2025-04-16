@@ -30,3 +30,7 @@ export const update = async (id: number, forest: Forest): Promise<Forest> => {
   const data = response.data;
   return data;
 };
+
+export const remove = async (id: number): Promise<void> => {
+  await axios.delete(`${api_url}/forests/${id}`);
+};

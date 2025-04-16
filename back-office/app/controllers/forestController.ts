@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Forest } from '../types/index';
 
-import { getAll, getOne, add, update } from '../api/forest';
+import { getAll, getOne, add, update, remove } from '../api/forest';
 
 
 
@@ -62,7 +62,18 @@ const forestController = {
          console.error('Erreur dans updateForest :', error);
          res.status(500).send('Erreur interne');
       }
-   }
+   },
+
+   deleteForest: async (req:Request, res:Response) => {
+      const id = req.params.id;
+      try {
+         await remove(Number(id));
+         res.redirect('/forests');
+      } catch (error) {
+         console.error('Erreur dans deleteForest :', error);
+         res.status(500).send('Erreur interne');
+      }
+   }      
 
 }
 

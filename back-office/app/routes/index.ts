@@ -17,7 +17,7 @@ routes.post("/forests/news", forestController.createForestPost);
 routes.get("/forests/:id", forestController.getForest);
 routes.get("/forests/:id/edit", forestController.editForestView);
 routes.patch("/forests/:id", forestController.updateForest);
-// routes.delete("/forests/:id", forestController.deleteForest);
+routes.delete("/forests/:id", forestController.deleteForest);
 
 routes.get("/", (req, res) => {
   res.render("index");
