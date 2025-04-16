@@ -3,17 +3,17 @@ import BaseMapper from './baseMapper';
 import { pool } from './db';
 import { Forest } from '../types/index';
 
-export default class ForestMapper extends BaseMapper<any> {
+export default class TreeMapper extends BaseMapper<any> {
     constructor() {
-        super('forest');
+        super('tree');
     }
 
-    async forestByTree(id : number): Promise<Forest[]> {
+    async treeByForest(id : number): Promise<Forest[]> {
         const query = `
-            SELECT DISTINCT f.*
-            FROM forest f
-            JOIN forest_tree ft ON ft.forest_id = f.id
-            WHERE ft.tree_id = $1
+            SELECT DISTINCT t.*
+            FROM tree t
+            JOIN forest_tree ft ON ft.tree_id = t.id
+            WHERE ft.forest_id = $1
         `;
         const { rows } = await pool.query(query, [id]);
         if (!rows) return []; 
