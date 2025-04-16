@@ -1,26 +1,50 @@
 import { Request, Response } from 'express';
-import { getAllTrees, updateTree, deleteTree, addTree } from '../api/tree';
+import { getAll, getOne, deleteTree, addTree } from '../api/tree';
 import { Tree } from '../types/index';
 
 const treeController = {
-   tree: async (req: Request, res: Response): Promise<void> => {
+   getAllTrees: async (req: Request, res: Response): Promise<void> => {
       try {
-         const data: Tree[] = await getAllTrees();
-         res.render('trees', { data });
+         const trees: Tree[] = await getAll();
+         res.render('trees', { trees });
       } catch (error) {
          console.error('Erreur dans le contrôleur:', error);
          res.status(500).send('Erreur interne');
       }
    },
-   updateTree: async (req: Request, res: Response): Promise<void> => {
-      try {
-         const id = req.params.id;
-         const updatedData = req.body;
 
-         const data: Tree = await updateTree(id, updatedData);
-         res.render(`trees/${id}`, { data });
+   getTree: async (req:Request, res:Response) => {
+      const id = req.params.id;
+      try {
+         const tree: Tree = await getOne(id);
+         res.render('trees/show', { tree });
       } catch (error) {
-         console.error('Erreur dans le contrôleur:', error);
+         console.error('Erreur dans getTree :', error);
+         res.status(500).send('Erreur en interne');
+      }
+   },
+
+   // updateTree: async (req: Request, res: Response): Promise<void> => {
+   //    try {
+   //       const id = req.params.id;
+   //       const updatedData = req.body;
+
+   //       const trees: Tree = await updateTree(id, updatedData);
+   //       res.render(`trees/${id}/edit`, { trees });
+   //    } catch (error) {
+   //       console.error('Erreur dans le contrôleur:', error);
+   //       res.status(500).send('Erreur interne');
+   //    }
+   // },
+   createTreeView: (req:Request, res:Response) => {
+      res.render('trees/new');
+   },
+   createTree: async (req: Request, res: Response): Promise<void> => {
+      try {
+         const newTree = await addTree(req.body);
+         res.redirect('/trees');
+      } catch (error) {
+         console.error("Erreur lors de la création d'un arbre:", error);
          res.status(500).send('Erreur interne');
       }
    },
@@ -34,15 +58,6 @@ const treeController = {
           res.status(500).send('Erreur interne');
       }
    },
-   addTree: async (req: Request, res: Response): Promise<void> => {
-      try {
-         const newTree = await addTree(req.body);
-         res.redirect('/trees');
-      } catch (error) {
-         console.error("Erreur lors de la création d'un arbre:", error);
-         res.status(500).send('Erreur interne');
-      }
-   }
 };
 
 export default treeController;

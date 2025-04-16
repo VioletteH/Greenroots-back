@@ -7,10 +7,13 @@ import forestController from "../controllers/forestController";
 const routes = express.Router();
 
 // TREES
-routes.get("/trees", treeController.tree)
-routes.patch("/trees/:id", treeController.updateTree)
-routes.delete("/trees/:id", treeController.deleteTree)
-routes.post("/trees", treeController.addTree)
+routes.get("/trees", treeController.getAllTrees);
+routes.get("/trees/news", treeController.createTreeView);
+// routes.post("/trees/news", treeController.createTreePost);
+routes.get("/trees/:id", treeController.getTree);
+// routes.get("/trees/:id/edit", treeController.editTreeView);
+// routes.patch("/trees/:id", treeController.updateTree);
+routes.delete("/trees/:id", treeController.deleteTree);
 
 //FORESTS
 routes.get("/forests", forestController.getAllForests);

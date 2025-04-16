@@ -1,0 +1,37 @@
+<%- include('../partials/header.ejs') %>
+
+<h1>Nouvel arbre</h1>
+
+<form action="/trees/news" method="POST">
+  <div class="mb-3">
+    <label class="form-label">Nom</label>
+    <input type="text" name="name" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">scientific_name</label>
+    <input type="text" name="scientific_name" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">category</label>
+    <input type="text" name="category" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Description</label>
+    <textarea name="description" class="form-control"></textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Image (URL)</label>
+    <input type="text" name="image" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">CO2</label>
+    <input type="number" name="location_x" class="form-control" step="any">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">O2</label>
+    <input type="number" name="location_y" class="form-control" step="any">
+  </div>
+  <button type="submit" class="btn btn-success">Créer</button>
+</form>
+
+<%- include('../partials/footer.ejs') %>
