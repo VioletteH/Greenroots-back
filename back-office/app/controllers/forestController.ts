@@ -52,6 +52,18 @@ const forestController = {
       }
    },
 
+   updateForest: async (req:Request, res:Response) => {
+      const id = req.params.id;
+      const forest: Forest = req.body;
+      try {
+         await update(Number(id), forest);
+         res.redirect('/forests');
+      } catch (error) {
+         console.error('Erreur dans updateForest :', error);
+         res.status(500).send('Erreur interne');
+      }
+   }
+
 }
 
 export default forestController;

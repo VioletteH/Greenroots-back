@@ -24,12 +24,9 @@ export const add = async (forest: Forest): Promise<Forest> => {
   return data;
 };
 
-export const update = async (forest: Forest): Promise<Forest> => {
-  try {
-    const response = await axios.patch(`${api_url}/forests/${forest.id}`, forest);
-    return response.data;
-  } catch (error: any) {
-    console.error('Erreur dans la requête PATCH :', error.response?.data || error.message);
-    throw error;
-  }
+export const update = async (id: number, forest: Forest): Promise<Forest> => {
+  const response = await axios.patch(`${api_url}/forests/${id}`, forest);
+
+  const data = response.data;
+  return data;
 };
