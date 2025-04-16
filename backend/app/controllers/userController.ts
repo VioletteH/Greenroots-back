@@ -22,7 +22,6 @@ const userController = {
     }),
 
     userById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-
         // Check user id
         const id = userLogged(req);
 
@@ -64,7 +63,12 @@ const userController = {
     }),
 
     updateUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const id = parseInt(req.params.id, 10);
+        // Check user id
+        const id = userLogged(req);
+
+        if (id === null) {
+            return next(new AppError("Invalid user ID", 400));
+        }
         // Validation
         const { error, value } = userSchema.validate(req.body);
         if (error) {
@@ -80,14 +84,19 @@ const userController = {
         res.status(200).json(updatedUser);
     }),
 
-    deleteUser: catchAsync(async (req:Request, res:Response) => {
-        const id = parseInt(req.params.id, 10);
+    deleteUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        // Check user id
+        const id = userLogged(req);
+
+        if (id === null) {
+            return next(new AppError("Invalid user ID", 400));
+        }
         // User exist
         const existingUser = await userMapper.findById(id);
         if (!existingUser) {
             return res.status(404).json({ message: "User not found" });
         }
-        const deletedUser = await userMapper.delete(id);
+        await userMapper.delete(id);
         res.status(200).send("User deleted");
     }),
     updateUserBackOffice: catchAsync(async (req:Request, res:Response, next: NextFunction) => {

@@ -39,6 +39,6 @@ routes.delete("/users/:id", authorizationController(['user', 'admin']), userCont
 routes.get("/orders", authorizationController(['user', 'admin']), orderController.orders);
 routes.get("/orders/:id", authorizationController(['user', 'admin']), orderController.orderById);
 routes.post("/orders", authorizationController(['user', 'admin']), orderController.addOrder);
-routes.patch("/orders/:id", authorizationController(['user', 'admin']), orderController.updateOrder);
+routes.patch("/orders/:id", authorizationController(['admin']), orderController.updateOrder);
     
 export default routes;

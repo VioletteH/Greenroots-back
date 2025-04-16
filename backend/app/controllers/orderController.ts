@@ -23,7 +23,7 @@ const orderController = {
 
     if (id === null) {
       return next(new AppError("Invalid user ID", 400));
-    }
+  }
 
     const order = await orderMapper.findById(id);
     if (!order) {
