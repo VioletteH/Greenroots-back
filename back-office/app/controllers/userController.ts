@@ -62,7 +62,6 @@ const userController = {
       })
     );
   
-    console.log(filteredUser);
     try {
       await update(Number(id), filteredUser);
       res.redirect('/users');
@@ -70,18 +69,7 @@ const userController = {
       console.error('Erreur dans updateUser :', error);
       res.status(500).send('Erreur interne');
     }
-  },
-
-   deleteUser: async (req:Request, res:Response) => {
-      const id = req.params.id;
-      try {
-         await remove(Number(id));
-         res.redirect('/users');
-      } catch (error) {
-         console.error('Erreur dans deleteUser :', error);
-         res.status(500).send('Erreur interne');
-      }
-   }      
+  },     
 
 }
 

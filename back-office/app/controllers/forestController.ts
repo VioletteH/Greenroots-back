@@ -55,7 +55,6 @@ const forestController = {
    updateForest: async (req:Request, res:Response) => {
       const id = req.params.id;
       const forest: Forest = req.body;
-      console.log(forest)
       try {
          await update(Number(id), forest);
          res.redirect('/forests');
