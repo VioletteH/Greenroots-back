@@ -22,6 +22,7 @@ routes.delete("/trees/:id", authorizationController(['admin']), treeController.d
 //FORESTS
 routes.get("/forests", forestController.forests);
 routes.get("/forests/:id", forestController.forestById);
+routes.get("/forests/:id/trees", treeController.treesByForest);
 routes.post("/forests", authorizationController(['admin']), forestController.addForest);
 routes.patch("/forests/:id", authorizationController(['admin']), forestController.updateForest);
 routes.delete("/forests/:id", authorizationController(['admin']), forestController.deleteForest);

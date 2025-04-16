@@ -15,7 +15,7 @@ export default class BaseMapper <T> {
         const query = `SELECT * FROM "${this.tableName}" LIMIT $1 OFFSET $2`;
         const values = [limit, offset];
         const { rows } = await pool.query(query, values);
-        const rowsCamel = rows.map(snakeToCamel)as T[];;
+        const rowsCamel = rows.map(snakeToCamel)as T[];
         debugBaseMapper('findAll');
         console.log("find",rowsCamel);
         return rowsCamel;
