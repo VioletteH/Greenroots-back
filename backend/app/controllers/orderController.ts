@@ -4,7 +4,7 @@ import { Order } from "../types/index";
 import { orderSchema } from "../utils/shemasJoi";
 import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
-import { log } from "console";
+import { userLogged } from "../utils/userLogged";
 
 const orderMapper = new BaseMapper<Order>("order");
 
@@ -18,7 +18,13 @@ const orderController = {
     res.status(200).json(orders);
   }),
   orderById: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const id = parseInt(req.params.id, 10);
+     // Check user id
+    const id = userLogged(req);
+
+    if (id === null) {
+      return next(new AppError("Invalid user ID", 400));
+    }
+
     const order = await orderMapper.findById(id);
     if (!order) {
       return next(new AppError(`Order ${id} already exists `, 400));

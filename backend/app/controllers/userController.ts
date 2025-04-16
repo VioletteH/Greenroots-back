@@ -1,13 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 import BaseMapper from '../mappers/baseMapper';
 import { User } from '../types/index';
 import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
 import { userSchema } from '../utils/shemasJoi';
-import { matchIds } from '../utils/matchIds';
-
-const JWT_SECRET = process.env.JWT_SECRET as string;
+import { userLogged } from '../utils/userLogged';
 
 const userMapper = new BaseMapper<User>('user');
 
@@ -22,23 +19,15 @@ const userController = {
     }),
 
     userById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        // Get user id from params
-        const id = parseInt(req.params.id, 10);
 
-        // Get user id from token
-        const token = req.headers.authorization?.split(' ')[1];
-        if (!token) {
-            return next(new AppError("No token provided", 401));
-        }
-        const decodedToken = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
-        const tokenId: number = decodedToken.id;
+        // Check user id
+        const id = userLogged(req);
 
-        // Check if params user id and token user id match
-        if (!matchIds(id, tokenId)) {
-            return next(new AppError("You are not authorized to access this user", 403));
+        if (id === null) {
+            return next(new AppError("Invalid user ID", 400));
         }
 
-        // User exist
+        // Check if user exists
         const existingUser = await userMapper.findById(id);
         if (!existingUser) {
             return next(new AppError(`User with ${id} not found`, 404));
@@ -80,7 +69,7 @@ const userController = {
         const updatedUser = await userMapper.update(id, value);
         res.status(200).json(updatedUser);
     }),
-    
+
     deleteUser: catchAsync(async (req:Request, res:Response) => {
         const id = parseInt(req.params.id, 10);
         // User exist
