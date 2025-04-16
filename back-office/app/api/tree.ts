@@ -28,3 +28,10 @@ export const add = async (tree: Tree): Promise<Tree> => {
     const response = await axios.post(`${api_url}`, tree);
     return response.data;
 };
+
+export const update = async (id: number, tree: Tree): Promise<Tree> => {
+    const response = await axios.patch(`${api_url}/${id}`, tree);
+  
+    const data = response.data;
+    return data;
+};

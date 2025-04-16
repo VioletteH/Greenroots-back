@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAll, getOne, deleteTree, add } from '../api/tree';
+import { getAll, getOne, deleteTree, add, update } from '../api/tree';
 import { Tree } from '../types/index';
 
 const treeController = {
@@ -24,18 +24,29 @@ const treeController = {
       }
    },
 
-   // updateTree: async (req: Request, res: Response): Promise<void> => {
-   //    try {
-   //       const id = req.params.id;
-   //       const updatedData = req.body;
+   editTreeView: async (req:Request, res:Response) => {
+      const id = req.params.id;
+      try {
+         const tree = await getOne(id);
+         res.render('trees/edit', {tree});
+      } catch (error) {
+         console.error('Erreur dans editTreeView :', error);
+         res.status(500).send('Erreur interne');
+      }
+   },
 
-   //       const trees: Tree = await updateTree(id, updatedData);
-   //       res.render(`trees/${id}/edit`, { trees });
-   //    } catch (error) {
-   //       console.error('Erreur dans le contrôleur:', error);
-   //       res.status(500).send('Erreur interne');
-   //    }
-   // },
+   updateTree: async (req: Request, res: Response) => {
+      const id = req.params.id;
+      const tree: Tree = req.body;
+      try {
+         await update(Number(id), tree)
+         res.redirect('/trees');
+      } catch (error) {
+         console.error('Erreur dans le contrôleur:', error);
+         res.status(500).send('Erreur interne');
+      }
+   },
+   
    createTreeView: (req:Request, res:Response) => {
       res.render('trees/new');
    },
