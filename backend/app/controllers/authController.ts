@@ -10,7 +10,6 @@ import type { User} from '../types/index';
 // Error handling
 import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
-import { error } from 'console';
 
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
