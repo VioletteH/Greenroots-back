@@ -24,8 +24,8 @@ export const add = async (user: User): Promise<User> => {
   return data;
 };
 
-export const update = async (id: number, user: User): Promise<User> => {
-  const response = await axios.patch(`${api_url}/${id}`, user);
+export const update = async (id: number, user: Partial<User>): Promise<User> => {
+  const response = await axios.patch(`${api_url}/${id}/backoffice`, user);
 
   const data = response.data;
   return data;

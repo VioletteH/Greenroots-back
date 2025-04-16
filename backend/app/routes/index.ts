@@ -29,6 +29,7 @@ routes.delete("/forests/:id", forestController.deleteForest);
 routes.get("/users", userController.users);
 routes.get("/users/:id", userController.userById);
 routes.post("/users", userController.addUser); //(BACKOFFICE)
+routes.patch("/users/:id/backoffice", userController.updateUserBackOffice) //(BACKOFFICE)
 routes.patch("/users/:id", userController.updateUser);
 routes.delete("/users/:id", userController.deleteUser);
 
