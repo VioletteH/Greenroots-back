@@ -2,7 +2,7 @@
 
 <h1>Modifier l'arbre "<%= tree.name %>"</h1>
 
-<form method="POST" action="/trees/<%= tree.id %>?_method=PATCH">
+<form method="POST" action="/trees/<%= tree.id %>?_method=PATCH" enctype="multipart/form-data">
   <div class="mb-3">
     <label class="form-label">Nom</label>
     <input type="text" name="name" value="<%= tree.name %>" class="form-control" required>
@@ -20,9 +20,16 @@
     <textarea name="description" class="form-control"><%= tree.description %></textarea>
   </div>
   <div class="mb-3">
-    <label class="form-label">Image (URL)</label>
-    <input type="text" name="image" value="<%= tree.image %>" class="form-control">
+    <label class="form-label">Image</label>
+    <input type="file" name="image" class="form-control" accept="image/*">
+    <div>
+      <p>Image actuelle :</p>
+      <img src="<%= tree.image %>" alt="Image actuelle" style="max-width: 200px;">
+    </div>
   </div>
+
+  <input type="hidden" name="oldImage" value="<%= tree.image %>">
+
   <div class="mb-3">
     <label class="form-label">CO2</label>
     <input type="number" name="co2" value="<%= tree.co2 %>" class="form-control" step="1">

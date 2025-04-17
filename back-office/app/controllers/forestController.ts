@@ -35,7 +35,7 @@ const forestController = {
       const forest: Forest = req.body;
 
       if (req.file) {
-         const imageUrl = `/uploads/${req.file.filename}`;
+         const imageUrl = `/uploads/forests/${req.file.filename}`;
          forest.image = imageUrl;
       }
       
@@ -72,7 +72,7 @@ const forestController = {
                }
             });
 
-            const imageUrl = `/uploads/${req.file.filename}`;
+            const imageUrl = `/uploads/forests/${req.file.filename}`;
             forest.image = imageUrl;
          } else {
             forest.image = oldImage;
@@ -98,7 +98,7 @@ const forestController = {
                }
             });
          }
-         
+
          await remove(req, Number(id));
          res.redirect('/forests');
       } catch (error) {
