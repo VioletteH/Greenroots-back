@@ -10,7 +10,6 @@ import type { User} from '../types/index';
 // Error handling
 import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
-import { error } from 'console';
 
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
@@ -46,16 +45,21 @@ const authController = {
                 JWT_SECRET,
                 { expiresIn: '12h' }
             );
-            console.log("🧪 Étape 4 - Génération du token JWT");
+
+            // Prepare user data to send
+            const { password, createdAt, updatedAt, ...userData } = user;
+
             res.status(200).json({
                 message: 'Login ok !',
                 token,
-                user: { id: user.id, email: user.email, role: user.role }
+                user: userData
             });
     }),
     register: catchAsync(async(req:Request, res:Response, next: NextFunction) : Promise<void> => {
+        console.log("req.body", req.body);
         //step 1 - data validation
         const { error, value } = registerSchema.validate(req.body);
+
         if (error) {
         
             // Extraction des messages d'erreur
@@ -78,10 +82,14 @@ const authController = {
             JWT_SECRET,
             { expiresIn: '12h' }
         );
+
+        // Prepare user data to send
+        const { password, createdAt, updatedAt, ...userData } = newUser;
+
         res.status(201).json({
             message: 'register ok!',
             token,
-            user: { id: newUser.id, email: newUser.email, role: newUser.role }
+            user: userData
         });
     }),
 }

@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi, { optional } from 'joi';
 
 //JOI - LoginShema
 export const loginSchema = Joi.object({
@@ -41,6 +41,15 @@ export const registerSchema = Joi.object({
     'string.empty': 'Password - requiered',
     'any.required': 'Password - requiered',
   }),
+  firstname: Joi.string()
+  .trim()
+  .max(255)
+  .required()
+  .messages({
+    'string.max': 'Firstname - max 255 characters',
+    'string.empty': 'Firstname - requiered',
+    'any.required': 'Firstname - requiered',
+  }),
 });
 
 //JOI - ForestShema
@@ -77,8 +86,6 @@ export const treeSchema = Joi.object({
 
 // JOI - userShema
 export const userSchema = Joi.object({
-  firstname: Joi.string().trim().max(255).required(),
-  lastname: Joi.string().trim().max(255).required(),
   email: Joi.string()
   .email()
   .trim()
@@ -97,5 +104,17 @@ export const userSchema = Joi.object({
     'string.empty': 'Mot de passe requis',
     'any.required': 'Mot de passe requis',
   }),
-})
+  role: Joi.string().valid("admin").default("admin")
+});
 
+// JOI - userUpdateSchema
+export const userUpdateSchema = Joi.object({
+  firstname: Joi.string().trim().max(255).optional(),
+  lastname: Joi.string().trim().max(255).optional(),
+  email: Joi.string().email().trim().lowercase(),
+  role: Joi.string().valid('admin', 'user'),
+  // on interdit le champ password
+  password: Joi.forbidden().messages({
+    'any.unknown': 'Le mot de passe ne peut pas être modifié ici.',
+  }),
+}).unknown(true); // Autorise les champs non définis

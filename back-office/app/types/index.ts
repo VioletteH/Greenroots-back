@@ -33,7 +33,7 @@ export type User = {
    address: string;
    zipcode: string;
    city: string;
-   role: 'user' | 'admin';
+   role: string;
    createdAt: string;
    updatedAt?: string;
 }

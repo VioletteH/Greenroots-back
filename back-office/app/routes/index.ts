@@ -3,8 +3,24 @@ import express from "express";
 import treeController from "../controllers/treeController";
 import orderController from "../controllers/orderController";
 import forestController from "../controllers/forestController";
+import userController from "../controllers/userController";
+import authController from "../controllers/authController";
+import { requireAuth } from "../middleware/requireAuth";
 
 const routes = express.Router();
+
+// ROUTES PUBLIQUES
+routes.get("/login", authController.loginView);
+routes.post("/login", authController.loginPost);
+routes.get("/logout", authController.logout);
+
+// ROUTES PROTEGEES
+routes.use(requireAuth);
+
+// ACCUEIL
+routes.get("/", (req, res) => {
+  res.render("index");
+});
 
 // TREES
 routes.get("/trees", treeController.getAllTrees);
@@ -24,17 +40,18 @@ routes.get("/forests/:id/edit", forestController.editForestView);
 routes.patch("/forests/:id", forestController.updateForest);
 routes.delete("/forests/:id", forestController.deleteForest);
 
-//USERS
-
 //ORDERS
 routes.get("/orders", orderController.getAllOrders)
 routes.get("/orders/:id", orderController.getOrder);
 routes.get("/orders/:id/edit", orderController.editOrderView);
 routes.patch("/orders/:id", orderController.updateOrder);
 
-routes.get("/", (req, res) => {
-  res.render("index");
-});
+//USERS
+routes.get("/users", userController.getAllUsers);
+routes.get("/users/news", userController.createUserView);
+routes.post("/users/news", userController.createUserPost);
+routes.get("/users/:id", userController.getUser);
+routes.get("/users/:id/edit", userController.editUserView);
+routes.patch("/users/:id", userController.updateUser);
 
 export default routes;
-
