@@ -4,8 +4,9 @@ import { Tree } from '../types/index';
 import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
 import { treeSchema } from '../utils/shemasJoi';
+import loadTreeMapper from '../mappers/treeMapper';
 
-const treeMapper = new BaseMapper<Tree>('tree');
+const treeMapper = new loadTreeMapper();
 
 const treeController = {   
     trees: catchAsync(async (req:Request, res:Response) => {
@@ -26,6 +27,19 @@ const treeController = {
         }
         res.status(200).json(existingTree);
 
+    }),
+    treesByForest: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const id = parseInt(req.params.id, 10);
+        // Tree exist
+        const existingTree = await treeMapper.findById(id);
+        if (!existingTree) {
+            return next(new AppError(`Tree with ${id} not found`, 404));
+        }
+        const trees = await treeMapper.treeByForest(id);
+        if (trees.length === 0) {
+            return next(new AppError(`No trees found for forest with id ${id}`, 404));
+        }
+        res.status(200).json(trees);
     }),
     addTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         // Validation

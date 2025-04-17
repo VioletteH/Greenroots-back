@@ -4,8 +4,9 @@ import { Forest } from '../types/index';
 import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
 import { forestSchema } from '../utils/shemasJoi';
+import loadForestMapper from '../mappers/forestMapper';
 
-const forestMapper = new BaseMapper<Forest>('forest');
+const forestMapper = new loadForestMapper();
 
 const forestController = {   
 
@@ -26,6 +27,15 @@ const forestController = {
         }
         res.status(200).json(forest);
 
+    }),
+    forestsByTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const id = parseInt(req.params.id, 10);
+        const forests = await forestMapper.forestByTree(id);
+        console.log("forestByTree");
+        if (forests.length === 0) {
+            return next(new AppError(`No forests found for tree with id ${id}`, 404));
+        }
+        res.status(200).json(forests);
     }),
     addForest: catchAsync(async (req:Request, res:Response, next: NextFunction ) => {
         const newForestData = req.body;

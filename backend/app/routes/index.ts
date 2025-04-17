@@ -14,6 +14,7 @@ routes.post("/register", authController.register);
 // TREES 
 routes.get("/trees", treeController.trees);
 routes.get("/trees/:id", treeController.treeById);
+routes.get("/trees/:id/forests", forestController.forestsByTree);
 routes.post("/trees", authorizationController(['admin']), treeController.addTree);
 routes.patch("/trees/:id", authorizationController(['admin']), treeController.updateTree);
 routes.delete("/trees/:id", authorizationController(['admin']), treeController.deleteTree);
@@ -21,6 +22,7 @@ routes.delete("/trees/:id", authorizationController(['admin']), treeController.d
 //FORESTS
 routes.get("/forests", forestController.forests);
 routes.get("/forests/:id", forestController.forestById);
+routes.get("/forests/:id/trees", treeController.treesByForest);
 routes.post("/forests", authorizationController(['admin']), forestController.addForest);
 routes.patch("/forests/:id", authorizationController(['admin']), forestController.updateForest);
 routes.delete("/forests/:id", authorizationController(['admin']), forestController.deleteForest);
@@ -29,6 +31,7 @@ routes.delete("/forests/:id", authorizationController(['admin']), forestControll
 routes.get("/users", authorizationController(['admin']), userController.users);
 routes.get("/users/:id", authorizationController(['user', 'admin']), userController.userById);
 routes.post("/users", userController.addUser);
+routes.patch("/users/:id/backoffice", userController.updateUserBackOffice) //(BACKOFFICE)
 routes.patch("/users/:id", authorizationController(['user', 'admin']), userController.updateUser);
 routes.delete("/users/:id", authorizationController(['user', 'admin']), userController.deleteUser);
 
