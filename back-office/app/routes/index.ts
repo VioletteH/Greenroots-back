@@ -35,10 +35,10 @@ routes.delete("/trees/:id", treeController.deleteTree);
 //FORESTS
 routes.get("/forests", forestController.getAllForests);
 routes.get("/forests/news", forestController.createForestView);
-routes.post("/forests/news",upload.single('image'), forestController.createForestPost);
+routes.post("/forests/news", upload.single('image'), forestController.createForestPost);
 routes.get("/forests/:id", forestController.getForest);
 routes.get("/forests/:id/edit", forestController.editForestView);
-routes.patch("/forests/:id", forestController.updateForest);
+routes.patch("/forests/:id", upload.single('image'), forestController.updateForest);
 routes.delete("/forests/:id", forestController.deleteForest);
 
 //ORDERS
