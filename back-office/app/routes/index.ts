@@ -3,7 +3,25 @@ import express from "express";
 import treeController from "../controllers/treeController";
 import forestController from "../controllers/forestController";
 import userController from "../controllers/userController";
+import authController from "../controllers/authController";
+
+import { requireAuth } from "../middleware/requireAuth";
+
 const routes = express.Router();
+
+
+// ROUTES PUBLIQUES
+routes.get("/login", authController.loginView);
+routes.post("/login", authController.loginPost);
+routes.get("/logout", authController.logout);
+
+// ROUTES PROTEGEES
+routes.use(requireAuth);
+
+// ACCUEIL
+routes.get("/", (req, res) => {
+  res.render("index");
+});
 
 // TREES
 routes.get("/trees", treeController.trees)
@@ -20,9 +38,7 @@ routes.get("/forests/:id/edit", forestController.editForestView);
 routes.patch("/forests/:id", forestController.updateForest);
 routes.delete("/forests/:id", forestController.deleteForest);
 
-routes.get("/", (req, res) => {
-  res.render("index");
-});
+
 
 //USERS
 routes.get("/users", userController.getAllUsers);
