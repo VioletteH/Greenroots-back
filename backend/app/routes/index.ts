@@ -37,9 +37,17 @@ routes.patch("/users/:id", authorizationController, isGranted, userController.up
 routes.delete("/users/:id", /*authorizationController,*/ userController.deleteUser);
 
 //ORDERS (
+<<<<<<< HEAD
 routes.get("/orders", authorizationController, isGranted, orderController.orders);
 routes.get("/orders/:id", authorizationController, isGranted, orderController.orderById);
 routes.post("/orders", authorizationController, isGranted, orderController.addOrder);
 routes.patch("/orders/:id", authorizationController, isGranted, orderController.updateOrder);
+=======
+routes.get("/orders", authorizationController(['user', 'admin']), orderController.orders);
+routes.get("/orders/user/:id", authorizationController(['user', 'admin']), orderController.ordersByUserId);
+routes.get("/orders/:id", authorizationController(['user', 'admin']), orderController.orderById);
+routes.post("/orders", authorizationController(['user', 'admin']), orderController.addOrder);
+routes.patch("/orders/:id", authorizationController(['admin']), orderController.updateOrder);
+>>>>>>> 3ddee17e6f8e3542dad0f94e4f002c8ba19cc7b7
     
 export default routes;

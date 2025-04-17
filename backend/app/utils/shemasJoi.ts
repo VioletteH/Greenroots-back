@@ -41,6 +41,15 @@ export const registerSchema = Joi.object({
     'string.empty': 'Password - requiered',
     'any.required': 'Password - requiered',
   }),
+  firstname: Joi.string()
+  .trim()
+  .max(255)
+  .required()
+  .messages({
+    'string.max': 'Firstname - max 255 characters',
+    'string.empty': 'Firstname - requiered',
+    'any.required': 'Firstname - requiered',
+  }),
 });
 
 //JOI - ForestShema
