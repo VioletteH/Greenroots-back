@@ -1,0 +1,18 @@
+<%- include('../partials/header.ejs') %>
+
+<h1><%= tree.name %></h1>
+<p><strong>Nom Scientifique :</strong> <%= tree.scientificName %></p>
+<p><strong>Categorie :</strong> <%= tree.category %></p>
+<p><strong>Description :</strong> <%= tree.description %></p>
+<p><strong>CO2 absorbé :</strong> <%= tree.co2 %></p>
+<p><strong>O2 créé :</strong> <%= tree.o2 %></p>
+<p><strong>Prix :</strong> <%= tree.price %> €</p>
+<p><strong>Image :</strong></p>
+<% if (tree.image) { %>
+  <img src="<%= tree.image %>" class="img-fluid" style="max-width: 300px;">
+<% } %>
+
+<a href="/trees" class="btn btn-secondary mt-3">Retour à la liste</a>
+<a href="/trees/<%= tree.id %>/edit" class="btn btn-warning mt-3">Modifier</a>
+
+<%- include('../partials/footer.ejs') %>

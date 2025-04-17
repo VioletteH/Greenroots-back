@@ -6,7 +6,6 @@ import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
 import { userSchema, userUpdateSchema } from '../utils/shemasJoi';
 import argon2 from 'argon2';
-import { userLogged } from '../utils/userLogged';
 
 const userMapper = new BaseMapper<User>('user');
 const userAuthMapper = new AuthMapper();
@@ -23,11 +22,7 @@ const userController = {
 
     userById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         // Check user id
-        const id = userLogged(req);
-
-        if (id === null) {
-            return next(new AppError("Invalid user ID", 400));
-        }
+        const id = parseInt(req.params.id, 10);
 
         // Check if user exists
         const existingUser = await userMapper.findById(id);
@@ -43,7 +38,9 @@ const userController = {
         // Validation
         const { error, value } = userSchema.validate(req.body);
         if (error) {
-            return next(new AppError("Invalid data", 400));
+            const messages = error.details.map(detail => detail.message);
+            console.log(messages);
+            return next(new AppError(messages.join(', '), 400));
         }
         // Check if user already exists
         const user = await userAuthMapper.findByEmail(value.email) as User; 
@@ -64,11 +61,8 @@ const userController = {
 
     updateUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         // Check user id
-        const id = userLogged(req);
+        const id = parseInt(req.params.id, 10);
 
-        if (id === null) {
-            return next(new AppError("Invalid user ID", 400));
-        }
         // Validation
         const { error, value } = userSchema.validate(req.body);
         if (error) {
@@ -86,11 +80,8 @@ const userController = {
 
     deleteUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         // Check user id
-        const id = userLogged(req);
+        const id = parseInt(req.params.id, 10);
 
-        if (id === null) {
-            return next(new AppError("Invalid user ID", 400));
-        }
         // User exist
         const existingUser = await userMapper.findById(id);
         if (!existingUser) {

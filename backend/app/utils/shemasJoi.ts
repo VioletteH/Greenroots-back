@@ -41,6 +41,15 @@ export const registerSchema = Joi.object({
     'string.empty': 'Password - requiered',
     'any.required': 'Password - requiered',
   }),
+  firstname: Joi.string()
+  .trim()
+  .max(255)
+  .required()
+  .messages({
+    'string.max': 'Firstname - max 255 characters',
+    'string.empty': 'Firstname - requiered',
+    'any.required': 'Firstname - requiered',
+  }),
 });
 
 //JOI - ForestShema
@@ -95,7 +104,13 @@ export const userSchema = Joi.object({
     'string.empty': 'Mot de passe requis',
     'any.required': 'Mot de passe requis',
   }),
-  role: Joi.string().valid("admin").default("admin")
+  role: Joi.string(),
+  firstname: Joi.string().optional().allow(''),
+  lastname: Joi.string().optional().allow(''),
+  address: Joi.string().optional().allow(''),
+  city: Joi.string().optional().allow(''),
+  zipcode: Joi.string().optional().allow(''),
+  phone: Joi.string().optional().allow(''),
 });
 
 // JOI - userUpdateSchema

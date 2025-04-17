@@ -56,8 +56,10 @@ const authController = {
             });
     }),
     register: catchAsync(async(req:Request, res:Response, next: NextFunction) : Promise<void> => {
+        console.log("req.body", req.body);
         //step 1 - data validation
         const { error, value } = registerSchema.validate(req.body);
+
         if (error) {
         
             // Extraction des messages d'erreur

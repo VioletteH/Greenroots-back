@@ -21,15 +21,17 @@ export const getOne = async (req: Request, id: string): Promise<User> => {
   return data;
 };
 
-export const add = async (user: User): Promise<User> => {
-  const response = await axios.post(`${api_url}`, user);
+export const add = async (req: Request, user: User): Promise<User> => {
+  const axiosInstance = createAxiosWithAuth(req);
+  const response = await axiosInstance.post(`${api_url}`, user);
 
   const data = response.data;
   return data;
 };
 
-export const update = async (id: number, user: Partial<User>): Promise<User> => {
-  const response = await axios.patch(`${api_url}/${id}/backoffice`, user);
+export const update = async (req: Request, id: number, user: Partial<User>): Promise<User> => {
+  const axiosInstance = createAxiosWithAuth(req);
+  const response = await axiosInstance.patch(`${api_url}/${id}/backoffice`, user);
 
   const data = response.data;
   return data;
