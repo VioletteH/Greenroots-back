@@ -22,7 +22,10 @@ export const getOne = async (req: Request, id: string): Promise<User> => {
 };
 
 export const add = async (user: User): Promise<User> => {
-  const response = await axios.post(`${api_url}`, user);
+
+  console.log("user", user);
+
+  const response = await axios.post(`${api_url}`, {user});
 
   const data = response.data;
   return data;
