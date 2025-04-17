@@ -5,9 +5,6 @@ import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
 import { userLogged } from "../utils/userLogged";
 
-
-
-
 const orderMapper = new OrderMapper();
 
 const orderController = {
@@ -20,11 +17,12 @@ const orderController = {
     res.status(200).json(orders);
   }),
   ordersByUserId: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const id = parseInt(req.params.id, 10);
-    const orders = await orderMapper.ordersByUserId(id);
-    if (!orders) {
-      return next(new AppError(`Orders for user ${id} not found`, 404));
+
+    const id = userLogged(req);
+    if (id === null) {
+      return next(new AppError("Invalid user ID", 400));
     }
+    const orders = await orderMapper.ordersByUserId(id);
     res.status(200).json(orders);
   }),
   orderById: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
