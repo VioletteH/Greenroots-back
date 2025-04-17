@@ -6,7 +6,7 @@ const treeController = {
    getAllTrees: async (req: Request, res: Response): Promise<void> => {
       try {
          const trees: Tree[] = await getAll();
-         res.render('trees', { trees });
+         res.render('tree', { trees });
       } catch (error) {
          console.error('Erreur dans le contrôleur:', error);
          res.status(500).send('Erreur interne');
@@ -17,7 +17,7 @@ const treeController = {
       const id = req.params.id;
       try {
          const tree: Tree = await getOne(id);
-         res.render('trees/show', { tree });
+         res.render('tree/show', { tree });
       } catch (error) {
          console.error('Erreur dans getTree :', error);
          res.status(500).send('Erreur en interne');
@@ -28,7 +28,7 @@ const treeController = {
       const id = req.params.id;
       try {
          const tree = await getOne(id);
-         res.render('trees/edit', {tree});
+         res.render('tree/edit', {tree});
       } catch (error) {
          console.error('Erreur dans editTreeView :', error);
          res.status(500).send('Erreur interne');
@@ -40,7 +40,7 @@ const treeController = {
       const tree: Tree = req.body;
       try {
          await update(Number(id), tree)
-         res.redirect('/trees');
+         res.redirect('/tree');
       } catch (error) {
          console.error('Erreur dans le contrôleur:', error);
          res.status(500).send('Erreur interne');
@@ -48,13 +48,13 @@ const treeController = {
    },
    
    createTreeView: (req:Request, res:Response) => {
-      res.render('trees/new');
+      res.render('tree/new');
    },
    createTreePost: async (req: Request, res: Response) => {
       const tree: Tree = req.body
       try {
          await add(tree);
-         res.redirect('/trees');
+         res.redirect('/tree');
       } catch (error) {
          console.error("Erreur lors de la création d'un arbre:", error);
          res.status(500).send('Erreur interne');
@@ -65,7 +65,7 @@ const treeController = {
       const id = req.params.id;
       try {
           await remove(Number(id));
-          res.redirect('/trees');
+          res.redirect('/tree');
       } catch (error) {
           console.error('Erreur lors de la suppression de l\'arbre:', error);
           res.status(500).send('Erreur interne');

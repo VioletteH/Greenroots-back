@@ -1,7 +1,7 @@
 import express from "express";
 
 import treeController from "../controllers/treeController";
-//import orderController from "../controllers/orderController";
+import orderController from "../controllers/orderController";
 import forestController from "../controllers/forestController";
 
 const routes = express.Router();
@@ -24,14 +24,17 @@ routes.get("/forests/:id/edit", forestController.editForestView);
 routes.patch("/forests/:id", forestController.updateForest);
 routes.delete("/forests/:id", forestController.deleteForest);
 
+//USERS
+
+//ORDERS
+routes.get("/orders", orderController.getAllOrders)
+routes.get("/orders/:id", orderController.getOrder);
+routes.get("/orders/:id/edit", orderController.editOrderView);
+routes.patch("/orders/:id", orderController.updateOrder);
+
 routes.get("/", (req, res) => {
   res.render("index");
 });
 
-//USERS
-
-//ORDERS
-//routes.get("orders", orderController.order)
-//routes.patch("/orders/", orderController.updateOrder);
 export default routes;
 
