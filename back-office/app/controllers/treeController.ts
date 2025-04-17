@@ -39,8 +39,8 @@ const treeController = {
       const id = req.params.id;
       const tree: Tree = req.body;
       try {
-         await update(Number(id), tree)
-         res.redirect('/tree');
+         await update(req, Number(id), tree)
+         res.redirect('/trees');
       } catch (error) {
          console.error('Erreur dans le contrôleur:', error);
          res.status(500).send('Erreur interne');
@@ -53,8 +53,8 @@ const treeController = {
    createTreePost: async (req: Request, res: Response) => {
       const tree: Tree = req.body
       try {
-         await add(tree);
-         res.redirect('/tree');
+         await add(req, tree);
+         res.redirect('/trees');
       } catch (error) {
          console.error("Erreur lors de la création d'un arbre:", error);
          res.status(500).send('Erreur interne');
@@ -64,8 +64,8 @@ const treeController = {
    deleteTree: async (req: Request, res: Response) => {
       const id = req.params.id;
       try {
-          await remove(Number(id));
-          res.redirect('/tree');
+          await remove(req, Number(id));
+          res.redirect('/trees');
       } catch (error) {
           console.error('Erreur lors de la suppression de l\'arbre:', error);
           res.status(500).send('Erreur interne');

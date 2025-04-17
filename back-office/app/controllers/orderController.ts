@@ -55,7 +55,7 @@ const orderController = {
         const id = req.params.id;
         const order: Order = req.body;
         try {
-            await update(Number(id), order)
+            await update(req, Number(id), order)
             res.redirect('/order');
         } catch (error) {
             console.error('Erreur dans le contrôleur:', error);

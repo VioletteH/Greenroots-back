@@ -15,11 +15,9 @@ export const getOne = async (req: Request, id: string): Promise<Order> => {
     const response = await axiosInstance.get(`${api_url}/${id}`);  
     return response.data; 
 };
-export const updateOrder = async (id:string, updatedData: Partial<Order>): Promise<Order> => {
-    const response = await axios.patch(`${api_url}/${id}`, updatedData);
-    return response.data; 
-};
-export const update = async (id: number, order: Order): Promise<Order> => {
-    const response = await axios.patch(`${api_url}/${id}`, order);  
+
+export const update = async (req: Request, id: number, order: Order): Promise<Order> => {
+    const axiosInstance = createAxiosWithAuth(req);
+    const response = await axiosInstance.patch(`${api_url}/${id}`, order);  
     return response.data; 
 };

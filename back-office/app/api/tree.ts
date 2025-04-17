@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { Tree } from '../types/index';
+import { createAxiosWithAuth } from "../utils/axiosInstance";
+import { Request } from "express";
 
 const api_url = 'http://greenroots-backend:3000/trees';
 
@@ -19,17 +21,20 @@ export const updateTree = async (id:string, updatedData: Partial<Tree>): Promise
     return response.data; 
 };
 
-export const remove = async (id: number): Promise<void> => {
-    await axios.delete(`${api_url}/${id}`);
+export const remove = async (req: Request, id: number): Promise<void> => {
+    const axiosInstance = createAxiosWithAuth(req);
+    await axiosInstance.delete(`${api_url}/${id}`);
 };
 
-export const add = async (tree: Tree): Promise<Tree> => {
-    const response = await axios.post(`${api_url}`, tree);
+export const add = async (req: Request, tree: Tree): Promise<Tree> => {
+    const axiosInstance = createAxiosWithAuth(req);
+    const response = await axiosInstance.post(`${api_url}`, tree);
     return response.data;
 };
 
-export const update = async (id: number, tree: Tree): Promise<Tree> => {
-    const response = await axios.patch(`${api_url}/${id}`, tree);  
+export const update = async (req: Request, id: number, tree: Tree): Promise<Tree> => {
+    const axiosInstance = createAxiosWithAuth(req);
+    const response = await axiosInstance.patch(`${api_url}/${id}`, tree);  
     const data = response.data;
     return data;
 };
