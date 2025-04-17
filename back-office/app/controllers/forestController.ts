@@ -89,6 +89,16 @@ const forestController = {
    deleteForest: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
+         const forest: Forest = await getOne(id);
+         if (forest.image) {
+            const imagePath = path.join(__dirname, '../../public', forest.image);
+            fs.unlink(imagePath, (err) => {
+               if (err) {
+                  console.error('Erreur lors de la suppression de l\'image :', err);
+               }
+            });
+         }
+         
          await remove(req, Number(id));
          res.redirect('/forests');
       } catch (error) {
