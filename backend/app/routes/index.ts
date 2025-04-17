@@ -37,6 +37,7 @@ routes.delete("/users/:id", authorizationController(['user', 'admin']), userCont
 
 //ORDERS (
 routes.get("/orders", authorizationController(['user', 'admin']), orderController.orders);
+routes.get("/orders/user/:id", authorizationController(['user', 'admin']), orderController.ordersByUserId);
 routes.get("/orders/:id", authorizationController(['user', 'admin']), orderController.orderById);
 routes.post("/orders", authorizationController(['user', 'admin']), orderController.addOrder);
 routes.patch("/orders/:id", authorizationController(['admin']), orderController.updateOrder);
