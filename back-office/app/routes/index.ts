@@ -6,6 +6,7 @@ import userController from "../controllers/userController";
 import authController from "../controllers/authController";
 
 import { requireAuth } from "../middleware/requireAuth";
+import upload from "../../config/multer-config";
 
 const routes = express.Router();
 
@@ -32,7 +33,7 @@ routes.get("/trees", treeController.trees)
 //FORESTS
 routes.get("/forests", forestController.getAllForests);
 routes.get("/forests/news", forestController.createForestView);
-routes.post("/forests/news", forestController.createForestPost);
+routes.post("/forests/news",upload.single('image'), forestController.createForestPost);
 routes.get("/forests/:id", forestController.getForest);
 routes.get("/forests/:id/edit", forestController.editForestView);
 routes.patch("/forests/:id", forestController.updateForest);

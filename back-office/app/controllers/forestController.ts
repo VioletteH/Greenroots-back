@@ -3,7 +3,7 @@ import { Forest } from '../types/index';
 
 import { getAll, getOne, add, update, remove } from '../api/forest';
 
-
+import upload from '../../config/multer-config';
 
 const forestController = {
    getAllForests: async (req:Request, res:Response) => {
@@ -32,6 +32,12 @@ const forestController = {
    },
    createForestPost: async (req:Request, res:Response) => {
       const forest: Forest = req.body;
+
+      if (req.file) {
+         const imageUrl = `/uploads/${req.file.filename}`;
+         forest.image = imageUrl;
+      }
+      
       try {
          await add(req, forest);
          res.redirect('/forests');
