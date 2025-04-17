@@ -31,7 +31,7 @@ routes.delete("/forests/:id", authorizationController, isGranted, forestControll
 //USERS (utilisateurs)
 routes.get("/users", /*authorizationController,*/ userController.users);
 routes.get("/users/:id", authorizationController, isGranted, userController.userById);
-routes.post("/users", userController.addUser);
+routes.post("/users", authorizationController, isGranted, userController.addUser);
 routes.patch("/users/:id/backoffice", authorizationController, isGranted, userController.updateUserBackOffice) //(BACKOFFICE)
 routes.patch("/users/:id", authorizationController, isGranted, userController.updateUser);
 routes.delete("/users/:id", /*authorizationController,*/ userController.deleteUser);

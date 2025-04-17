@@ -36,7 +36,7 @@ const userController = {
    createUserPost: async (req:Request, res:Response) => {
       const user: User = req.body;
       try {
-         await add(user);
+         await add(req, user);
          res.redirect('/users');
       } catch (error) {
          console.error('Erreur dans createUserPost :', error);
@@ -66,7 +66,7 @@ const userController = {
     );
   
     try {
-      await update(Number(id), filteredUser);
+      await update(req, Number(id), filteredUser);
       res.redirect('/users');
     } catch (error) {
       console.error('Erreur dans updateUser :', error);

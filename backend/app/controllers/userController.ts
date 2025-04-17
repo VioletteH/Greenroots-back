@@ -38,7 +38,9 @@ const userController = {
         // Validation
         const { error, value } = userSchema.validate(req.body);
         if (error) {
-            return next(new AppError("Invalid data", 400));
+            const messages = error.details.map(detail => detail.message);
+            console.log(messages);
+            return next(new AppError(messages.join(', '), 400));
         }
         // Check if user already exists
         const user = await userAuthMapper.findByEmail(value.email) as User; 
