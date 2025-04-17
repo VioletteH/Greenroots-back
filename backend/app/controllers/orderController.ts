@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import BaseMapper from "../mappers/baseMapper";
-import { Order } from "../types/index";
+import OrderMapper from "../mappers/orderMapper";
 import { orderSchema } from "../utils/shemasJoi";
 import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
-import { log } from "console";
 
-const orderMapper = new BaseMapper<Order>("order");
+
+
+const orderMapper = new OrderMapper();
 
 const orderController = {
   orders: catchAsync(async (req: Request, res: Response) => {
@@ -14,6 +14,14 @@ const orderController = {
     console.log("orders", orders);
     if (orders.length === 0) {
       res.status(200).json("ordders not found");
+    }
+    res.status(200).json(orders);
+  }),
+  ordersByUserId: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const id = parseInt(req.params.id, 10);
+    const orders = await orderMapper.ordersByUserId(id);
+    if (!orders) {
+      return next(new AppError(`Orders for user ${id} not found`, 404));
     }
     res.status(200).json(orders);
   }),
