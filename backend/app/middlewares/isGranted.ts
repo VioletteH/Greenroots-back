@@ -18,13 +18,14 @@ export const isGranted = catchAsync(async (req: Request, res: Response, next: Ne
     }
 
     if (userRole === "admin") {
-        return next();
+        next();
+        return;
     }
 
     if (userRole === "user") {
         const id = parseInt(req.params.id, 10);
         const tokenId: number = decodedToken.id;
-        if (id !== tokenId) {
+        if (id && id !== tokenId) {
             return res.status(403).json({ message: "Forbidden" });
         }
         return next();

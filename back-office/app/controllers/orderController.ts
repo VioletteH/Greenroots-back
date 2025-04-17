@@ -18,7 +18,7 @@ const formatOrder = (order: Order): Order => ({
 const orderController = {
     getAllOrders: async (req: Request, res: Response): Promise<void> => {
         try {
-            const orders: Order[] = await getAll();
+            const orders: Order[] = await getAll(req);
             const formattedOrders = orders.map(formatOrder);              
             res.render('order', { orders: formattedOrders });
         } catch (error) {
@@ -30,7 +30,7 @@ const orderController = {
     getOrder: async (req:Request, res:Response) => {
         const id = req.params.id;
         try {
-            const order: Order = await getOne(id);
+            const order: Order = await getOne(req, id);
             const formattedOrder = formatOrder(order);
             res.render('order/show', { order: formattedOrder });
         } catch (error) {
@@ -42,7 +42,7 @@ const orderController = {
     editOrderView: async (req:Request, res:Response) => {
         const id = req.params.id;
         try {
-            const order = await getOne(id);
+            const order = await getOne(req, id);
             const formattedOrder = formatOrder(order);
             res.render('order/edit', { order: formattedOrder });
         } catch (error) {
