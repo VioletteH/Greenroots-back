@@ -1,17 +1,21 @@
 import axios from "axios";
 import { User } from "../types/index";
+import { createAxiosWithAuth } from "../utils/axiosInstance";
+import { Request } from "express";
 
 const api_url = "http://greenroots-backend:3000/users";
 
-export const getAll = async (): Promise<User[]> => {
-  const response = await axios.get(`${api_url}?=limit=15&offset=0`);
+export const getAll = async (req: Request): Promise<User[]> => {
+  const axiosInstance = createAxiosWithAuth(req);
+  const response = await axiosInstance.get(`${api_url}?limit=15&offset=0`);
 
   const data = response.data;
   return data;
 };
 
-export const getOne = async (id: string): Promise<User> => {
-  const response = await axios.get(`${api_url}/${id}`);
+export const getOne = async (req: Request, id: string): Promise<User> => {
+  const axiosInstance = createAxiosWithAuth(req);
+  const response = await axiosInstance.get(`${api_url}/${id}`);
 
   const data = response.data;
   return data;
