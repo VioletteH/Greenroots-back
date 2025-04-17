@@ -10,7 +10,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Backoffice</a>
-      <% if (locals) { %>
+      <% if (typeof currentUser !== 'undefined' && currentUser) { %>
         <button class="btn btn-outline-light" type="button" onclick="window.location.href='/logout'">Déconnexion</button>
       <% } %>
     </div>
