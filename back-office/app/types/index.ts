@@ -41,7 +41,7 @@ export type Order = {
    id: number;
    user_id: number;
    total_price: number;
-   status: number;
+   status: number | string; 
    createdAt: string;
    updatedAt?: string;
 }

@@ -1,0 +1,41 @@
+<%- include('../partials/header.ejs') %>
+
+<h1>Modifier l'arbre "<%= tree.name %>"</h1>
+
+<form method="POST" action="/trees/<%= tree.id %>?_method=PATCH">
+  <div class="mb-3">
+    <label class="form-label">Nom</label>
+    <input type="text" name="name" value="<%= tree.name %>" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Nom scientifique</label>
+    <input type="text" name="scientific_name" value="<%= tree.scientificName %>" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Catégorie</label>
+    <input type="text" name="category" value="<%= tree.category %>" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Description</label>
+    <textarea name="description" class="form-control"><%= tree.description %></textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Image (URL)</label>
+    <input type="text" name="image" value="<%= tree.image %>" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">CO2</label>
+    <input type="number" name="co2" value="<%= tree.co2 %>" class="form-control" step="1">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">O2</label>
+    <input type="number" name="o2" value="<%= tree.o2 %>" class="form-control" step="1">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Prix</label>
+    <input type="number" name="price" value="<%= tree.price %>" class="form-control" step="0.01">
+  </div>
+  <button type="submit" class="btn btn-primary">Mettre à jour</button>
+</form>
+
+<%- include('../partials/footer.ejs') %>
