@@ -1,17 +1,20 @@
 import { Request, Response } from 'express';
 import { User } from '../types/index';
 
-import { getAll, getOne, add, update, remove } from '../api/user';
-
-
+import { getAll, getOne, add, update } from '../api/user';
 
 const userController = {
    getAllUsers: async (req:Request, res:Response) => {
       try {
-         const users: User[] = await getAll();
+         const users: User[] = await getAll(req);
          res.render('user/index', { users });
       } catch (error) {
          console.error('Erreur dans getAllUsers :', error);
+
+         if (error instanceof Error && error.message.includes("token")) {
+            return res.redirect("/login");
+         }
+
          res.status(500).send('Erreur interne');
       }
    },
@@ -19,7 +22,7 @@ const userController = {
    getUser: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
-         const user: User = await getOne(id);
+         const user: User = await getOne(req, id);
          res.render('user/show', { user });
       } catch (error) {
          console.error('Erreur dans getUser :', error);
@@ -33,7 +36,7 @@ const userController = {
    createUserPost: async (req:Request, res:Response) => {
       const user: User = req.body;
       try {
-         await add(user);
+         await add(req, user);
          res.redirect('/users');
       } catch (error) {
          console.error('Erreur dans createUserPost :', error);
@@ -44,7 +47,7 @@ const userController = {
    editUserView: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
-         const user = await getOne(id);
+         const user = await getOne(req, id);
          res.render('user/edit', {user});
       } catch (error) {
          console.error('Erreur dans editUserView :', error);
@@ -63,7 +66,7 @@ const userController = {
     );
   
     try {
-      await update(Number(id), filteredUser);
+      await update(req, Number(id), filteredUser);
       res.redirect('/users');
     } catch (error) {
       console.error('Erreur dans updateUser :', error);

@@ -33,7 +33,7 @@ export type User = {
    address: string;
    zipcode: string;
    city: string;
-   role: 'user' | 'admin';
+   role: string;
    createdAt: string;
    updatedAt?: string;
 }
@@ -41,7 +41,7 @@ export type Order = {
    id: number;
    user_id: number;
    total_price: number;
-   status: number;
+   status: number | string; 
    createdAt: string;
    updatedAt?: string;
 }

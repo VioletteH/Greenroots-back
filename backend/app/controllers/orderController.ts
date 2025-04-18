@@ -27,11 +27,7 @@ const orderController = {
   }),
   orderById: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
      // Check user id
-    const id = userLogged(req);
-
-    if (id === null) {
-      return next(new AppError("Invalid user ID", 400));
-  }
+     const id = parseInt(req.params.id, 10);
 
     const order = await orderMapper.findById(id);
     if (!order) {

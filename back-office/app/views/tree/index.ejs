@@ -1,0 +1,36 @@
+<%- include('../partials/header.ejs') %>
+
+<h1>Liste des arbres</h1>
+<a href="/trees/news" class="btn btn-primary mb-3">Ajouter un arbre</a>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Catégorie</th>
+      <th>Production de CO2 (kg.an-1)</th>
+      <th>Absorption d'O2 (kg.an-1)</th>
+      <th>Prix(euros)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% trees.forEach(tree => { %>
+      <tr>
+        <td><%= tree.name %></td>
+        <td><%= tree.category %></td>
+        <td><%= tree.co2 %></td>
+        <td><%= tree.o2 %></td>
+        <td><%= tree.price %></td>
+        <td>
+          <a href="/trees/<%= tree.id %>" class="btn btn-info btn-sm">Voir</a>
+          <a href="/trees/<%= tree.id %>/edit" class="btn btn-warning btn-sm">Modifier</a>
+          <form action="/trees/<%= tree.id %>?_method=DELETE" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer cet arbre ?')">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('../partials/footer.ejs') %>

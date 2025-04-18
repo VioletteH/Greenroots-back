@@ -33,7 +33,7 @@ const forestController = {
    createForestPost: async (req:Request, res:Response) => {
       const forest: Forest = req.body;
       try {
-         await add(forest);
+         await add(req, forest);
          res.redirect('/forests');
       } catch (error) {
          console.error('Erreur dans createForestPost :', error);
@@ -56,7 +56,7 @@ const forestController = {
       const id = req.params.id;
       const forest: Forest = req.body;
       try {
-         await update(Number(id), forest);
+         await update(req, Number(id), forest);
          res.redirect('/forests');
       } catch (error) {
          console.error('Erreur dans updateForest :', error);
@@ -67,7 +67,7 @@ const forestController = {
    deleteForest: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
-         await remove(Number(id));
+         await remove(req, Number(id));
          res.redirect('/forests');
       } catch (error) {
          console.error('Erreur dans deleteForest :', error);

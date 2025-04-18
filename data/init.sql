@@ -1,3 +1,4 @@
+-- SQLBook: Code
 BEGIN;
 
 DROP TABLE IF EXISTS "order_item";

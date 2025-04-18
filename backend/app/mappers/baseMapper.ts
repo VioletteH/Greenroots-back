@@ -12,7 +12,7 @@ export default class BaseMapper <T> {
     }
 
     async findAll(limit?:number, offset?:number) : Promise<T[]> {
-        const query = `SELECT * FROM "${this.tableName}" LIMIT $1 OFFSET $2`;
+        const query = `SELECT * FROM "${this.tableName}" ORDER BY created_at DESC LIMIT $1 OFFSET $2`;
         const values = [limit, offset];
         const { rows } = await pool.query(query, values);
         const rowsCamel = rows.map(snakeToCamel)as T[];
