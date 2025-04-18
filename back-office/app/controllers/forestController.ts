@@ -3,7 +3,8 @@ import { Forest } from '../types/index';
 
 import { getAll, getOne, add, update, remove } from '../api/forest';
 
-
+import fs from 'fs';
+import path from 'path';
 
 const forestController = {
    getAllForests: async (req:Request, res:Response) => {
@@ -32,6 +33,12 @@ const forestController = {
    },
    createForestPost: async (req:Request, res:Response) => {
       const forest: Forest = req.body;
+
+      if (req.file) {
+         const imageUrl = `/uploads/forests/${req.file.filename}`;
+         forest.image = imageUrl;
+      }
+      
       try {
          await add(req, forest);
          res.redirect('/forests');
@@ -54,8 +61,23 @@ const forestController = {
 
    updateForest: async (req:Request, res:Response) => {
       const id = req.params.id;
-      const forest: Forest = req.body;
+      const { oldImage, ...forestData } = req.body;
+      const forest = forestData as Forest;
       try {
+         if (req.file) {
+            const oldImagePath = path.join(__dirname, '../../public', oldImage);
+            fs.unlink(oldImagePath, (err) => {
+               if (err) {
+                  console.error('Erreur lors de la suppression de l\'ancienne image :', err);
+               }
+            });
+
+            const imageUrl = `/uploads/forests/${req.file.filename}`;
+            forest.image = imageUrl;
+         } else {
+            forest.image = oldImage;
+         }
+
          await update(req, Number(id), forest);
          res.redirect('/forests');
       } catch (error) {
@@ -67,6 +89,16 @@ const forestController = {
    deleteForest: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
+         const forest: Forest = await getOne(id);
+         if (forest.image) {
+            const imagePath = path.join(__dirname, '../../public', forest.image);
+            fs.unlink(imagePath, (err) => {
+               if (err) {
+                  console.error('Erreur lors de la suppression de l\'image :', err);
+               }
+            });
+         }
+
          await remove(req, Number(id));
          res.redirect('/forests');
       } catch (error) {

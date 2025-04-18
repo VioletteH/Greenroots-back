@@ -6,6 +6,7 @@ import forestController from "../controllers/forestController";
 import userController from "../controllers/userController";
 import authController from "../controllers/authController";
 import { requireAuth } from "../middleware/requireAuth";
+import upload from "../../config/multer-config";
 
 const routes = express.Router();
 
@@ -25,19 +26,19 @@ routes.get("/", (req, res) => {
 // TREES
 routes.get("/trees", treeController.getAllTrees);
 routes.get("/trees/news", treeController.createTreeView);
-routes.post("/trees/news", treeController.createTreePost);
+routes.post("/trees/news", upload.single('image'), treeController.createTreePost);
 routes.get("/trees/:id", treeController.getTree);
 routes.get("/trees/:id/edit", treeController.editTreeView);
-routes.patch("/trees/:id", treeController.updateTree);
+routes.patch("/trees/:id", upload.single('image'), treeController.updateTree);
 routes.delete("/trees/:id", treeController.deleteTree);
 
 //FORESTS
 routes.get("/forests", forestController.getAllForests);
 routes.get("/forests/news", forestController.createForestView);
-routes.post("/forests/news", forestController.createForestPost);
+routes.post("/forests/news", upload.single('image'), forestController.createForestPost);
 routes.get("/forests/:id", forestController.getForest);
 routes.get("/forests/:id/edit", forestController.editForestView);
-routes.patch("/forests/:id", forestController.updateForest);
+routes.patch("/forests/:id", upload.single('image'), forestController.updateForest);
 routes.delete("/forests/:id", forestController.deleteForest);
 
 //ORDERS

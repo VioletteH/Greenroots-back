@@ -2,6 +2,9 @@ import { Request, Response } from 'express';
 import { getAll, getOne, remove, add, update } from '../api/tree';
 import { Tree } from '../types/index';
 
+import fs from 'fs';
+import path from 'path';
+
 const treeController = {
    getAllTrees: async (req: Request, res: Response): Promise<void> => {
       try {
@@ -37,8 +40,23 @@ const treeController = {
 
    updateTree: async (req: Request, res: Response) => {
       const id = req.params.id;
-      const tree: Tree = req.body;
+      const { oldImage, ...treeData } = req.body;
+      const tree = treeData as Tree;
       try {
+         if (req.file) {
+            const oldImagePath = path.join(__dirname, '../../public', oldImage);
+            fs.unlink(oldImagePath, (err) => {
+               if (err) {
+                  console.error('Erreur lors de la suppression de l\'ancienne image :', err);
+               }
+            });
+
+            const imageUrl = `/uploads/trees/${req.file.filename}`;
+            tree.image = imageUrl;
+         } else {
+            tree.image = oldImage;
+         }
+
          await update(req, Number(id), tree)
          res.redirect('/trees');
       } catch (error) {
@@ -52,6 +70,12 @@ const treeController = {
    },
    createTreePost: async (req: Request, res: Response) => {
       const tree: Tree = req.body
+
+      if (req.file) {
+         const imageUrl = `/uploads/trees/${req.file.filename}`;
+         tree.image = imageUrl;
+      }
+
       try {
          await add(req, tree);
          res.redirect('/trees');
@@ -64,8 +88,18 @@ const treeController = {
    deleteTree: async (req: Request, res: Response) => {
       const id = req.params.id;
       try {
-          await remove(req, Number(id));
-          res.redirect('/trees');
+         const tree: Tree = await getOne(id);
+         if (tree.image) {
+            const imagePath = path.join(__dirname, '../../public', tree.image);
+            fs.unlink(imagePath, (err) => {
+               if (err) {
+                  console.error('Erreur lors de la suppression de l\'image :', err);
+               }
+            });
+         }
+         
+         await remove(req, Number(id));
+         res.redirect('/trees');
       } catch (error) {
           console.error('Erreur lors de la suppression de l\'arbre:', error);
           res.status(500).send('Erreur interne');

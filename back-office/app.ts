@@ -12,10 +12,13 @@ const app = express();
 app.use(cors());
 const PORT = 3000;
 
+app.use(express.static('public'));
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(cookieParser());
+
 app.set('view engine', 'ejs');
 app.set('views', 'app/views');
 app.use(routes);
