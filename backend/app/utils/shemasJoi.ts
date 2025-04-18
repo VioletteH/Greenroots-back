@@ -117,10 +117,10 @@ export const userSchema = Joi.object({
 export const userUpdateSchema = Joi.object({
   firstname: Joi.string().trim().max(255).optional(),
   lastname: Joi.string().trim().max(255).optional(),
-  email: Joi.string().email().trim().lowercase(),
-  role: Joi.string().valid('admin', 'user'),
-  // on interdit le champ password
-  password: Joi.forbidden().messages({
-    'any.unknown': 'Le mot de passe ne peut pas être modifié ici.',
-  }),
-}).unknown(true); // Autorise les champs non définis
+  email: Joi.string().email().trim().lowercase().optional(),
+  phone: Joi.string().trim().max(50).optional(),
+  address: Joi.string().trim().max(255).optional(),
+  zipcode: Joi.string().trim().max(20).optional(),
+  city: Joi.string().trim().max(100).optional(),
+  password: Joi.string().min(8).trim().optional(),
+});

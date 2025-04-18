@@ -64,7 +64,9 @@ const userController = {
         const id = parseInt(req.params.id, 10);
 
         // Validation
-        const { error, value } = userSchema.validate(req.body);
+        const { error, value } = userUpdateSchema.validate(req.body);
+        console.log("error", error);
+        
         if (error) {
             return next(new AppError("Invalid data", 400));
         }
