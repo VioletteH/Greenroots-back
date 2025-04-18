@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import OrderMapper from "../mappers/orderMapper";
 import { orderSchema } from "../utils/shemasJoi";
 import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
+import BaseMapper from "../mappers/baseMapper";
 // import { userLogged } from "../utils/userLogged";
 
-const orderMapper = new OrderMapper();
+const orderMapper = new BaseMapper("order");
 
 const orderController = {
   orders: catchAsync(async (req: Request, res: Response) => {
@@ -16,15 +16,17 @@ const orderController = {
     }
     res.status(200).json(orders);
   }),
+
   ordersByUserId: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    const id = (req.params.id as unknown) as number;
+    const id = parseInt(req.params.id, 10);
     if (id === null) {
       return next(new AppError("Invalid user ID", 400));
     }
     const orders = await orderMapper.findByField("user_id", id);
     res.status(200).json(orders);
   }),
+
   orderById: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
      // Check user id
      const id = parseInt(req.params.id, 10);
@@ -35,6 +37,7 @@ const orderController = {
     }
     res.status(200).json(order);
   }),
+
   addOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     // Validation
     const { error, value } = orderSchema.validate(req.body);
@@ -50,6 +53,8 @@ const orderController = {
     const newOrder = await orderMapper.create(value);
     res.status(201).json(newOrder);
   }),
+
+  // TODO - check if the order is already paid
   updateOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10);
     // Validation
@@ -68,6 +73,7 @@ const orderController = {
     const updatedOrder = await orderMapper.update(id, value);
     res.status(200).json(updatedOrder);
   }),
+
   deleteOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10);
     // Order exist
