@@ -4,7 +4,7 @@ import AuthMapper from '../mappers/authMapper';
 import { User } from '../types/index';
 import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
-import { userSchema, userUpdateSchema } from '../utils/shemasJoi';
+import { userSchema, userUpdateSchema, userUpdateSchemaBackOffice } from '../utils/shemasJoi';
 import argon2 from 'argon2';
 
 const userMapper = new BaseMapper<User>('user');
@@ -64,7 +64,9 @@ const userController = {
         const id = parseInt(req.params.id, 10);
 
         // Validation
-        const { error, value } = userSchema.validate(req.body);
+        const { error, value } = userUpdateSchema.validate(req.body);
+        console.log("error", error);
+        
         if (error) {
             return next(new AppError("Invalid data", 400));
         }
@@ -93,7 +95,7 @@ const userController = {
     updateUserBackOffice: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
         // Validation
-        const { error, value } = userUpdateSchema.validate(req.body);
+        const { error, value } = userUpdateSchemaBackOffice.validate(req.body);
         if (error) {
             return next(new AppError("Invalid update data", 400));
         }
