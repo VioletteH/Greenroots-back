@@ -5,6 +5,7 @@ import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
 import { treeSchema } from '../utils/shemasJoi';
 import loadTreeMapper from '../mappers/treeMapper';
+import { unslugify } from '../utils/unslugify';
 
 const treeMapper = new loadTreeMapper();
 
@@ -38,6 +39,24 @@ const treeController = {
         const trees = await treeMapper.treeByForest(id);
         if (trees.length === 0) {
             return next(new AppError(`No trees found for forest with id ${id}`, 404));
+        }
+        res.status(200).json(trees);
+    }),
+    treesByCountry: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const slug = unslugify(req.params.slug);
+
+        const trees = await treeMapper.treeByCountry(slug);
+        if (trees.length === 0) {
+            return next(new AppError(`No trees found for slug ${slug}`, 404));
+        }
+        res.status(200).json(trees);
+    }),
+    treesByCategory: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const slug = unslugify(req.params.slug);
+
+        const trees = await treeMapper.treeByCategory(slug);
+        if (trees.length === 0) {
+            return next(new AppError(`No trees found for slug ${slug}`, 404));
         }
         res.status(200).json(trees);
     }),
