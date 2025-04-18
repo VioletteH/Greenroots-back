@@ -26,7 +26,7 @@ export default class TreeMapper extends BaseMapper<any> {
             FROM tree t
             JOIN forest_tree ft ON t.id = ft.tree_id
             JOIN forest f ON ft.forest_id = f.id
-            WHERE f.country ILIKE $1
+            WHERE f.country_slug = $1
             GROUP BY f.country
         `;
         const { rows } = await pool.query(query, [slug]);
@@ -39,7 +39,7 @@ export default class TreeMapper extends BaseMapper<any> {
         const query = `
             SELECT *
             FROM tree
-            WHERE category ILIKE $1
+            WHERE category_slug = $1
         `;
         const { rows } = await pool.query(query, [slug]);
         if (!rows) return []; 

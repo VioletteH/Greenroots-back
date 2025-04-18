@@ -43,7 +43,7 @@ const treeController = {
         res.status(200).json(trees);
     }),
     treesByCountry: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const slug = unslugify(req.params.slug);
+        const slug = req.params.slug;
 
         const trees = await treeMapper.treeByCountry(slug);
         if (trees.length === 0) {
@@ -52,7 +52,7 @@ const treeController = {
         res.status(200).json(trees);
     }),
     treesByCategory: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const slug = unslugify(req.params.slug);
+        const slug = req.params.slug;
 
         const trees = await treeMapper.treeByCategory(slug);
         if (trees.length === 0) {

@@ -1,6 +1,14 @@
 -- SQLBook: Code
 BEGIN;
 
+CREATE OR REPLACE FUNCTION remove_accents(text)
+RETURNS text AS $$
+BEGIN
+    RETURN translate($1, 'áàäâãéèëêíìïîóòöôõúùüûçñÁÀÄÂÃÉÈËÊÍÌÏÎÓÒÖÔÕÚÙÜÛÇÑ',
+                          'aaaaaeeeeiiiiooooouuuucnAAAAAEEEEIIIIOOOOOUUUUCN');
+END;
+$$ LANGUAGE plpgsql IMMUTABLE;
+
 DROP TABLE IF EXISTS "order_item";
 DROP TABLE IF EXISTS "forest_tree";
 DROP TABLE IF EXISTS "order";
@@ -29,6 +37,9 @@ CREATE TABLE "tree" (
     scientific_name TEXT NOT NULL,
     image TEXT NOT NULL,
     category TEXT NOT NULL,
+    category_slug TEXT GENERATED ALWAYS AS (
+        regexp_replace(lower(remove_accents(category)), '\s+', '-', 'g')
+    ) STORED,
     description TEXT NOT NULL,
     co2 DECIMAL(10, 2) NOT NULL,
     o2 DECIMAL(10, 2) NOT NULL,
@@ -44,6 +55,9 @@ CREATE TABLE "forest" (
     image TEXT NOT NULL,
     description TEXT NOT NULL,
     country TEXT NOT NULL,
+    country_slug TEXT GENERATED ALWAYS AS (
+        regexp_replace(lower(remove_accents(country)), '\s+', '-', 'g')
+    ) STORED,
     location_x DECIMAL(10, 6) NOT NULL,
     location_y DECIMAL(10, 6) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
