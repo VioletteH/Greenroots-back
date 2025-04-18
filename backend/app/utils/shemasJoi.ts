@@ -32,7 +32,6 @@ export const registerSchema = Joi.object({
     'string.empty': 'Email - requiered',
     'any.required': 'Email - requiered',
   }),
-  
   password: Joi.string()
   .min(8)
   .required()
@@ -50,6 +49,7 @@ export const registerSchema = Joi.object({
     'string.empty': 'Firstname - requiered',
     'any.required': 'Firstname - requiered',
   }),
+  role: Joi.string()
 });
 
 //JOI - ForestShema

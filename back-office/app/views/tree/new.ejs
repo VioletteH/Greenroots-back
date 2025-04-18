@@ -2,7 +2,7 @@
 
 <h1>Nouvel arbre</h1>
 
-<form action="/trees/news" method="POST">
+<form action="/trees/news" method="POST" enctype="multipart/form-data">
   <div class="mb-3">
     <label class="form-label">Nom</label>
     <input type="text" name="name" class="form-control" required>
@@ -20,8 +20,8 @@
     <textarea name="description" class="form-control"></textarea>
   </div>
   <div class="mb-3">
-    <label class="form-label">Image (URL)</label>
-    <input type="text" name="image" class="form-control">
+    <label class="form-label">Image</label>
+    <input type="file" name="image" class="form-control" accept="image/*" required>
   </div>
   <div class="mb-3">
     <label class="form-label">CO2</label>
