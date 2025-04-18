@@ -39,4 +39,11 @@ GET http://localhost:3000/orders/user/1
 ### routes.get("/orders/:id", orderController.orderById);
 GET 🛠️ http://localhost:3000/orders/1
 
+### ITEMS 
+### routes.get("/items", orderItemController.items);
+GET http://localhost:3000/items
+
+###routes.get("/items/order/:id", orderItemController.itemsByOrderId);
+GET http://localhost:3000/items/order/5
+
 
