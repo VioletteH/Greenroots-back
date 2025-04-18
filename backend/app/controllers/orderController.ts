@@ -3,7 +3,7 @@ import OrderMapper from "../mappers/orderMapper";
 import { orderSchema } from "../utils/shemasJoi";
 import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
-import { userLogged } from "../utils/userLogged";
+// import { userLogged } from "../utils/userLogged";
 
 const orderMapper = new OrderMapper();
 
@@ -18,7 +18,7 @@ const orderController = {
   }),
   ordersByUserId: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    const id = userLogged(req);
+    const id = (req.params.id as unknown) as number;
     if (id === null) {
       return next(new AppError("Invalid user ID", 400));
     }
