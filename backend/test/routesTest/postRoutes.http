@@ -81,7 +81,7 @@ POST http://localhost:3000/orders
 Content-Type: application/json
 
 {
-    "user_id": 1,
-    "total_price": 100,
-    "status": 1,
+    "user_id": 2,
+    "total_price": 300,
+    "status": 2
 }

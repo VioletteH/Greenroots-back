@@ -22,7 +22,7 @@ const orderController = {
     if (id === null) {
       return next(new AppError("Invalid user ID", 400));
     }
-    const orders = await orderMapper.ordersByUserId(id);
+    const orders = await orderMapper.findByField("user_id", id);
     res.status(200).json(orders);
   }),
   orderById: catchAsync(async (req: Request, res: Response, next: NextFunction) => {

@@ -50,6 +50,7 @@ export const registerSchema = Joi.object({
     'string.empty': 'Firstname - requiered',
     'any.required': 'Firstname - requiered',
   }),
+  // role: Joi.string() - si vous voulez le garder, décommentez cette ligne
 });
 
 //JOI - ForestShema
