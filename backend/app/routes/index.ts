@@ -6,6 +6,7 @@ import userController from "../controllers/userController";
 import orderController from "../controllers/orderController";
 import authorizationController from "../controllers/authorizationController";
 import { isGranted } from "../middlewares/isGranted";
+import orderItemController from "../controllers/itemController";
 const routes = express.Router();
 
 // AUTHENTICATION
@@ -16,6 +17,8 @@ routes.post("/register", authController.register);
 routes.get("/trees", treeController.trees);
 routes.get("/trees/:id", treeController.treeById);
 routes.get("/trees/:id/forests", forestController.forestsByTree);
+routes.get("/trees/country/:slug", treeController.treesByCountry);
+routes.get("/trees/category/:slug", treeController.treesByCategory);
 routes.post("/trees", authorizationController, isGranted, treeController.addTree);
 routes.patch("/trees/:id", authorizationController, isGranted, treeController.updateTree);
 routes.delete("/trees/:id", authorizationController, isGranted, treeController.deleteTree);
@@ -39,7 +42,13 @@ routes.delete("/users/:id", /*authorizationController,*/ userController.deleteUs
 //ORDERS
 routes.get("/orders", authorizationController, isGranted, orderController.orders);
 routes.get("/orders/:id", authorizationController, isGranted, orderController.orderById);
+routes.get("/orders/user/:id", authorizationController, isGranted, orderController.ordersByUserId);
 routes.post("/orders", authorizationController, isGranted, orderController.addOrder);
 routes.patch("/orders/:id", authorizationController, isGranted, orderController.updateOrder);
-    
+
+
+//ORDER ITEMS
+routes.get("/items", orderItemController.items);
+routes.get("/items/order/:id", orderItemController.itemsByOrderId);
+//routes.post("/orders-items", orderController.addOrderItem);
 export default routes;

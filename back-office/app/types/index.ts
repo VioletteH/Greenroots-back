@@ -4,6 +4,7 @@ export type Tree = {
    scientific_name: string;
    image: string;
    category: string;
+   categorySlug: string;
    description: string;
    co2: number;
    o2: number;
@@ -18,6 +19,7 @@ export type Forest = {
    image: string;
    description: string;
    country: string;
+   countrySlug: string;
    location_x: number;
    location_y: number;
    createdAt: string;

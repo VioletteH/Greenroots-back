@@ -75,7 +75,21 @@ POST http://localhost:3000/orders
 Content-Type: application/json
 
 {
-    "user_id": 1,
-    "total_price": 100,
-    "status": 1,
+    "user_id": 24,
+    "total_price": 20,
+    "status": 3
 }
+
+### ✅ Test addOrderItem
+POST http://localhost:3000/orders-items
+Content-Type: application/json
+
+{
+    "order_id": 9,
+    "tree_id": 4,
+    "name": "Charme",
+    "quantity": 3,
+    "price": 150
+}
+  
+
