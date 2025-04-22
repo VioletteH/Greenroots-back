@@ -63,15 +63,15 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-    "firstname": "Joe",
-    "lastname": "Biden",
-    "email": "joe.biden@gmail.com",
-    "password": "TrumpIHateYou",
+    "firstname": "thibaut",
+    "lastname": "thibaut",
+    "email": "thibaut@thibaut.com",
+    "password": "azertyuiop",
     "phone": "0788888888",
     "address": "10 av du capitole",
     "zipcode": "31000",
     "city": "Washigton",
-    "role": "user"
+    "role": "admin"
 }
 
 ### ORDERS
@@ -81,21 +81,19 @@ POST http://localhost:3000/orders
 Content-Type: application/json
 
 {
-    "user_id": 24,
-    "total_price": 20,
-    "status": 3
+    "user_id": 11,
+    "total_price": 200,
+    "status": 2
 }
 
-### ✅ Test addOrderItem
-POST http://localhost:3000/orders-items
-Content-Type: application/json
+### ✅ Test addOrderItem // activer la route + controller pour le test
+# POST http://localhost:3000/orders-items
+# Content-Type: application/json
 
-{
-    "order_id": 9,
-    "tree_id": 4,
-    "name": "Charme",
-    "quantity": 3,
-    "price": 150
-}
-  
-
+# {
+#     "order_id": 6,
+#     "tree_id": 1,
+#     "name": "sapin",
+#     "quantity": 2,
+#     "price": 50
+# }

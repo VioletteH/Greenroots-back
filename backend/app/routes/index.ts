@@ -47,9 +47,9 @@ routes.get("/orders/user/:id", authorizationController, isGranted, orderControll
 routes.post("/orders", authorizationController, isGranted, orderController.addOrder);
 routes.patch("/orders/:id", authorizationController, isGranted, orderController.updateOrder);
 
-
 //ORDER ITEMS
 routes.get("/items", itemController.items);
 routes.get("/items/order/:id", itemController.itemsByOrderId);
-// routes.post("/orders-items", itemController.addOrderItem);
+routes.post("/orders-items", itemController.addOrderItem);
+
 export default routes;
