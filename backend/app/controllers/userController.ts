@@ -65,16 +65,22 @@ const userController = {
 
         // Validation
         const { error, value } = userUpdateSchema.validate(req.body);
-        console.log("error", error);
-        
         if (error) {
-            return next(new AppError("Invalid data", 400));
+            const messages = error.details.map(detail => detail.message);
+            return next(new AppError(messages.join(', '), 400));
         }
+    
         // User exist
         const existingUser = await userMapper.findById(id);
         if (!existingUser) {
             return next(new AppError(`User with ${id} not found`, 404));
         }
+        //  agron2
+        if (value.password) {
+            const hashedPassword = await argon2.hash(value.password);
+            value.password = hashedPassword;
+        }
+
         // Update user
         const updatedUser = await userMapper.update(id, value);
         res.status(200).json(updatedUser);
