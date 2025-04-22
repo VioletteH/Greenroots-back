@@ -10,8 +10,17 @@ GET http://localhost:3000/trees
 ### ✅ routes.get("/trees/:id", treeController.treesById);
 GET http://localhost:3000/trees/1
 
-### 🛠️ routes.get("/trees", treeController.trees);
+### ✅ routes.get("/trees", treeController.trees);
 GET http://localhost:3000/trees/?limit=2&offset=3
+
+### ✅ routes.get("/forests/:id/trees", treeController.treesByForest);
+GET http://localhost:3000/forests/1/trees
+
+### ✅ routes.get("/trees/country/:slug", treeController.treesByCountry);
+GET http://localhost:3000/trees/country/bresil
+
+### ✅ routes.get("/trees/category/:slug", treeController.treesByCategory);
+GET http://localhost:3000/trees/category/conifere
 
 ### FORESTS
 
@@ -20,6 +29,9 @@ GET http://localhost:3000/forests
 
 ### ✅ routes.get("/forests/:id", forestController.forestById);
 GET http://localhost:3000/forests/1
+
+### ✅ routes.get("/trees/:id/forests", forestController.forestsByTree);
+GET http://localhost:3000/trees/1/forests
 
 ### USERS
 
@@ -36,6 +48,7 @@ GET 🛠️ http://localhost:3000/orders
 
 ### routes.get("/orders/user/:id", orderController.ordersByUserId);
 GET http://localhost:3000/orders/user/1
+
 ### routes.get("/orders/:id", orderController.orderById);
 GET 🛠️ http://localhost:3000/orders/1
 
