@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import BaseMapper from '../mappers/baseMapper';
 import AuthMapper from '../mappers/authMapper';
+import UserMapper from '../mappers/userMapper';
 import { User } from '../types/index';
 import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
 import { userSchema, userUpdateSchema, userUpdateSchemaBackOffice } from '../utils/shemasJoi';
 import argon2 from 'argon2';
 
-const userMapper = new BaseMapper<User>('user');
+const userMapper = new UserMapper();
 const userAuthMapper = new AuthMapper();
 
 const userController = {   
@@ -115,6 +116,20 @@ const userController = {
         // Update user
         const updatedUser = await userMapper.update(id, value);
         res.status(200).json(updatedUser);
+    }),
+    impactByUserId: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        // Check user id
+        const id = parseInt(req.params.id, 10);
+
+        // User exist
+        const existingUser = await userMapper.findById(id);
+        if (!existingUser) {
+            return next(new AppError(`User with ${id} not found`, 404));
+        }
+
+        // Get impact
+        const impact = await userMapper.environmentalImpact(id);
+        res.status(200).json(impact);
     })
 }
 export default userController;
