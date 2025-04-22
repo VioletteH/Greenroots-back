@@ -22,15 +22,16 @@ const itemController = {
       const items = await orderItemMapper.findByField("order_id", id);
       res.status(200).json(items);
     }),
-}
+    addOrderItem: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const data = req.body;
+        const addOrderItemResult = await orderItemMapper.create(data);
+        if (!addOrderItemResult) {
+          return next(new AppError(`Order item not created`, 400));
+        }
+        res.status(201).json(addOrderItemResult)
+      }
+    ),
+  }
 
 export default itemController;
 
-/*   addOrderItem: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const data = req.body;
-    const addOrderItemResult = await orderItemMapper.create(data);
-    if (!addOrderItemResult) {
-      return next(new AppError(`Order item not created`, 400));
-    }
-    res.status(201).json(addOrderItemResult);
-  }) */

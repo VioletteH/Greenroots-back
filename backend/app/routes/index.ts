@@ -7,6 +7,7 @@ import orderController from "../controllers/orderController";
 import authorizationController from "../controllers/authorizationController";
 import { isGranted } from "../middlewares/isGranted";
 import orderItemController from "../controllers/itemController";
+import itemController from "../controllers/itemController";
 const routes = express.Router();
 
 // AUTHENTICATION
@@ -48,7 +49,7 @@ routes.patch("/orders/:id", authorizationController, isGranted, orderController.
 
 
 //ORDER ITEMS
-routes.get("/items", orderItemController.items);
-routes.get("/items/order/:id", orderItemController.itemsByOrderId);
-//routes.post("/orders-items", orderController.addOrderItem);
+routes.get("/items", itemController.items);
+routes.get("/items/order/:id", itemController.itemsByOrderId);
+// routes.post("/orders-items", itemController.addOrderItem);
 export default routes;
