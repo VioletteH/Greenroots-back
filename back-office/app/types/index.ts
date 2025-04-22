@@ -12,6 +12,9 @@ export type Tree = {
    createdAt: string;
    updatedAt?: string;
 }
+export type TreeWithAssociations = Tree & {
+   forestAssociations: { forestId: number; stock: number }[];
+ };
 export type Forest = {
    id: number;
    name: string;

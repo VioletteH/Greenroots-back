@@ -61,18 +61,19 @@ const treeController = {
         res.status(200).json(trees);
     }),
     addTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        // Validation
         const { error, value } = treeSchema.validate(req.body);
         if (error) {
             return next(new AppError("Invalid data", 400));
-        } 
-        // Tree exist
-        const existingTree = await treeMapper.findById(value.id);
-        if (existingTree) {
-            return next(new AppError(`Tree with ${value.id} already exists`, 400));
         }
-        // Create new tree
-        const newTree = await treeMapper.create(value);
+        
+        const { forestAssociations, ...treeData } = value;
+
+        const newTree = await treeMapper.create(treeData);
+
+        if (forestAssociations && Array.isArray(forestAssociations)) {
+            await treeMapper.addTreeToForests(newTree.id, forestAssociations);
+        }
+
         res.status(201).json(newTree);
     }),
     updateTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {

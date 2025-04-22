@@ -11,6 +11,12 @@
 <% if (tree.image) { %>
   <img src="<%= tree.image %>" class="img-fluid" style="max-width: 300px;">
 <% } %>
+<p><strong>Forêts associées :</strong></p>
+<ul class="list-group">
+  <% forests.forEach(forest => { %>
+    <li class="list-group-item"><a href="/forests/<%= forest.id %>"><%= forest.name %></a></li>
+  <% }) %>
+</ul>
 
 <a href="/trees" class="btn btn-secondary mt-3">Retour à la liste</a>
 <a href="/trees/<%= tree.id %>/edit" class="btn btn-warning mt-3">Modifier</a>

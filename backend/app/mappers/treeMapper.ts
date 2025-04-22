@@ -45,4 +45,24 @@ export default class TreeMapper extends BaseMapper<any> {
         if (!rows) return []; 
         return rows.map(snakeToCamel) as Forest[];
     }
+
+    async addTreeToForests(treeId: number, forestAssociations: { forestId: number, stock: number }[]): Promise<void> {
+        const query = `
+            INSERT INTO forest_tree (tree_id, forest_id, stock)
+            VALUES ($1, $2, $3)
+        `;
+        const client = await pool.connect();
+        try {
+            await client.query('BEGIN');
+            for (const { forestId, stock } of forestAssociations) {
+                await client.query(query, [treeId, forestId, stock]);
+            }
+            await client.query('COMMIT');
+        } catch (err) {
+            await client.query('ROLLBACK');
+            throw err;
+        } finally {
+            client.release();
+        }
+    }
 }

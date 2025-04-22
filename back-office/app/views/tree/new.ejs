@@ -35,6 +35,18 @@
     <label class="form-label">Prix</label>
     <input type="number" name="price" class="form-control" step="0.01">
   </div>
+  <div class="mb-3">
+    <label class="form-label d-block">Forêts</label>
+    <% forests.forEach(forest => { %>
+      <div class="form-check mb-2">
+        <input type="checkbox" name="forestAssociations[<%= forest.id %>][checked]" value="true" class="form-check-input" id="forest-<%= forest.id %>">
+        <label for="forest-<%= forest.id %>" class="form-check-label"><%= forest.name %></label>
+        <input type="number" name="forestAssociations[<%= forest.id %>][stock]" class="form-control mt-1" placeholder="Stock" min="1">
+      </div>
+    <% }) %>
+  </div>
+  
+  
   <button type="submit" class="btn btn-success">Créer</button>
 </form>
 

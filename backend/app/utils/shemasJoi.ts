@@ -82,7 +82,13 @@ export const treeSchema = Joi.object({
   description: Joi.string().required(),
   co2: Joi.number().precision(2).positive().required(),
   o2: Joi.number().precision(2).positive().required(),
-  price: Joi.number().precision(2).positive().required()
+  price: Joi.number().precision(2).positive().required(),
+  forestAssociations: Joi.array().items(
+    Joi.object({
+      forestId: Joi.number().integer().positive().required(),
+      stock: Joi.number().integer().positive().required(),
+    })
+  ).optional()
 });
 
 // JOI - userShema

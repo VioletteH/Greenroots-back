@@ -42,6 +42,14 @@
     <label class="form-label">Prix</label>
     <input type="number" name="price" value="<%= tree.price %>" class="form-control" step="0.01">
   </div>
+  <div class="mb-3">
+    <label class="form-label">Forêts associées</label>
+    <select name="forests" class="form-select">
+      <% forests.forEach(forest => { %>
+        <option value="<%= forest.id %>" <% if (tree.forests && tree.forests.includes(forest.id)) { %> selected <% } %>><%= forest.name %></option>
+      <% }) %>
+    </select>
+  </div>
   <button type="submit" class="btn btn-primary">Mettre à jour</button>
 </form>
 
