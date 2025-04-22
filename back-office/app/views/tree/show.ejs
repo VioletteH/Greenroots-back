@@ -20,10 +20,16 @@
     </tr>
   </thead>
   <tbody>
-    <% for (let i = 0; i < tree.forestname.length; i++) { %>
+    <% if (tree.forestname && tree.forestname.length > 0) { %>
+      <% for (let i = 0; i < tree.forestname.length; i++) { %>
+        <tr>
+          <td><a href="/forests/<%= i + 1 %>"><%= tree.forestname[i] %></a></td>
+          <td><%= tree.stock[i] %></td>
+        </tr>
+      <% } %>
+    <% } else { %>
       <tr>
-        <td><a href="/forests/<%= i + 1 %>"><%= tree.forestname[i] %></a></td>
-        <td><%= tree.stock[i] %></td>
+        <td colspan="2" class="text-center">Aucune forêt associée</td>
       </tr>
     <% } %>
   </tbody>

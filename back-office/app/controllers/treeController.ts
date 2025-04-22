@@ -41,7 +41,6 @@ const treeController = {
       const id = req.params.id;
       try {
          const tree: any = await getTreeWithForestsAndStock(id);
-         console.log(tree);
          res.render('tree/show', { tree });
       } catch (error) {
          console.error('Erreur dans getTree :', error);
@@ -130,19 +129,19 @@ const treeController = {
          form.image = `/uploads/trees/${req.file.filename}`;
       }
 
-      const parsedAssociations: { forestId: number; stock: number }[] = [];
+      const parsedAssociations: { forestId: number ; stock: number }[] = [];
 
       if (form.forestAssociations && typeof form.forestAssociations === 'object') {
          for (const [forestId, assoc] of Object.entries(form.forestAssociations)) {
-           if (assoc.checked) {
-             const stock = parseInt(assoc.stock || '', 10);
-             if (!isNaN(stock) && stock > 0) {
+         if (assoc.checked) {
+            const stock = parseInt(assoc.stock || '', 10);
+            if (!isNaN(stock) && stock > 0) {
                parsedAssociations.push({
-                 forestId: Number(forestId),
-                 stock
+               forestId: Number(forestId),
+               stock
                });
-             }
-           }
+            }
+         }
          }
       }
 

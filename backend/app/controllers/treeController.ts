@@ -82,7 +82,7 @@ const treeController = {
 
         const newTree = await treeMapper.create(treeData);
 
-        if (forestAssociations && Array.isArray(forestAssociations)) {
+        if (forestAssociations.length > 0 && Array.isArray(forestAssociations)) {
             await treeMapper.addTreeToForests(newTree.id, forestAssociations);
         }
 

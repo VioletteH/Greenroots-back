@@ -47,6 +47,8 @@ export default class TreeMapper extends BaseMapper<any> {
     }
 
     async addTreeToForests(treeId: number, forestAssociations: { forestId: number, stock: number }[]): Promise<void> {
+        if (!forestAssociations || forestAssociations.length === 0) return;
+
         const query = `
             INSERT INTO forest_tree (tree_id, forest_id, stock)
             VALUES ($1, $2, $3)
@@ -112,13 +114,13 @@ export default class TreeMapper extends BaseMapper<any> {
     async getTreeWithForestsAndStock(treeId: number): Promise<any> {
         const query = `
             SELECT tree.*, 
-                array_agg(forest.name ORDER BY forest.name) AS forestName,
-                array_agg(forest_tree.stock ORDER BY forest.name) AS stock
+                array_remove(array_agg(forest.name ORDER BY forest.name), NULL) AS forestName,
+                array_remove(array_agg(forest_tree.stock ORDER BY forest.name), NULL) AS stock
             FROM tree
-            JOIN forest_tree ON tree.id = forest_tree.tree_id
-            JOIN forest ON forest.id = forest_tree.forest_id
+            LEFT JOIN forest_tree ON tree.id = forest_tree.tree_id
+            LEFT JOIN forest ON forest.id = forest_tree.forest_id
             WHERE tree.id = $1
-            GROUP BY tree.id, tree.name, tree.category, tree.price LIMIT 100
+            GROUP BY tree.id;
         `;
         const { rows } = await pool.query(query, [treeId]);
         if (!rows || rows.length === 0) return null;
