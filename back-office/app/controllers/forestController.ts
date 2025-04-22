@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Forest } from '../types/index';
 
-import { getAll, getOne, add, update, remove } from '../api/forest';
+import { getAll, getOne, add, update, remove, getForestWithTreesAndStock } from '../api/forest';
 
 import fs from 'fs';
 import path from 'path';
@@ -20,7 +20,7 @@ const forestController = {
    getForest: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
-         const forest: Forest = await getOne(id);
+         const forest = await getForestWithTreesAndStock(id);
          res.render('forest/show', { forest });
       } catch (error) {
          console.error('Erreur dans getForest :', error);

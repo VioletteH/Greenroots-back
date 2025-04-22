@@ -81,5 +81,14 @@ const forestController = {
         const deletedForest = await forestMapper.delete(id);
         res.status(200).send("Forest deleted");
     }),
+
+    getForestWithTreesAndStock: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const id = parseInt(req.params.id, 10);
+        const forest = await forestMapper.getForestWithTreesAndStock(id);
+        if (!forest) {
+            return next(new AppError(`Forest with ${id} not found`, 404));
+        }
+        res.status(200).json(forest);
+    }),
 }
 export default forestController;

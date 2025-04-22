@@ -29,6 +29,7 @@ routes.delete("/trees/:id", authorizationController, isGranted, treeController.d
 routes.get("/forests", forestController.forests);
 routes.get("/forests/:id", forestController.forestById);
 routes.get("/forests/:id/trees", treeController.treesByForest);
+routes.get("/forests/:id/trees-with-stock", forestController.getForestWithTreesAndStock);
 routes.post("/forests", authorizationController, isGranted, forestController.addForest);
 routes.patch("/forests/:id", authorizationController, isGranted, forestController.updateForest);
 routes.delete("/forests/:id", authorizationController, isGranted, forestController.deleteForest);

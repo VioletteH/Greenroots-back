@@ -38,6 +38,19 @@ export type Forest = {
    createdAt: string;
    updatedAt?: string;
 }
+export type ForestForm = Forest & {
+   oldImage: string;
+   treeAssociations: {
+     [treeId: string]: {
+       checked?: string;
+       stock?: string;
+     };
+   };
+};
+export type ForestWithTreesAndStock = Forest & {
+   treesName?: string[];
+   stock?: number[];
+}
 export type User = {
    id: number;
    firstname: string;

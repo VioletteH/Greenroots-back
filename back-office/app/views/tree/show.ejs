@@ -15,15 +15,15 @@
 <table class="table table-bordered mt-3">
   <thead>
     <tr>
-      <th>Forêt associées</th>
-      <th>Stock disponible</th>
+      <th>Forêt associée</th>
+      <th>Restant à planter</th>
     </tr>
   </thead>
   <tbody>
     <% if (tree.forestname && tree.forestname.length > 0) { %>
       <% for (let i = 0; i < tree.forestname.length; i++) { %>
         <tr>
-          <td><a href="/forests/<%= i + 1 %>"><%= tree.forestname[i] %></a></td>
+          <td><%= tree.forestname[i] %></td>
           <td><%= tree.stock[i] %></td>
         </tr>
       <% } %>
