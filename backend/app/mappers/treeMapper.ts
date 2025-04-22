@@ -66,6 +66,49 @@ export default class TreeMapper extends BaseMapper<any> {
         }
     }
 
+    async updateTreeToForests(treeId: number, forestAssociations: { forestId: number, stock: number }[]): Promise<void> {
+        const insertQuery = `
+            INSERT INTO forest_tree (tree_id, forest_id, stock)
+            VALUES ($1, $2, $3)
+            ON CONFLICT (tree_id, forest_id)
+            DO UPDATE SET stock = EXCLUDED.stock
+        `;
+        
+        const client = await pool.connect();
+        try {
+            await client.query('BEGIN');
+    
+            // Étape 1 : Insert / Update
+            for (const { forestId, stock } of forestAssociations) {
+                await client.query(insertQuery, [treeId, forestId, stock]);
+            }
+    
+            // Étape 2 : Suppression des associations qui ne sont plus présentes
+            const forestIds = forestAssociations.map(fa => fa.forestId);
+            if (forestIds.length > 0) {
+                const placeholders = forestIds.map((_, i) => `$${i + 2}`).join(', ');
+                const deleteQuery = `
+                  DELETE FROM forest_tree
+                  WHERE tree_id = $1
+                  AND forest_id NOT IN (${placeholders})
+                `;
+                await client.query(deleteQuery, [treeId, ...forestIds]);
+            } else {
+                // Aucun forestId dans la liste → on supprime tout
+                await client.query(`DELETE FROM forest_tree WHERE tree_id = $1`, [treeId]);
+            }
+    
+            await client.query('COMMIT');
+        } catch (err: any) {
+            await client.query('ROLLBACK');
+            console.error("Erreur lors de la mise à jour des associations arbre-forêt :", err.message, err.code, err.detail);
+            throw err;
+        } finally {
+            client.release();
+        }
+
+    }
+
     async getTreeWithForestsAndStock(treeId: number): Promise<any> {
         const query = `
             SELECT tree.*, 

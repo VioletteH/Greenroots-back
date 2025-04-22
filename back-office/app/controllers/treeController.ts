@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getAll, getOne, getTreeWithForestsAndStock, remove, add, update } from '../api/tree';
 import { getAll as getAllForests } from '../api/forest';
-import { Tree, TreeWithAssociations } from '../types/index';
+import { Tree } from '../types/index';
 
 import fs from 'fs';
 import path from 'path';
@@ -23,6 +23,7 @@ interface ForestAssociationForm {
    o2?: string;
    price?: string;
    forestAssociations?: ForestAssociationForm;
+   oldImage: string;
 }
 
 const treeController = {
@@ -51,8 +52,9 @@ const treeController = {
    editTreeView: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
-         const tree = await getOne(id);
-         res.render('tree/edit', {tree});
+         const forests = await getAllForests();
+         const tree: any = await getTreeWithForestsAndStock(id);
+         res.render('tree/edit', { tree, forests });
       } catch (error) {
          console.error('Erreur dans editTreeView :', error);
          res.status(500).send('Erreur interne');
@@ -61,27 +63,58 @@ const treeController = {
 
    updateTree: async (req: Request, res: Response) => {
       const id = req.params.id;
-      const { oldImage, ...treeData } = req.body;
-      const tree = treeData as Tree;
-      try {
-         if (req.file) {
-            const oldImagePath = path.join(__dirname, '../../public', oldImage);
-            fs.unlink(oldImagePath, (err) => {
-               if (err) {
-                  console.error('Erreur lors de la suppression de l\'ancienne image :', err);
-               }
-            });
+      const form = req.body as TreeForm;
+      const oldImage = form.oldImage;
 
-            const imageUrl = `/uploads/trees/${req.file.filename}`;
-            tree.image = imageUrl;
-         } else {
-            tree.image = oldImage;
+      if (req.file) {
+         const oldImagePath = path.join(__dirname, '../../public', oldImage);
+         fs.unlink(oldImagePath, (err) => {
+            if (err) {
+               console.error('Erreur lors de la suppression de l\'ancienne image :', err);
+            }
+         });
+
+         const imageUrl = `/uploads/trees/${req.file.filename}`;
+         form.image = imageUrl;
+      } else {
+         form.image = oldImage;
+      }
+
+      const parsedAssociations: { forestId: number; stock: number }[] = [];
+
+      if (form.forestAssociations && typeof form.forestAssociations === 'object') {
+         for (const [forestId, assoc] of Object.entries(form.forestAssociations)) {
+           if (assoc.checked) {
+             const stock = parseInt(assoc.stock || '', 10);
+             if (!isNaN(stock) && stock > 0) {
+               parsedAssociations.push({
+                 forestId: Number(forestId),
+                 stock
+               });
+             }
+           }
          }
+      }
 
-         await update(req, Number(id), tree)
+      const treeToUpdate: Omit<Tree, 'id' | 'createdAt' | 'updatedAt' | 'categorySlug'> & {
+         forestAssociations: { forestId: number; stock: number }[];
+      } = {
+         name: form.name,
+         scientific_name: form.scientific_name ?? '',
+         category: form.category ?? '',
+         description: form.description ?? '',
+         image: form.image ?? '',
+         co2: Number(form.co2 ?? 0),
+         o2: Number(form.o2 ?? 0),
+         price: Number(form.price ?? 0),
+         forestAssociations: parsedAssociations
+      };
+
+      try {
+         await update(req, Number(id), treeToUpdate as unknown as Tree);
          res.redirect('/trees');
       } catch (error) {
-         console.error('Erreur dans le contrôleur:', error);
+         console.error("Erreur lors de la mise à jour d'un arbre:", error);
          res.status(500).send('Erreur interne');
       }
    },

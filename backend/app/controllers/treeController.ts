@@ -90,18 +90,21 @@ const treeController = {
     }),
     updateTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
-        // Validation
         const { error, value } = treeSchema.validate(req.body);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }
+        const { forestAssociations, ...treeData } = value;
         // Tree exist
         const existingTree = await treeMapper.findById(id);
         if (!existingTree) {
             return next(new AppError(`Tree with ${id} not found`, 404));
         }
         // Update tree
-        const updatedTree = await treeMapper.update(id, value);
+        const updatedTree = await treeMapper.update(id, treeData);
+        if (forestAssociations && Array.isArray(forestAssociations)) {
+            await treeMapper.updateTreeToForests(id, forestAssociations);
+        }
         res.status(200).json(updatedTree);
     }),
     deleteTree: catchAsync(async (req:Request, res:Response) => {
