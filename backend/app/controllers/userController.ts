@@ -75,6 +75,12 @@ const userController = {
         if (!existingUser) {
             return next(new AppError(`User with ${id} not found`, 404));
         }
+        //  agron2
+        if (value.password) {
+            const hashedPassword = await argon2.hash(value.password);
+            value.password = hashedPassword;
+        }
+
         // Update user
         const updatedUser = await userMapper.update(id, value);
         res.status(200).json(updatedUser);
