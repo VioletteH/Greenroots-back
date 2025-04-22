@@ -62,7 +62,13 @@ export const forestSchema = Joi.object({
   description: Joi.string().required(),
   country: Joi.string().required(),
   location_x: Joi.number().precision(6).required(),
-  location_y: Joi.number().precision(6).required()
+  location_y: Joi.number().precision(6).required(),
+  treeAssociations: Joi.array().items(
+    Joi.object({
+      treeId: Joi.number().integer().positive().required(),
+      stock: Joi.number().integer().positive().required(),
+    })
+  ).optional()
 });
 
 //JOI - orderShema

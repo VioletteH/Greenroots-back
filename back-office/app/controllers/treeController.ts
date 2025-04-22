@@ -46,18 +46,18 @@ const treeController = {
       if (form.forestAssociations && typeof form.forestAssociations === 'object') {
          // Parcourir les associations forêt-arbre
          for (const [forestId, assoc] of Object.entries(form.forestAssociations)) {
-         // Vérifier si l'association est cochée
-         if (assoc.checked) {
-            const stock = parseInt(assoc.stock || '', 10);
-            // Vérifier si le stock est un nombre valide et supérieur à 0
-            if (!isNaN(stock) && stock > 0) {
-            // Ajouter l'association à la liste des associations
-               parsedAssociations.push({
-               forestId: Number(forestId),
-               stock
-               });
+            // Vérifier si l'association est cochée
+            if (assoc.checked) {
+               const stock = parseInt(assoc.stock || '', 10);
+               // Vérifier si le stock est un nombre valide et supérieur à 0
+               if (!isNaN(stock) && stock > 0) {
+               // Ajouter l'association à la liste des associations
+                  parsedAssociations.push({
+                  forestId: Number(forestId),
+                  stock
+                  });
+               }
             }
-         }
          }
       }
 
@@ -65,15 +65,7 @@ const treeController = {
       const treeToInsert: Omit<Tree, 'id' | 'createdAt' | 'updatedAt' | 'categorySlug'> & {
          forestAssociations: { forestId: number; stock: number }[];
       } = {
-         name: form.name,
-         
-         scientific_name: form.scientific_name ?? '',
-         category: form.category ?? '',
-         description: form.description ?? '',
-         image: form.image ?? '',
-         co2: Number(form.co2 ?? 0),
-         o2: Number(form.o2 ?? 0),
-         price: Number(form.price ?? 0),
+         ...form,
          forestAssociations: parsedAssociations
       };
 

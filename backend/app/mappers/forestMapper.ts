@@ -35,4 +35,27 @@ export default class ForestMapper extends BaseMapper<any> {
         if (!rows || rows.length === 0) return null;
         return snakeToCamel(rows[0]);
     }
+
+    async addForestToTrees(forestId: number, treeAssociations: { treeId: number, stock: number }[]): Promise<void> {
+        // S'il n'y a pas d'associations, on ne fait rien
+        if (!treeAssociations || treeAssociations.length === 0) return;
+
+        const query = `
+            INSERT INTO forest_tree (forest_id, tree_id, stock)
+            VALUES ($1, $2, $3)
+        `;
+        const client = await pool.connect();
+        try {
+            await client.query('BEGIN');
+            for (const {treeId, stock } of treeAssociations) {
+                await client.query(query, [forestId, treeId, stock]);
+            }
+            await client.query('COMMIT');
+        } catch (error) {
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+        }
+    }
 }

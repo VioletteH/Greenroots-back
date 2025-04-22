@@ -26,7 +26,7 @@ export const getForestWithTreesAndStock = async (id: string): Promise<ForestWith
   return data;
 };
 
-export const add = async (req: Request, forest: Forest): Promise<Forest> => {
+export const add = async (req: Request, forest: Forest): Promise<ForestWithTreesAndStock> => {
   const axiosInstance = createAxiosWithAuth(req);
   const response = await axiosInstance.post(`${api_url}`, forest);
 
@@ -34,7 +34,7 @@ export const add = async (req: Request, forest: Forest): Promise<Forest> => {
   return data;
 };
 
-export const update = async (req: Request, id: number, forest: Forest): Promise<Forest> => {
+export const update = async (req: Request, id: number, forest: Forest): Promise<ForestWithTreesAndStock> => {
   const axiosInstance = createAxiosWithAuth(req);
   const response = await axiosInstance.patch(`${api_url}/${id}`, forest);
 

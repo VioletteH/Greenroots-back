@@ -8,6 +8,7 @@ import loadForestMapper from '../mappers/forestMapper';
 
 const forestMapper = new loadForestMapper();
 
+
 const forestController = {   
 
     forests: catchAsync(async (req: Request, res: Response, next:NextFunction ): Promise<void>  => {
@@ -38,19 +39,19 @@ const forestController = {
         res.status(200).json(forests);
     }),
     addForest: catchAsync(async (req:Request, res:Response, next: NextFunction ) => {
-        const newForestData = req.body;
-        // Validation
-        const { error, value } = forestSchema.validate(newForestData);
+        const { error, value } = forestSchema.validate(req.body);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }
-        // Forest exist
-        const existingForest = await forestMapper.findById(newForestData.id);
-        if (existingForest) {
-            return res.status(400).json({ message: "The forest already exists" });
+
+        const { treeAssociations, ...forestData } = value;
+
+        const newForest = await forestMapper.create(forestData);
+
+        if (treeAssociations.length > 0 && Array.isArray(treeAssociations)) {
+            await forestMapper.addForestToTrees(newForest.id, treeAssociations);
         }
-        // Create new forest
-        const newForest = await forestMapper.create(newForestData);
+
         res.status(201).json(newForest);
     }),
     updateForest: catchAsync(async (req:Request, res:Response, next: NextFunction )  => {
