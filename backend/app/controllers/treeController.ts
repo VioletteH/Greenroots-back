@@ -10,15 +10,27 @@ import { unslugify } from '../utils/unslugify';
 const treeMapper = new loadTreeMapper();
 
 const treeController = {   
-    trees: catchAsync(async (req:Request, res:Response) => {
-            const limit = parseInt(req.query.limit as string, 10) || 10;
-            const offset = parseInt(req.query.offset as string, 10) || 0; 
-            const trees = await treeMapper.findAll(limit, offset);
-            if (trees.length === 0) {
-                res.status(200).json("trees not found");
-            }
-            res.status(200).json(trees);
-        }),
+    trees: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const limit = parseInt(req.query.limit as string, 10) || 10;
+        const offset = parseInt(req.query.offset as string, 10) || 0; 
+        const sortBy = req.query.sortBy as string;
+        let trees;
+
+        if (sortBy === 'price') {
+            trees = await treeMapper.treeByPrice();
+        } else {
+            trees = await treeMapper.findAll(limit, offset); 
+        }
+    
+        if (!trees || trees.length === 0) {
+            return next(new AppError("No trees found", 404)); 
+        }
+        // const trees = await treeMapper.findAll(limit, offset);
+        // if (trees.length === 0) {
+        //     res.status(200).json("trees not found");
+        // }
+        res.status(200).json(trees);
+    }),
     treeById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
         // Tree exist
@@ -60,6 +72,13 @@ const treeController = {
         }
         res.status(200).json(trees);
     }),
+    // treesByPrice: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+    //     const trees = await treeMapper.treeByPrice();
+    //     if (trees.length === 0) {
+    //         return next(new AppError(`No trees found`, 404));
+    //     }
+    //     res.status(200).json(trees);
+    // }),
     addTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         // Validation
         const { error, value } = treeSchema.validate(req.body);

@@ -22,7 +22,7 @@ function createUser() {
     address: faker.location.streetAddress(),
     zipcode: faker.location.zipCode(),
     city: faker.location.city(),
-    role: faker.helpers.arrayElement(['user', 'admin']),
+    role: faker.helpers.arrayElement(['utilisateur', 'admin']),
     created_at: faker.date.past(),
     updated_at: faker.date.recent(),
   };

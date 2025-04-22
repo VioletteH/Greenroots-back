@@ -41,6 +41,9 @@ const orderController = {
   addOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     // Validation
     const { error, value } = orderSchema.validate(req.body);
+    console.log("error", error);
+    console.log("value", value);
+    
     if (error) {
       return next(new AppError(`Invalid data`, 400));
     }
