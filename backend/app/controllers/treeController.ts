@@ -60,6 +60,18 @@ const treeController = {
         }
         res.status(200).json(trees);
     }),
+    getTreeWithForestsAndStock: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const id = parseInt(req.params.id, 10);
+
+        const existingTree = await treeMapper.findById(id);
+        if (!existingTree) {
+            return next(new AppError(`Tree with ${id} not found`, 404));
+        }
+
+        const trees = await treeMapper.getTreeWithForestsAndStock(id);
+
+        res.status(200).json(trees);
+    }),
     addTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const { error, value } = treeSchema.validate(req.body);
         if (error) {

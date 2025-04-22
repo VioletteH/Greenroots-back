@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAll, getOne, getForestByTree, remove, add, update } from '../api/tree';
+import { getAll, getOne, getTreeWithForestsAndStock, remove, add, update } from '../api/tree';
 import { getAll as getAllForests } from '../api/forest';
 import { Tree, TreeWithAssociations } from '../types/index';
 
@@ -39,9 +39,9 @@ const treeController = {
    getTree: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
-         const tree: Tree = await getOne(id);
-         const forests = await getForestByTree(id);
-         res.render('tree/show', { tree, forests });
+         const tree: any = await getTreeWithForestsAndStock(id);
+         console.log(tree);
+         res.render('tree/show', { tree });
       } catch (error) {
          console.error('Erreur dans getTree :', error);
          res.status(500).send('Erreur en interne');
@@ -52,12 +52,7 @@ const treeController = {
       const id = req.params.id;
       try {
          const tree = await getOne(id);
-         const forestsAssigned = await getForestByTree(id);
-         const allForests = await getAllForests();
-         const forests = allForests.filter((forest) => {
-            return !forestsAssigned.some((assignedForest) => assignedForest.id === forest.id);
-         });
-         res.render('tree/edit', {tree, forests, forestsAssigned});
+         res.render('tree/edit', {tree});
       } catch (error) {
          console.error('Erreur dans editTreeView :', error);
          res.status(500).send('Erreur interne');

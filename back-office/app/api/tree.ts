@@ -16,8 +16,8 @@ export const getOne = async (id: string): Promise<Tree> => {
     return data;
 };
 
-export const getForestByTree = async (id: string): Promise<Forest[]> => {
-    const response = await axios.get(`${api_url}/${id}/forests`);  
+export const getTreeWithForestsAndStock = async (id: string): Promise<Forest[]> => {
+    const response = await axios.get(`${api_url}/${id}/forests-with-stock`);  
     const data = response.data;
     return data;
 };

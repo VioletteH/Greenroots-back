@@ -11,12 +11,24 @@
 <% if (tree.image) { %>
   <img src="<%= tree.image %>" class="img-fluid" style="max-width: 300px;">
 <% } %>
-<p><strong>Forêts associées :</strong></p>
-<ul class="list-group">
-  <% forests.forEach(forest => { %>
-    <li class="list-group-item"><a href="/forests/<%= forest.id %>"><%= forest.name %></a></li>
-  <% }) %>
-</ul>
+
+<p><strong>Forêts associées et stock :</strong></p>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Forêt</th>
+      <th>Stock</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for (let i = 0; i < tree.forestname.length; i++) { %>
+      <tr>
+        <td><a href="/forests/<%= i + 1 %>"><%= tree.forestname[i] %></a></td>
+        <td><%= tree.stock[i] %></td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
 
 <a href="/trees" class="btn btn-secondary mt-3">Retour à la liste</a>
 <a href="/trees/<%= tree.id %>/edit" class="btn btn-warning mt-3">Modifier</a>

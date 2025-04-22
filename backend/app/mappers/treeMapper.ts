@@ -65,4 +65,20 @@ export default class TreeMapper extends BaseMapper<any> {
             client.release();
         }
     }
+
+    async getTreeWithForestsAndStock(treeId: number): Promise<any> {
+        const query = `
+            SELECT tree.*, 
+                array_agg(forest.name ORDER BY forest.name) AS forestName,
+                array_agg(forest_tree.stock ORDER BY forest.name) AS stock
+            FROM tree
+            JOIN forest_tree ON tree.id = forest_tree.tree_id
+            JOIN forest ON forest.id = forest_tree.forest_id
+            WHERE tree.id = $1
+            GROUP BY tree.id, tree.name, tree.category, tree.price LIMIT 100
+        `;
+        const { rows } = await pool.query(query, [treeId]);
+        if (!rows || rows.length === 0) return null;
+        return snakeToCamel(rows[0]);
+    }
 }

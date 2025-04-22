@@ -18,6 +18,7 @@ routes.post("/register", authController.register);
 routes.get("/trees", treeController.trees);
 routes.get("/trees/:id", treeController.treeById);
 routes.get("/trees/:id/forests", forestController.forestsByTree);
+routes.get("/trees/:id/forests-with-stock", treeController.getTreeWithForestsAndStock);
 routes.get("/trees/country/:slug", treeController.treesByCountry);
 routes.get("/trees/category/:slug", treeController.treesByCategory);
 routes.post("/trees", authorizationController, isGranted, treeController.addTree);
