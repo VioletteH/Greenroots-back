@@ -119,9 +119,17 @@ export const userUpdateSchema = Joi.object({
   firstname: Joi.string().trim().max(255).optional(),
   lastname: Joi.string().trim().max(255).optional(),
   email: Joi.string().email().trim().lowercase().optional(),
-  phone: Joi.string().trim().max(50).optional(),
+  phone: Joi.string()
+  .pattern(/^((\+33\s?|0)[1-9](\s?\d{2}){4})$/)
+  .message('Le numéro de téléphone doit être au format français')
+  .trim()
+  .optional(),
   address: Joi.string().trim().max(255).optional(),
-  zipcode: Joi.string().trim().max(20).optional(),
+  zipcode: Joi.string()
+  .pattern(/^\d{5}$/)
+  .message('Le code postal doit contenir exactement 5 chiffres')
+  .trim()
+  .optional(),
   city: Joi.string().trim().max(100).optional(),
   password: Joi.string().min(8).trim().optional(),
 });
