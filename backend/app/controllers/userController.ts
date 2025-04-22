@@ -65,11 +65,11 @@ const userController = {
 
         // Validation
         const { error, value } = userUpdateSchema.validate(req.body);
-        console.log("error", error);
-        
         if (error) {
-            return next(new AppError("Invalid data", 400));
+            const messages = error.details.map(detail => detail.message);
+            return next(new AppError(messages.join(', '), 400));
         }
+    
         // User exist
         const existingUser = await userMapper.findById(id);
         if (!existingUser) {
