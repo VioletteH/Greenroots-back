@@ -46,6 +46,22 @@ export default class TreeMapper extends BaseMapper<any> {
         return rows.map(snakeToCamel) as Forest[];
     }
 
+    async getTreeWithForestsAndStock(treeId: number): Promise<any> {
+        const query = `
+            SELECT tree.*,
+                array_remove(array_agg(forest.name ORDER BY forest.name), NULL) AS forestName,
+                array_remove(array_agg(forest_tree.stock ORDER BY forest.name), NULL) AS stock
+            FROM tree
+            LEFT JOIN forest_tree ON tree.id = forest_tree.tree_id
+            LEFT JOIN forest ON forest.id = forest_tree.forest_id
+            WHERE tree.id = $1
+            GROUP BY tree.id;
+        `;
+        const { rows } = await pool.query(query, [treeId]);
+        if (!rows || rows.length === 0) return null;
+        return snakeToCamel(rows[0]);
+    }
+
     async addTreeToForests(treeId: number, forestAssociations: { forestId: number, stock: number }[]): Promise<void> {
         // S'il n'y a pas d'associations, on ne fait rien
         if (!forestAssociations || forestAssociations.length === 0) return;
@@ -118,19 +134,4 @@ export default class TreeMapper extends BaseMapper<any> {
         }
     }
 
-    async getTreeWithForestsAndStock(treeId: number): Promise<any> {
-        const query = `
-            SELECT tree.*,
-                array_remove(array_agg(forest.name ORDER BY forest.name), NULL) AS forestName,
-                array_remove(array_agg(forest_tree.stock ORDER BY forest.name), NULL) AS stock
-            FROM tree
-            LEFT JOIN forest_tree ON tree.id = forest_tree.tree_id
-            LEFT JOIN forest ON forest.id = forest_tree.forest_id
-            WHERE tree.id = $1
-            GROUP BY tree.id;
-        `;
-        const { rows } = await pool.query(query, [treeId]);
-        if (!rows || rows.length === 0) return null;
-        return snakeToCamel(rows[0]);
-    }
 }

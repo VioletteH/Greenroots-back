@@ -58,4 +58,42 @@ export default class ForestMapper extends BaseMapper<any> {
             client.release();
         }
     }
+
+    async updateForestToTrees(forestId: number, treeAssociations: { treeId: number, stock: number }[]): Promise<void> {
+        const insertQuery = `
+            INSERT INTO forest_tree (forest_id, tree_id, stock)
+            VALUES ($1, $2, $3)
+            ON CONFLICT (forest_id, tree_id)
+            DO UPDATE SET stock = EXCLUDED.stock
+        `;
+
+        const client = await pool.connect();
+        try {
+            await client.query('BEGIN');
+            for (const {treeId, stock } of treeAssociations) {
+                await client.query(insertQuery, [forestId, treeId, stock]);
+            }
+
+            const treeIds = treeAssociations.map(ta => ta.treeId);
+            if (treeIds.length > 0) {
+                const placeholders = treeIds.map((_, i) => `$${i + 2}`).join(', ');
+                const deleteQuery = `
+                    DELETE FROM forest_tree
+                    WHERE forest_id = $1
+                    AND tree_id NOT IN (${placeholders})
+                `;
+                await client.query(deleteQuery, [forestId, ...treeIds]);
+            } else {
+                await client.query(`DELETE FROM forest_tree WHERE forest_id = $1`, [forestId]);
+            }
+            await client.query('COMMIT');
+        } catch (err: any) {
+            await client.query('ROLLBACK');
+            console.error("Erreur lors de la mise à jour des associations arbre-forêt :", err.message, err.code, err.detail);
+            throw err;
+        }
+        finally {
+            client.release();
+        }
+    }
 }

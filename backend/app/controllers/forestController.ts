@@ -38,6 +38,14 @@ const forestController = {
         }
         res.status(200).json(forests);
     }),
+    getForestWithTreesAndStock: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const id = parseInt(req.params.id, 10);
+        const forest = await forestMapper.getForestWithTreesAndStock(id);
+        if (!forest) {
+            return next(new AppError(`Forest with ${id} not found`, 404));
+        }
+        res.status(200).json(forest);
+    }),
     addForest: catchAsync(async (req:Request, res:Response, next: NextFunction ) => {
         const { error, value } = forestSchema.validate(req.body);
         if (error) {
@@ -56,19 +64,25 @@ const forestController = {
     }),
     updateForest: catchAsync(async (req:Request, res:Response, next: NextFunction )  => {
         const id = parseInt(req.params.id, 10);
-        const updatedForestData = req.body; 
-        // Validation
-        const { error, value } = forestSchema.validate(updatedForestData);
+
+        const { error, value } = forestSchema.validate(req.body);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }
-        // Forest exist
+
+        const { treeAssociations, ...forestData } = value;
+
         const existingForest = await forestMapper.findById(id);
         if (!existingForest) {
             return res.status(404).json({ message: "Forest not found" });
         }
-        // Update forest
-        const updatedForest = await forestMapper.update(id, updatedForestData);
+
+        const updatedForest = await forestMapper.update(id, forestData);
+
+        if (treeAssociations && Array.isArray(treeAssociations)) {
+            await forestMapper.updateForestToTrees(id, treeAssociations);
+        }
+
         res.status(200).json(updatedForest);
     }),
     deleteForest: catchAsync (async (req:Request, res:Response) => {
@@ -83,13 +97,5 @@ const forestController = {
         res.status(200).send("Forest deleted");
     }),
 
-    getForestWithTreesAndStock: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const id = parseInt(req.params.id, 10);
-        const forest = await forestMapper.getForestWithTreesAndStock(id);
-        if (!forest) {
-            return next(new AppError(`Forest with ${id} not found`, 404));
-        }
-        res.status(200).json(forest);
-    }),
 }
 export default forestController;
