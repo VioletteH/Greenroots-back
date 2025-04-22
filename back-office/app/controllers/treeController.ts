@@ -1,30 +1,10 @@
 import { Request, Response } from 'express';
 import { getAll, getOne, getTreeWithForestsAndStock, remove, add, update } from '../api/tree';
 import { getAll as getAllForests } from '../api/forest';
-import { Tree } from '../types/index';
+import { Tree, TreeForm } from '../types/index';
 
 import fs from 'fs';
 import path from 'path';
-
-interface ForestAssociationForm {
-   [forestId: string]: {
-     checked?: string;
-     stock?: string;
-   };
-}
- 
- interface TreeForm {
-   name: string;
-   scientific_name?: string;
-   category?: string;
-   description?: string;
-   image?: string;
-   co2?: string;
-   o2?: string;
-   price?: string;
-   forestAssociations?: ForestAssociationForm;
-   oldImage: string;
-}
 
 const treeController = {
    getAllTrees: async (req: Request, res: Response): Promise<void> => {
@@ -40,7 +20,7 @@ const treeController = {
    getTree: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
-         const tree: any = await getTreeWithForestsAndStock(id);
+         const tree = await getTreeWithForestsAndStock(id);
          res.render('tree/show', { tree });
       } catch (error) {
          console.error('Erreur dans getTree :', error);
