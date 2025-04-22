@@ -28,6 +28,64 @@ const treeController = {
       }
    },
 
+   createTreeView: async (req:Request, res:Response) => {
+      const forests = await getAllForests();
+      res.render('tree/new', { forests });
+   },
+   createTreePost: async (req: Request, res: Response) => {
+      const form = req.body as TreeForm;
+
+      if (req.file) {
+         form.image = `/uploads/trees/${req.file.filename}`;
+      }
+
+      // Parser les associations forêt-arbre
+      const parsedAssociations: { forestId: number ; stock: number }[] = [];
+
+      // Vérifier si form.forestAssociations est un objet
+      if (form.forestAssociations && typeof form.forestAssociations === 'object') {
+         // Parcourir les associations forêt-arbre
+         for (const [forestId, assoc] of Object.entries(form.forestAssociations)) {
+         // Vérifier si l'association est cochée
+         if (assoc.checked) {
+            const stock = parseInt(assoc.stock || '', 10);
+            // Vérifier si le stock est un nombre valide et supérieur à 0
+            if (!isNaN(stock) && stock > 0) {
+            // Ajouter l'association à la liste des associations
+               parsedAssociations.push({
+               forestId: Number(forestId),
+               stock
+               });
+            }
+         }
+         }
+      }
+
+      // Créer l'objet arbre à insérer
+      const treeToInsert: Omit<Tree, 'id' | 'createdAt' | 'updatedAt' | 'categorySlug'> & {
+         forestAssociations: { forestId: number; stock: number }[];
+      } = {
+         name: form.name,
+         
+         scientific_name: form.scientific_name ?? '',
+         category: form.category ?? '',
+         description: form.description ?? '',
+         image: form.image ?? '',
+         co2: Number(form.co2 ?? 0),
+         o2: Number(form.o2 ?? 0),
+         price: Number(form.price ?? 0),
+         forestAssociations: parsedAssociations
+      };
+
+      try {
+         await add(req, treeToInsert as unknown as Tree);
+         res.redirect('/trees');
+      } catch (error) {
+         console.error("Erreur lors de la création d'un arbre:", error);
+         res.status(500).send('Erreur interne');
+      }
+   },
+
    editTreeView: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
@@ -94,56 +152,6 @@ const treeController = {
          res.redirect('/trees');
       } catch (error) {
          console.error("Erreur lors de la mise à jour d'un arbre:", error);
-         res.status(500).send('Erreur interne');
-      }
-   },
-   
-   createTreeView: async (req:Request, res:Response) => {
-      const forests = await getAllForests();
-      res.render('tree/new', { forests });
-   },
-   createTreePost: async (req: Request, res: Response) => {
-      const form = req.body as TreeForm;
-
-      if (req.file) {
-         form.image = `/uploads/trees/${req.file.filename}`;
-      }
-
-      const parsedAssociations: { forestId: number ; stock: number }[] = [];
-
-      if (form.forestAssociations && typeof form.forestAssociations === 'object') {
-         for (const [forestId, assoc] of Object.entries(form.forestAssociations)) {
-         if (assoc.checked) {
-            const stock = parseInt(assoc.stock || '', 10);
-            if (!isNaN(stock) && stock > 0) {
-               parsedAssociations.push({
-               forestId: Number(forestId),
-               stock
-               });
-            }
-         }
-         }
-      }
-
-      const treeToInsert: Omit<Tree, 'id' | 'createdAt' | 'updatedAt' | 'categorySlug'> & {
-         forestAssociations: { forestId: number; stock: number }[];
-      } = {
-         name: form.name,
-         scientific_name: form.scientific_name ?? '',
-         category: form.category ?? '',
-         description: form.description ?? '',
-         image: form.image ?? '',
-         co2: Number(form.co2 ?? 0),
-         o2: Number(form.o2 ?? 0),
-         price: Number(form.price ?? 0),
-         forestAssociations: parsedAssociations
-      };
-
-      try {
-         await add(req, treeToInsert as unknown as Tree);
-         res.redirect('/trees');
-      } catch (error) {
-         console.error("Erreur lors de la création d'un arbre:", error);
          res.status(500).send('Erreur interne');
       }
    },
