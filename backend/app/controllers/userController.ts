@@ -62,11 +62,11 @@ const userController = {
     }),
 
     updateUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const sanitizedBody = sanitizeInput(req.body);
+        // const sanitizedBody = sanitizeInput(req.body);
         const id = parseInt(req.params.id, 10);
 
         // Validation
-        const { error, value } = userUpdateSchema.validate(sanitizedBody);
+        const { error, value } = userUpdateSchema.validate(req.body);
         console.log("error", error);
         
         if (error) {

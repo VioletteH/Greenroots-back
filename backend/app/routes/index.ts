@@ -63,4 +63,15 @@ routes.get("/search", searchController);
 //PAYMENT
 routes.post("/create-payment-intent", stripeController.intent);
 
+// 
+routes.get('/csrf-token', (req, res) => {
+  const token = req.csrfToken(); // ✅ déclenche la génération du token
+  res.cookie('XSRF-TOKEN', token, {
+    httpOnly: false,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production'
+  });
+  res.status(200).json({ csrfToken: token });
+});
+
 export default routes;
