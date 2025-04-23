@@ -6,10 +6,10 @@
   <thead>
     <tr>
       <th>Id de l'utilisateur</th>
+      <th>Numéro commande</th>
       <th>Prix total</th>
       <th>Statut de la commande</th>
       <th>Créée le :</th>
-      <th>Mise à jour le :</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -17,10 +17,10 @@
     <% orders.forEach(order => { %>
       <tr>
         <td><%= order.userId %></td>
+        <td><%= order.id %></td>
         <td><%= order.totalPrice %></td>
         <td><%= order.statusLabel %></td>
         <td><%= order.createdAtFormatted %></td>
-        <td><%= order.updatedAtFormatted %></td>
         <td>
           <a href="/orders/<%= order.id %>" class="btn btn-info btn-sm">Voir</a>
           <a href="/orders/<%= order.id %>/edit" class="btn btn-warning btn-sm">Modifier</a>
