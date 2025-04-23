@@ -12,7 +12,6 @@ import type { User} from '../types/index';
 import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
 
-
 const JWT_SECRET = process.env.JWT_SECRET as string;
 const userMapper = new AuthMapper();
 

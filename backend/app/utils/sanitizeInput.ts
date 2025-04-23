@@ -1,16 +1,17 @@
-import sanitizer from 'sanitizer';
+import sanitizeHtml from 'sanitize-html';
 
-export const sanitizeInput = (obj: any): any => {
-    if (typeof obj === 'string') {
-        return sanitizer.escape(obj); 
-    } else if (typeof obj === 'object' && obj !== null) {
-        const sanitized: any = {};
-        for (const key in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, key)) {
-                sanitized[key] = sanitizeInput(obj[key]);
-            }
-        }
-        return sanitized;
+export function sanitizeInput(input: any): any {
+  if (typeof input === 'string') {
+    return sanitizeHtml(input);
+  }
+
+  if (typeof input === 'object' && input !== null) {
+    const sanitizedObj: Record<string, any> = {};
+    for (const key in input) {
+      sanitizedObj[key] = sanitizeInput(input[key]);
     }
-    return obj; 
-};
+    return sanitizedObj;
+  }
+
+  return input;
+}

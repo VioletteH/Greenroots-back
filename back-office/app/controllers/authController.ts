@@ -1,15 +1,19 @@
 import axios from "axios";
 import { Request, Response } from "express";
+import {sanitizeObject} from "../utils/sanitize";
 
 const API_URL = "http://greenroots-backend:3000";
 
 const authController = {
     loginView: (req: Request, res: Response) => {
-        res.render('auth/login');
+        res.render('auth/login', {
+            csrfToken: req.csrfToken()
+        });
     },
 
     loginPost: async (req: Request, res: Response) => {
-        const { email, password } = req.body;
+        const sanitizedBody = sanitizeObject(req.body);
+        const { email, password } = sanitizedBody;
         try {
             const response = await axios.post(`${API_URL}/login/`, {
                 email,

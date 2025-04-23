@@ -3,6 +3,7 @@
   <h1>Nouvelle forêt</h1>
 
   <form action="/forests/news" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <div class="mb-3">
       <label class="form-label">Nom</label>
       <input type="text" name="name" class="form-control" required>

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Forest, ForestForm } from '../types/index';
+import {sanitizeObject} from "../utils/sanitize";
 
 import { getAll, getOne, add, update, remove, getForestWithTreesAndStock } from '../api/forest';
 import { getAll as getAllTrees } from '../api/tree';
@@ -11,7 +12,7 @@ const forestController = {
    getAllForests: async (req:Request, res:Response) => {
       try {
          const forests: Forest[] = await getAll();
-         res.render('forest/index', { forests });
+         res.render('forest/index', { forests, csrfToken: req.csrfToken() });
       } catch (error) {
          console.error('Erreur dans getAllForests :', error);
          res.status(500).send('Erreur interne');
@@ -31,10 +32,10 @@ const forestController = {
 
    createForestView: async (req:Request, res:Response) => {
       const trees = await getAllTrees();
-      res.render('forest/new', { trees });
+      res.render('forest/new', { trees, csrfToken: req.csrfToken() });
    },
    createForestPost: async (req:Request, res:Response) => {
-      const form = req.body as ForestForm
+      const form = sanitizeObject(req.body) as ForestForm;
 
       if (req.file) {
          form.image = `/uploads/forests/${req.file.filename}`;
@@ -84,7 +85,7 @@ const forestController = {
       try {
          const trees = await getAllTrees();
          const forest = await getForestWithTreesAndStock(id);
-         res.render('forest/edit', {forest, trees});
+         res.render('forest/edit', {forest, trees, csrfToken: req.csrfToken()});
       } catch (error) {
          console.error('Erreur dans editForestView :', error);
          res.status(500).send('Erreur interne');
@@ -93,7 +94,8 @@ const forestController = {
 
    updateForest: async (req:Request, res:Response) => {
       const id = req.params.id;
-      const form = req.body as ForestForm;
+
+      const form = sanitizeObject(req.body) as ForestForm;
       const oldImage = form.oldImage
 
       if (req.file) {
