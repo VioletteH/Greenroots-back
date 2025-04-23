@@ -3,54 +3,57 @@ import Joi, { optional } from 'joi';
 //JOI - LoginShema
 export const loginSchema = Joi.object({
   email: Joi.string()
-  .email()
-  .trim()
-  .lowercase()
-  .required()
-  .messages({
-    'string.email': 'Email - invalid',
-    'string.empty': 'Email - requiered',
-    'any.required': 'Email - requiered',
-  }),
-  
+    .email()
+    .trim()
+    .lowercase()
+    .required()
+    .messages({
+      'string.email': "L'adresse e-mail doit être valide.",
+      'string.empty': "L'adresse e-mail est requise.",
+      'any.required': "L'adresse e-mail est requise.",
+    }),
+
   password: Joi.string()
-  .trim()
-  .required()
-  .messages({
-    'string.empty': 'Password - requiered',
-    'any.required': 'Password - requiered',
-  }),
+    .trim()
+    .required()
+    .messages({
+      'string.empty': "Le mot de passe est requis.",
+      'any.required': "Le mot de passe est requis.",
+    }),
 });
+
 
 //JOI - RegisterShema 
 export const registerSchema = Joi.object({
   email: Joi.string()
-  .email()
-  .required()
-  .messages({
-    'string.email': 'Email - invalid',
-    'string.empty': 'Email - requiered',
-    'any.required': 'Email - requiered',
-  }),
+    .email()
+    .required()
+    .messages({
+      'string.email': "L'adresse e-mail doit être valide.",
+      'string.empty': "L'adresse e-mail est requise.",
+      'any.required': "L'adresse e-mail est requise.",
+    }),
+
   password: Joi.string()
-  .min(8)
-  .required()
-  .messages({
-    'string.min': 'Password - min 8 characters',
-    'string.empty': 'Password - requiered',
-    'any.required': 'Password - requiered',
-  }),
+    .min(8)
+    .required()
+    .messages({
+      'string.min': "Le mot de passe doit contenir au moins 8 caractères.",
+      'string.empty': "Le mot de passe est requis.",
+      'any.required': "Le mot de passe est requis.",
+    }),
+
   firstname: Joi.string()
-  .trim()
-  .max(255)
-  .required()
-  .messages({
-    'string.max': 'Firstname - max 255 characters',
-    'string.empty': 'Firstname - requiered',
-    'any.required': 'Firstname - requiered',
-  }),
-    // role: Joi.string() - si vous voulez le garder, décommentez cette ligne
+    .trim()
+    .max(255)
+    .required()
+    .messages({
+      'string.max': "Le prénom ne peut pas dépasser 255 caractères.",
+      'string.empty': "Le prénom est requis.",
+      'any.required': "Le prénom est requis.",
+    }),
 });
+
 
 //JOI - ForestShema
 
@@ -113,17 +116,69 @@ export const userSchema = Joi.object({
   phone: Joi.string().optional().allow(''),
 });
 
-// JOI - userUpdateSchema
+// JOI - userUpdateShema
 export const userUpdateSchema = Joi.object({
-  firstname: Joi.string().trim().max(255).optional(),
-  lastname: Joi.string().trim().max(255).optional(),
-  email: Joi.string().email().trim().lowercase().optional(),
-  phone: Joi.string().trim().max(50).optional(),
-  address: Joi.string().trim().max(255).optional(),
-  zipcode: Joi.string().trim().max(20).optional(),
-  city: Joi.string().trim().max(100).optional(),
-  password: Joi.string().min(8).trim().optional(),
+  firstname: Joi.string()
+    .trim()
+    .max(255)
+    .optional()
+    .messages({
+      'string.base': 'Le prénom doit être une chaîne de caractères.',
+      'string.max': 'Le prénom ne peut pas dépasser 255 caractères.',
+    }),
+  lastname: Joi.string()
+    .trim()
+    .max(255)
+    .optional()
+    .messages({
+      'string.base': 'Le nom doit être une chaîne de caractères.',
+      'string.max': 'Le nom ne peut pas dépasser 255 caractères.',
+    }),
+  email: Joi.string()
+    .email()
+    .trim()
+    .lowercase()
+    .optional()
+    .messages({
+      'string.email': "L'adresse e-mail doit être valide.",
+      'string.base': "L'adresse e-mail doit être une chaîne de caractères.",
+    }),
+  phone: Joi.string()
+    .pattern(/^((\+33\s?|0)[1-9](\s?\d{2}){4})$/)
+    .message('Le numéro de téléphone doit être au format français (ex: 06 12 34 56 78 ou +33 6 12 34 56 78).')
+    .trim()
+    .optional(),
+  address: Joi.string()
+    .trim()
+    .max(255)
+    .optional()
+    .messages({
+      'string.base': "L'adresse doit être une chaîne de caractères.",
+      'string.max': "L'adresse ne peut pas dépasser 255 caractères.",
+    }),
+  zipcode: Joi.string()
+    .pattern(/^\d{5}$/)
+    .message('Le code postal doit contenir exactement 5 chiffres.')
+    .trim()
+    .optional(),
+  city: Joi.string()
+    .trim()
+    .max(100)
+    .optional()
+    .messages({
+      'string.base': 'La ville doit être une chaîne de caractères.',
+      'string.max': 'Le nom de la ville ne peut pas dépasser 100 caractères.',
+    }),
+  password: Joi.string()
+    .min(8)
+    .trim()
+    .optional()
+    .messages({
+      'string.base': 'Le mot de passe doit être une chaîne de caractères.',
+      'string.min': 'Le mot de passe doit contenir au moins 8 caractères.',
+    }),
 });
+
 
 // JOI - userUpdateSchema
 export const userUpdateSchemaBackOffice = Joi.object({
