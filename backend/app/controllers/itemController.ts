@@ -3,6 +3,7 @@ import { orderSchema } from "../utils/shemasJoi";
 import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
 import BaseMapper from "../mappers/baseMapper";
+import { sanitizeInput } from '../utils/sanitizeInput';
 
 const orderItemMapper = new BaseMapper("order_item");
 
@@ -23,8 +24,8 @@ const itemController = {
       res.status(200).json(items);
     }),
     addOrderItem: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-        const data = req.body;
-        const addOrderItemResult = await orderItemMapper.create(data);
+        const sanitizedBody = sanitizeInput(req.body);  
+        const addOrderItemResult = await orderItemMapper.create(sanitizedBody);
         if (!addOrderItemResult) {
           return next(new AppError(`Order item not created`, 400));
         }

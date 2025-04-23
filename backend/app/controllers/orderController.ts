@@ -3,7 +3,7 @@ import { orderSchema } from "../utils/shemasJoi";
 import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
 import BaseMapper from "../mappers/baseMapper";
-// import { userLogged } from "../utils/userLogged";
+import { sanitizeInput } from '../utils/sanitizeInput';
 
 const orderMapper = new BaseMapper("order");
 
@@ -39,8 +39,8 @@ const orderController = {
   }),
 
   addOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    // Validation
-    const { error, value } = orderSchema.validate(req.body);
+    const sanitizedBody = sanitizeInput(req.body);
+    const { error, value } = orderSchema.validate(sanitizedBody);
     console.log("error", error);
     console.log("value", value);
     
@@ -60,8 +60,8 @@ const orderController = {
   // TODO - check if the order is already paid
   updateOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10);
-    // Validation
-    const { error, value } = orderSchema.validate(req.body);
+    const sanitizedBody = sanitizeInput(req.body);
+    const { error, value } = orderSchema.validate(sanitizedBody);
     if (error) {
       next(new AppError(`Invalid data`, 400));
       return res.status(400).json({ message: "Invalid data" });
