@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { orderSchema } from "../utils/shemasJoi";
+import { orderSchema, orderUpdateSchema } from "../utils/shemasJoi";
 import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
 import BaseMapper from "../mappers/baseMapper";
@@ -57,36 +57,22 @@ const orderController = {
     res.status(201).json(newOrder);
   }),
 
-  // TODO - check if the order is already paid
   updateOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10);
-    // Validation
-    const { error, value } = orderSchema.validate(req.body);
+    
+    const { error, value } = orderUpdateSchema.validate(req.body);
+
     if (error) {
-      next(new AppError(`Invalid data`, 400));
-      return res.status(400).json({ message: "Invalid data" });
+      return next(new AppError(`Invalid data`, 400));
     }
-    // Order exist
+
     const existingOrder = await orderMapper.findById(id);
     if (!existingOrder) {
       return next(new AppError(`Order ${id} not found`, 404));
     }
-    // Update order
-    // TODO - check if the order is already paid
+
     const updatedOrder = await orderMapper.update(id, value);
     res.status(200).json(updatedOrder);
-  }),
-
-  deleteOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const id = parseInt(req.params.id, 10);
-    // Order exist
-    const existingOrder = await orderMapper.findById(id);
-    if (!existingOrder) {
-      return next(new AppError(`Order ${id} not found`, 404));
-    }
-    // TODO - check if the order is already paid
-    const deletedOrder = await orderMapper.delete(id);
-    res.status(200).json(deletedOrder);
   }),
 };
 export default orderController;

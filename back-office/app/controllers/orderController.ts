@@ -8,11 +8,11 @@ const statusMap: { [key: number]: string } = {
     2: 'Terminée',
     3: 'Annulée'
 };
-const formatOrder = (order: Order): Order => ({
+const formatOrder = (order: Order): Order & { statusLabel: string } => ({
     ...order,
     createdAt: formatDate(order.createdAt),
     updatedAt: formatDate(order.updatedAt),
-    status: statusMap[Number(order.status)] || 'Statut inconnu'
+    statusLabel: statusMap[Number(order.status)] || 'Statut inconnu'
 });
 
 const orderController = {
@@ -53,10 +53,10 @@ const orderController = {
 
     updateOrder: async (req: Request, res: Response) => {
         const id = req.params.id;
-        const order: Order = req.body;
+        const { status } = req.body;
         try {
-            await update(req, Number(id), order)
-            res.redirect('/order');
+            await update(req, Number(id), { status: Number(status) });
+            res.redirect('/orders');
         } catch (error) {
             console.error('Erreur dans le contrôleur:', error);
             res.status(500).send('Erreur interne');

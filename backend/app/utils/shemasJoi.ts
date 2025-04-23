@@ -80,6 +80,13 @@ export const orderSchema = Joi.object({
   status: Joi.number().integer().required()
 });
 
+// Joi - PATCH orderSchema (pour mise à jour partielle)
+export const orderUpdateSchema = Joi.object({
+  user_id: Joi.number().integer().positive(),
+  total_price: Joi.number().precision(2).positive(),
+  status: Joi.number().integer().valid(1, 2, 3)
+});
+
 //JOI - treeShema
 
 export const treeSchema = Joi.object({

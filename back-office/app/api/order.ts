@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Order } from '../types/index';
 import { createAxiosWithAuth } from "../utils/axiosInstance";
 import { Request } from "express";
@@ -16,7 +15,7 @@ export const getOne = async (req: Request, id: string): Promise<Order> => {
     return response.data; 
 };
 
-export const update = async (req: Request, id: number, order: Order): Promise<Order> => {
+export const update = async (req: Request, id: number, order: Partial<Order>): Promise<Order> => {
     const axiosInstance = createAxiosWithAuth(req);
     const response = await axiosInstance.patch(`${api_url}/${id}`, order);  
     return response.data; 
