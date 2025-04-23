@@ -4,9 +4,10 @@ import treeController from "../controllers/treeController";
 import forestController from "../controllers/forestController";
 import userController from "../controllers/userController";
 import orderController from "../controllers/orderController";
+import itemController from "../controllers/itemController";
+import stripeController from "../controllers/stripeController";
 import authorizationController from "../controllers/authorizationController";
 import { isGranted } from "../middlewares/isGranted";
-import itemController from "../controllers/itemController";
 import { searchController } from "../controllers/searchController";
 const routes = express.Router();
 
@@ -58,5 +59,8 @@ routes.post("/orders-items", itemController.addOrderItem);
 
 //SEARCH
 routes.get("/search", searchController);
+
+//PAYMENT
+routes.post("/create-payment-intent", stripeController.intent);
 
 export default routes;

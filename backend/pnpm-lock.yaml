@@ -41,6 +41,13 @@ importers:
       pg:
         specifier: ^8.14.1
         version: 8.14.1
+      sanitizer:
+        specifier: ^0.1.3
+        version: 0.1.3
+      stripe:
+        specifier: ^18.0.0
+        version: 18.0.0
+
       sanitize-html:
         specifier: ^2.16.0
         version: 2.16.0
@@ -69,6 +76,11 @@ importers:
       '@types/pg':
         specifier: ^8.11.11
         version: 8.11.11
+
+      '@types/stripe':
+        specifier: ^8.0.417
+        version: 8.0.417
+
       '@types/sanitize-html':
         specifier: ^2.15.0
         version: 2.15.0
@@ -187,6 +199,10 @@ packages:
 
   '@types/serve-static@1.15.7':
     resolution: {integrity: sha512-W8Ym+h8nhuRwaKPaDw34QUkwsGi6Rc4yYqvKFo5rm2FUEhCFbzVWrxXUxuKK8TASjWsysJY0nsmNCGhCOIsrOw==}
+
+  '@types/stripe@8.0.417':
+    resolution: {integrity: sha512-PTuqskh9YKNENnOHGVJBm4sM0zE8B1jZw1JIskuGAPkMB+OH236QeN8scclhYGPA4nG6zTtPXgwpXdp+HPDTVw==}
+    deprecated: This is a stub types definition. stripe provides its own type definitions, so you do not need this installed.
 
   accepts@2.0.0:
     resolution: {integrity: sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng==}
@@ -766,6 +782,10 @@ packages:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
     engines: {node: '>= 0.8'}
 
+  stripe@18.0.0:
+    resolution: {integrity: sha512-3Fs33IzKUby//9kCkCa1uRpinAoTvj6rJgQ2jrBEysoxEvfsclvXdna1amyEYbA2EKkjynuB4+L/kleCCaWTpA==}
+    engines: {node: '>=12.*'}
+
   supports-color@5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
     engines: {node: '>=4'}
@@ -957,6 +977,10 @@ snapshots:
       '@types/http-errors': 2.0.4
       '@types/node': 22.14.0
       '@types/send': 0.17.4
+
+  '@types/stripe@8.0.417':
+    dependencies:
+      stripe: 18.0.0
 
   accepts@2.0.0:
     dependencies:
@@ -1565,6 +1589,11 @@ snapshots:
   split2@4.2.0: {}
 
   statuses@2.0.1: {}
+
+  stripe@18.0.0:
+    dependencies:
+      '@types/node': 22.14.0
+      qs: 6.14.0
 
   supports-color@5.5.0:
     dependencies:
