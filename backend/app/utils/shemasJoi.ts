@@ -64,7 +64,13 @@ export const forestSchema = Joi.object({
   description: Joi.string().required(),
   country: Joi.string().required(),
   location_x: Joi.number().precision(6).required(),
-  location_y: Joi.number().precision(6).required()
+  location_y: Joi.number().precision(6).required(),
+  treeAssociations: Joi.array().items(
+    Joi.object({
+      treeId: Joi.number().integer().positive().required(),
+      stock: Joi.number().integer().positive().required(),
+    })
+  ).optional()
 });
 
 //JOI - orderShema
@@ -84,7 +90,13 @@ export const treeSchema = Joi.object({
   description: Joi.string().required(),
   co2: Joi.number().precision(2).positive().required(),
   o2: Joi.number().precision(2).positive().required(),
-  price: Joi.number().precision(2).positive().required()
+  price: Joi.number().precision(2).positive().required(),
+  forestAssociations: Joi.array().items(
+    Joi.object({
+      forestId: Joi.number().integer().positive().required(),
+      stock: Joi.number().integer().positive().required(),
+    })
+  ).optional()
 });
 
 // JOI - userShema

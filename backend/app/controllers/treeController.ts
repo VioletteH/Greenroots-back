@@ -72,42 +72,63 @@ const treeController = {
         }
         res.status(200).json(trees);
     }),
-    // treesByPrice: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-    //     const trees = await treeMapper.treeByPrice();
-    //     if (trees.length === 0) {
-    //         return next(new AppError(`No trees found`, 404));
-    //     }
-    //     res.status(200).json(trees);
-    // }),
-    addTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        // Validation
-        const { error, value } = treeSchema.validate(req.body);
-        if (error) {
-            return next(new AppError("Invalid data", 400));
-        } 
-        // Tree exist
-        const existingTree = await treeMapper.findById(value.id);
-        if (existingTree) {
-            return next(new AppError(`Tree with ${value.id} already exists`, 400));
-        }
-        // Create new tree
-        const newTree = await treeMapper.create(value);
-        res.status(201).json(newTree);
-    }),
-    updateTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+    getTreeWithForestsAndStock: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
-        // Validation
-        const { error, value } = treeSchema.validate(req.body);
-        if (error) {
-            return next(new AppError("Invalid data", 400));
-        }
-        // Tree exist
+
         const existingTree = await treeMapper.findById(id);
         if (!existingTree) {
             return next(new AppError(`Tree with ${id} not found`, 404));
         }
-        // Update tree
-        const updatedTree = await treeMapper.update(id, value);
+
+        const trees = await treeMapper.getTreeWithForestsAndStock(id);
+
+        res.status(200).json(trees);
+    }),
+    addTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const { error, value } = treeSchema.validate(req.body);
+        if (error) {
+            return next(new AppError("Invalid data", 400));
+        }
+        
+        // On extrait `forestAssociations` de `value` et on assigne les autres propriétés du `value` à `treeData`.
+        // Cela permet de séparer les associations de forêts des autres données de l'arbre.
+        const { forestAssociations, ...treeData } = value;
+
+        const newTree = await treeMapper.create(treeData);
+
+        // Vérification si des associations de forêts ont été envoyées (si `forestAssociations` n'est pas vide et est un tableau).
+        // Si c'est le cas, on associe le nouvel arbre aux forêts spécifiées.
+        if (forestAssociations.length > 0 && Array.isArray(forestAssociations)) {
+            await treeMapper.addTreeToForests(newTree.id, forestAssociations);
+        }
+
+        res.status(201).json(newTree);
+    }),
+    updateTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const id = parseInt(req.params.id, 10);
+
+        const { error, value } = treeSchema.validate(req.body);
+        if (error) {
+            return next(new AppError("Invalid data", 400));
+        }
+
+        // On extrait `forestAssociations` de `value` et on assigne les autres propriétés du `value` à `treeData`.
+        const { forestAssociations, ...treeData } = value;
+
+        // Vérifie si l’arbre avec l’ID fourni existe en base de données.
+        const existingTree = await treeMapper.findById(id);
+        if (!existingTree) {
+            return next(new AppError(`Tree with ${id} not found`, 404));
+        }
+
+        const updatedTree = await treeMapper.update(id, treeData);
+
+        // Vérifie si des associations de forêts ont été envoyées (si `forestAssociations` n'est pas vide et est un tableau).
+        // Si c'est le cas, on met à jour les associations de forêts pour l'arbre spécifié.
+        if (forestAssociations && Array.isArray(forestAssociations)) {
+            await treeMapper.updateTreeToForests(id, forestAssociations);
+        }
+        
         res.status(200).json(updatedTree);
     }),
     deleteTree: catchAsync(async (req:Request, res:Response) => {

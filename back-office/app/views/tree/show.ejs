@@ -12,6 +12,29 @@
   <img src="<%= tree.image %>" class="img-fluid" style="max-width: 300px;">
 <% } %>
 
+<table class="table table-bordered mt-3">
+  <thead>
+    <tr>
+      <th>Forêt associée</th>
+      <th>Restant à planter</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (tree.forestname && tree.forestname.length > 0) { %>
+      <% for (let i = 0; i < tree.forestname.length; i++) { %>
+        <tr>
+          <td><%= tree.forestname[i] %></td>
+          <td><%= tree.stock[i] %></td>
+        </tr>
+      <% } %>
+    <% } else { %>
+      <tr>
+        <td colspan="2" class="text-center">Aucune forêt associée</td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
 <a href="/trees" class="btn btn-secondary mt-3">Retour à la liste</a>
 <a href="/trees/<%= tree.id %>/edit" class="btn btn-warning mt-3">Modifier</a>
 

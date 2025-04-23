@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Forest } from "../types/index";
+import { Forest, ForestWithTreesAndStock } from "../types/index";
 import { createAxiosWithAuth } from "../utils/axiosInstance";
 import { Request } from "express";
 
@@ -19,7 +19,14 @@ export const getOne = async (id: string): Promise<Forest> => {
   return data;
 };
 
-export const add = async (req: Request, forest: Forest): Promise<Forest> => {
+export const getForestWithTreesAndStock = async (id: string): Promise<ForestWithTreesAndStock> => {
+  const response = await axios.get(`${api_url}/${id}/trees-with-stock`);
+
+  const data = response.data;
+  return data;
+};
+
+export const add = async (req: Request, forest: Forest): Promise<ForestWithTreesAndStock> => {
   const axiosInstance = createAxiosWithAuth(req);
   const response = await axiosInstance.post(`${api_url}`, forest);
 
@@ -27,7 +34,7 @@ export const add = async (req: Request, forest: Forest): Promise<Forest> => {
   return data;
 };
 
-export const update = async (req: Request, id: number, forest: Forest): Promise<Forest> => {
+export const update = async (req: Request, id: number, forest: Forest): Promise<ForestWithTreesAndStock> => {
   const axiosInstance = createAxiosWithAuth(req);
   const response = await axiosInstance.patch(`${api_url}/${id}`, forest);
 

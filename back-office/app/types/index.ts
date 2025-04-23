@@ -12,6 +12,19 @@ export type Tree = {
    createdAt: string;
    updatedAt?: string;
 }
+export type TreeForm = Tree & {
+   oldImage: string;
+   forestAssociations: {
+     [forestId: string]: {
+       checked?: string;
+       stock?: string;
+     };
+   };
+};
+export type TreeWithForestsAndStock = Tree & {
+   forestname?: string[];
+   stock?: number[];
+}
 export type Forest = {
    id: number;
    name: string;
@@ -24,6 +37,19 @@ export type Forest = {
    location_y: number;
    createdAt: string;
    updatedAt?: string;
+}
+export type ForestForm = Forest & {
+   oldImage: string;
+   treeAssociations: {
+     [treeId: string]: {
+       checked?: string;
+       stock?: string;
+     };
+   };
+};
+export type ForestWithTreesAndStock = Forest & {
+   treesName?: string[];
+   stock?: number[];
 }
 export type User = {
    id: number;

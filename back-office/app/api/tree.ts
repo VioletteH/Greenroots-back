@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Tree } from '../types/index';
+import { Forest, Tree, TreeWithForestsAndStock } from '../types/index';
 import { createAxiosWithAuth } from "../utils/axiosInstance";
 import { Request } from "express";
 
@@ -16,6 +16,12 @@ export const getOne = async (id: string): Promise<Tree> => {
     return data;
 };
 
+export const getTreeWithForestsAndStock = async (id: string): Promise<TreeWithForestsAndStock[]> => {
+    const response = await axios.get(`${api_url}/${id}/forests-with-stock`);  
+    const data = response.data;
+    return data;
+};
+
 export const updateTree = async (id:string, updatedData: Partial<Tree>): Promise<Tree> => {
     const response = await axios.patch(`${api_url}/${id}`, updatedData);
     return response.data; 
@@ -26,13 +32,13 @@ export const remove = async (req: Request, id: number): Promise<void> => {
     await axiosInstance.delete(`${api_url}/${id}`);
 };
 
-export const add = async (req: Request, tree: Tree): Promise<Tree> => {
+export const add = async (req: Request, tree: Tree): Promise<TreeWithForestsAndStock> => {
     const axiosInstance = createAxiosWithAuth(req);
     const response = await axiosInstance.post(`${api_url}`, tree);
     return response.data;
 };
 
-export const update = async (req: Request, id: number, tree: Tree): Promise<Tree> => {
+export const update = async (req: Request, id: number, tree: Tree): Promise<TreeWithForestsAndStock> => {
     const axiosInstance = createAxiosWithAuth(req);
     const response = await axiosInstance.patch(`${api_url}/${id}`, tree);  
     const data = response.data;

@@ -19,6 +19,7 @@ routes.post("/register", authController.register);
 routes.get("/trees", treeController.trees);
 routes.get("/trees/:id", treeController.treeById);
 routes.get("/trees/:id/forests", forestController.forestsByTree);
+routes.get("/trees/:id/forests-with-stock", treeController.getTreeWithForestsAndStock);
 routes.get("/trees/country/:slug", treeController.treesByCountry);
 routes.get("/trees/category/:slug", treeController.treesByCategory);
 routes.post("/trees", authorizationController, isGranted, treeController.addTree);
@@ -29,6 +30,7 @@ routes.delete("/trees/:id", authorizationController, isGranted, treeController.d
 routes.get("/forests", forestController.forests);
 routes.get("/forests/:id", forestController.forestById);
 routes.get("/forests/:id/trees", treeController.treesByForest);
+routes.get("/forests/:id/trees-with-stock", forestController.getForestWithTreesAndStock);
 routes.post("/forests", authorizationController, isGranted, forestController.addForest);
 routes.patch("/forests/:id", authorizationController, isGranted, forestController.updateForest);
 routes.delete("/forests/:id", authorizationController, isGranted, forestController.deleteForest);

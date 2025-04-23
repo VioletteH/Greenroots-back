@@ -90,7 +90,8 @@ CREATE TABLE "forest_tree" (
     tree_id INT NOT NULL REFERENCES "tree"(id),
     stock INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT unique_forest_tree UNIQUE (forest_id, tree_id)
 );
 
 ALTER TABLE "user" ALTER COLUMN id RESTART WITH 1;
