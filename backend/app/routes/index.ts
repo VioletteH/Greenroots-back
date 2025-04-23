@@ -54,13 +54,10 @@ routes.patch("/orders/:id", authorizationController, isGranted, orderController.
 //ORDER ITEMS
 routes.get("/items", itemController.items);
 routes.get("/items/order/:id", itemController.itemsByOrderId);
-<<<<<<< HEAD
 routes.post("/orders-items", itemController.addOrderItem);
-=======
 // routes.post("/orders-items", itemController.addOrderItem);
 
 //SEARCH
 routes.get("/search", searchController);
->>>>>>> moteur-recherche
 
 export default routes;
