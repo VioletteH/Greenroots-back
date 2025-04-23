@@ -10,7 +10,8 @@ INSERT INTO "user" (firstname, lastname, email, password, phone, address, zipcod
 ('Eve', 'Miller', 'eve.miller@example.com', 'password7', '01 23 45 67 89', '234 Rue de l''Érable', '23456', 'Keystone', 'utilisateur'),
 ('Frank', 'Moore', 'frank.moore@example.com', 'password8', '01 23 45 67 89', '567 Rue du Noyer', '89012', 'Côte', 'utilisateur'),
 ('Grace', 'Taylor', 'grace.taylor@example.com', 'password9', '01 23 45 67 89', '890 Rue de l''Épicéa', '34567', 'Centre', 'utilisateur'),
-('Heidi', 'Clark', 'heidi.clark@example.com', 'password10', '01 23 45 67 89', '123 Rue du Tremble', '67890', 'Colline', 'utilisateur');
+('Heidi', 'Clark', 'heidi.clark@example.com', 'password10', '01 23 45 67 89', '123 Rue du Tremble', '67890', 'Colline', 'utilisateur'),
+('Admin', '', 'master@greenroots.com', '$argon2id$v=19$m=65536,t=3,p=4$+p6idzhGlx1E5Eoxp7TTkw$Uk4xOlghkt8h2Qsr7yFjDnWdll6m33BjJULgl0mgVh0', '', '', '', '', 'admin');
 
 INSERT INTO "tree" (name, scientific_name, image, category, description, co2, o2, price) VALUES
 ('Manguier Africain', 'Cordyla africana', 'manguier_africain.jpg', 'Fruitier', 'Fournit des fruits nutritifs, du bois et de l''ombre, Aide à la restauration des terres dégradées', 10, 30, 50),
