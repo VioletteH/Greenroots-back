@@ -2,9 +2,9 @@
 
 <h1>Commande de l'utilisateur avec l'Id : <%= order.userId %></h1>
 <p><strong>Prix total :</strong> <%= order.totalPrice %></p>
-<p><strong>Statut :</strong> <%= order.status %></p>
-<p><strong>Créée le :</strong> <%= order.createdAt %></p>
-<p><strong>Date de mise à jour :</strong> <%= order.updatedAt %></p>
+<p><strong>Statut :</strong> <%= order.statusLabel %></p>
+<p><strong>Créée le :</strong> <%= order.createdAtFormatted %></p>
+<p><strong>Date de mise à jour :</strong> <%= order.updatedAtFormatted %></p>
 
 
 <a href="/orders" class="btn btn-secondary mt-3">Retour à la liste</a>

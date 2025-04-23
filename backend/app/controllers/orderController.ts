@@ -17,6 +17,21 @@ const orderController = {
     res.status(200).json(orders);
   }),
 
+  ordersWithCount: catchAsync(async (req: Request, res: Response) => {
+    const limit = parseInt(req.query.limit as string, 10) || 10;
+    const offset = parseInt(req.query.offset as string, 10) || 0;
+
+    const { data: orders, total } = await orderMapper.findAllWithCount(limit, offset);
+
+    if (orders.length === 0) {
+      res.status(200).json("No orders found");
+    }
+    res.status(200).json({
+      orders,
+      total,
+    });
+  }),
+
   ordersByUserId: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
     const id = parseInt(req.params.id, 10);

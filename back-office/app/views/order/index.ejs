@@ -10,6 +10,7 @@
       <th>Statut de la commande</th>
       <th>Créée le :</th>
       <th>Mise à jour le :</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -17,9 +18,9 @@
       <tr>
         <td><%= order.userId %></td>
         <td><%= order.totalPrice %></td>
-        <td><%= order.status %></td>
-        <td><%= order.createdAt %></td>
-        <td><%= order.updatedAt %></td>
+        <td><%= order.statusLabel %></td>
+        <td><%= order.createdAtFormatted %></td>
+        <td><%= order.updatedAtFormatted %></td>
         <td>
           <a href="/orders/<%= order.id %>" class="btn btn-info btn-sm">Voir</a>
           <a href="/orders/<%= order.id %>/edit" class="btn btn-warning btn-sm">Modifier</a>
@@ -29,5 +30,7 @@
     <% }) %>
   </tbody>
 </table>
+
+<%- include('../partials/pagination.ejs') %>
 
 <%- include('../partials/footer.ejs') %>
