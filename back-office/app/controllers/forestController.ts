@@ -10,8 +10,20 @@ import path from 'path';
 const forestController = {
    getAllForests: async (req:Request, res:Response) => {
       try {
-         const forests: Forest[] = await getAll();
-         res.render('forest/index', { forests });
+         const limit = 5;
+         const page = Number(req.query.page as string) || 1;
+         const offset = (page - 1) * limit;
+
+         const { forests, total } = await getAll(limit, offset);
+         const totalPages = Math.ceil(total / limit);
+
+         res.render('forest/index', { 
+            forests,
+            currentPage: page,
+            totalPages,
+            hasNext: page < totalPages,
+            hasPrevious: page > 1
+          });
       } catch (error) {
          console.error('Erreur dans getAllForests :', error);
          res.status(500).send('Erreur interne');
