@@ -6,6 +6,7 @@ import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
 import { userSchema, userUpdateSchema, userUpdateSchemaBackOffice } from '../utils/shemasJoi';
 import argon2 from 'argon2';
+import { sanitizeInput } from '../utils/sanitizeInput';
 
 const userMapper = new BaseMapper<User>('user');
 const userAuthMapper = new AuthMapper();
@@ -60,11 +61,11 @@ const userController = {
     }),
 
     updateUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        // Check user id
+        const sanitizedBody = sanitizeInput(req.body);
         const id = parseInt(req.params.id, 10);
 
         // Validation
-        const { error, value } = userUpdateSchema.validate(req.body);
+        const { error, value } = userUpdateSchema.validate(sanitizedBody);
         console.log("error", error);
         
         if (error) {
