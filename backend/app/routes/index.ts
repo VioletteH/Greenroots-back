@@ -16,6 +16,7 @@ routes.post("/register", authController.register);
 
 // TREES 
 routes.get("/trees", treeController.trees);
+routes.get("/trees/with-count", treeController.treesWithCount);
 routes.get("/trees/:id", treeController.treeById);
 routes.get("/trees/:id/forests", forestController.forestsByTree);
 routes.get("/trees/:id/forests-with-stock", treeController.getTreeWithForestsAndStock);
@@ -27,6 +28,7 @@ routes.delete("/trees/:id", authorizationController, isGranted, treeController.d
 
 //FORESTS
 routes.get("/forests", forestController.forests);
+routes.get("/forests/with-count", forestController.forestsWithCount);
 routes.get("/forests/:id", forestController.forestById);
 routes.get("/forests/:id/trees", treeController.treesByForest);
 routes.get("/forests/:id/trees-with-stock", forestController.getForestWithTreesAndStock);

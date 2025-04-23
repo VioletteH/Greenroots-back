@@ -25,11 +25,21 @@ const treeController = {
         if (!trees || trees.length === 0) {
             return next(new AppError("No trees found", 404)); 
         }
-        // const trees = await treeMapper.findAll(limit, offset);
-        // if (trees.length === 0) {
-        //     res.status(200).json("trees not found");
-        // }
         res.status(200).json(trees);
+    }),
+    treesWithCount: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const limit = parseInt(req.query.limit as string, 10) || 10;
+        const offset = parseInt(req.query.offset as string, 10) || 0; 
+
+        const { data: trees, total } = await treeMapper.findAllWithCount(limit, offset);
+
+        if (!trees || trees.length === 0) {
+            return next(new AppError("No trees found", 404)); 
+        }
+        res.status(200).json({
+            trees,
+            total,
+        });
     }),
     treeById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
