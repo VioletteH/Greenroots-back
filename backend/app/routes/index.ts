@@ -6,7 +6,6 @@ import userController from "../controllers/userController";
 import orderController from "../controllers/orderController";
 import authorizationController from "../controllers/authorizationController";
 import { isGranted } from "../middlewares/isGranted";
-import orderItemController from "../controllers/itemController";
 import itemController from "../controllers/itemController";
 import { searchController } from "../controllers/searchController";
 const routes = express.Router();
