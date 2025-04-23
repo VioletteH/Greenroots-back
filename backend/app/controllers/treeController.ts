@@ -6,6 +6,7 @@ import { catchAsync } from '../utils/catchAsync';
 import { treeSchema } from '../utils/shemasJoi';
 import loadTreeMapper from '../mappers/treeMapper';
 import { unslugify } from '../utils/unslugify';
+import { limits } from 'argon2';
 
 const treeMapper = new loadTreeMapper();
 
@@ -30,6 +31,23 @@ const treeController = {
         //     res.status(200).json("trees not found");
         // }
         res.status(200).json(trees);
+    }),
+    allTreesWithForests: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const limit = parseInt(req.query.limit as string, 10) || 10;
+        const offset = parseInt(req.query.offset as string, 10) || 0;
+        const trees = await treeMapper.getAllTreesWithForests(limit, offset);
+        if (!trees || trees.length === 0) {
+            return next(new AppError("No trees found", 404));
+        }
+        res.status(200).json(trees);
+    }),    
+    oneTreeWithForests: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const id = parseInt(req.params.id, 10);
+        const tree = await treeMapper.getOneTreeWithForests(id);
+        if (!tree || tree.length === 0) {
+            return next(new AppError("No trees found", 404));
+        }
+        res.status(200).json(tree);
     }),
     treeById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
