@@ -2,6 +2,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import argon2 from 'argon2';
+import { sanitizeInput } from '../utils/sanitizeInput';
 
 import { loginSchema, registerSchema } from '../utils/shemasJoi';
 import AuthMapper from '../mappers/authMapper';
@@ -18,47 +19,48 @@ const userMapper = new AuthMapper();
 const authController = {   
     
     login: catchAsync(async (req: Request, res: Response, next:NextFunction ): Promise<void>  => {
-            //step 1 - data validation
-            const { error, value } = loginSchema.validate(req.body);
-            //TODO - SANITIZE
-            if (error) {
-               return next(new AppError ("Password or email - invalid", 400));
-            }
+        const sanitizedBody = sanitizeInput(req.body);
 
-            //step 2 - find user
-            const user = await userMapper.findByEmail(value.email) as User;
-            if (!user) {
-                return next(new AppError ("Password or email - invalid", 400));
-            }
+        //step 1 - data validation
+        const { error, value } = loginSchema.validate(sanitizedBody);
+        if (error) {
+            return next(new AppError ("Password or email - invalid", 400));
+        }
 
-            //step 3 - password verification
-            const passwordValid = await argon2.verify(user.password, value.password);
-            if (!passwordValid) {
-                return next(new AppError ("Password or email - invalid", 400));
-            }
+        //step 2 - find user
+        const user = await userMapper.findByEmail(value.email) as User;
+        if (!user) {
+            return next(new AppError ("Password or email - invalid", 400));
+        }
 
-            //One message for all errors for security reasons 
+        //step 3 - password verification
+        const passwordValid = await argon2.verify(user.password, value.password);
+        if (!passwordValid) {
+            return next(new AppError ("Password or email - invalid", 400));
+        }
 
-            //step 4 - generate JWT token
-            const token = jwt.sign(
-                { id: user.id, role: user.role, email: user.email },
-                JWT_SECRET,
-                { expiresIn: '12h' }
-            );
+        //One message for all errors for security reasons 
 
-            // Prepare user data to send
-            const { password, createdAt, updatedAt, ...userData } = user;
+        //step 4 - generate JWT token
+        const token = jwt.sign(
+            { id: user.id, role: user.role, email: user.email },
+            JWT_SECRET,
+            { expiresIn: '12h' }
+        );
 
-            res.status(200).json({
-                message: 'Login ok !',
-                token,
-                user: userData
-            });
+        // Prepare user data to send
+        const { password, createdAt, updatedAt, ...userData } = user;
+
+        res.status(200).json({
+            message: 'Login ok !',
+            token,
+            user: userData
+        });
     }),
     register: catchAsync(async(req:Request, res:Response, next: NextFunction) : Promise<void> => {
-        console.log("req.body", req.body);
+        const sanitizedBody = sanitizeInput(req.body);
         //step 1 - data validation
-        const { error, value } = registerSchema.validate(req.body);
+        const { error, value } = registerSchema.validate(sanitizedBody);
 
         if (error) {
         

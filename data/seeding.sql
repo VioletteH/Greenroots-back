@@ -15,9 +15,9 @@ INSERT INTO "user" (firstname, lastname, email, password, phone, address, zipcod
 INSERT INTO "tree" (name, scientific_name, image, category, description, co2, o2, price) VALUES
 ('Manguier Africain', 'Cordyla africana', 'manguier_africain.jpg', 'Fruitier', 'Fournit des fruits nutritifs, du bois et de l''ombre, Aide à la restauration des terres dégradées', 10, 30, 50),
 ('Santal Blanc', 'Santalum album', 'santal_blanc.jpg', 'Bois précieux', 'Bois précieux pour son huile essentielle et son utilisation culturelle, Nécessite souvent un arbre hôte pour ses racines', 25, 30, 200),
-('Ébène du Gabon', 'Diospyros crassiflora', 'ebene_du_gabon.jpg', 'Bois très dense et précieux', 'Surexploité, Sa replantation est cruciale pour la biodiversité et l''économie locale durable', 40, 50, 300),
+('Ébène du Gabon', 'Diospyros crassiflora', 'ebene_du_gabon.jpg', 'Bois précieux', 'Surexploité, Sa replantation est cruciale pour la biodiversité et l''économie locale durable', 40, 50, 300),
 ('Arolle', 'Pinus cembra', 'arolle.jpg', 'Conifère', 'Stabilise les sols en haute altitude, Important pour la faune, notamment le casse-noix, Ses graines sont comestibles', 50, 60, 120),
-('Acajou d''Honduras', 'Swietenia macrophylla', 'acajou_honduras.jpg', 'Bois de qualité très recherché', 'A subi une déforestation importante, Sa replantation durable est essentielle', 30, 50, 250),
+('Acajou d''Honduras', 'Swietenia macrophylla', 'acajou_honduras.jpg', 'Bois recherché', 'A subi une déforestation importante, Sa replantation durable est essentielle', 30, 50, 250),
 ('Baobab Africain', 'Adansonia digitata', 'baobab_africain.jpg', 'Emblématique', 'Stocke de l''eau, Ses fruits sont nutritifs, Ses feuilles et son écorce ont des usages traditionnels, Résilient à la sécheresse', 10, 50, 80),
 ('If Commun', 'Taxus baccata', 'if_commun.jpg', 'Conifère', 'Arbre à croissance lente, très important pour la biodiversité, Fournit abri et nourriture, Usages médicinaux (taxol), A subi des pertes dues à la déforestation et à son utilisation', 40, 50, 150),
 ('Kauri', 'Agathis australis', 'kauri.jpg', 'Emblématique', 'Arbre géant emblématique, Massivement exploité, Les efforts de replantation sont cruciaux pour restaurer les forêts indigènes et la biodiversité unique de la Nouvelle-Zélande', 20, 30, 500),
@@ -25,7 +25,7 @@ INSERT INTO "tree" (name, scientific_name, image, category, description, co2, o2
 ('Chêne Liège', 'Quercus suber', 'chene_liege.jpg', 'Bois précieux', 'Source de liège, une ressource renouvelable importante, Les forêts de chênes-lièges sont des écosystèmes riches en biodiversité, Jouent un rôle crucial dans la prévention de la désertification', 50, 30, 180);
 
 INSERT INTO "forest" (name, association, image, description, country, location_x, location_y) VALUES
-('Forêt Amazonienne', 'GreenRoots', 'imageforet1.jpg', 'Vaste forêt tropicale humide nécessitant une reforestation.', 'Bresil', -5.0000, -60.0000),
+('Forêt Amazonienne', 'GreenRoots', 'imageforet1.jpg', 'Vaste forêt tropicale humide nécessitant une reforestation.', 'Bresil',  -5.0000, -60.0000),
 ('Forêts Indonésiennes', 'GreenRoots', 'imageforet2.jpg', 'Archipel avec des forêts tropicales humides critiques pour la biodiversité.','Indonésie', -2.0000, 118.0000),
 ('Zone de Reforestation du Sahel', 'GreenRoots', 'imageforet3.jpg', 'Région aride nécessitant des efforts de reforestation contre la désertification.', 'Maurritanie', 15.0000, 20.0000),
 ('Forêts de Madagascar', 'GreenRoots', 'imageforet4.jpg', 'Île avec une biodiversité unique et une déforestation importante.', 'Madagascar', -18.0000, 47.0000),

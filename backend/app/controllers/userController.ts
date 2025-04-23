@@ -1,13 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 import BaseMapper from '../mappers/baseMapper';
 import AuthMapper from '../mappers/authMapper';
+import UserMapper from '../mappers/userMapper';
 import { User } from '../types/index';
 import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
 import { userSchema, userUpdateSchema, userUpdateSchemaBackOffice } from '../utils/shemasJoi';
 import argon2 from 'argon2';
+import { sanitizeInput } from '../utils/sanitizeInput';
 
-const userMapper = new BaseMapper<User>('user');
+const userMapper = new UserMapper();
 const userAuthMapper = new AuthMapper();
 
 const userController = {   
@@ -60,21 +62,29 @@ const userController = {
     }),
 
     updateUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        // Check user id
+        const sanitizedBody = sanitizeInput(req.body);
         const id = parseInt(req.params.id, 10);
 
         // Validation
-        const { error, value } = userUpdateSchema.validate(req.body);
+        const { error, value } = userUpdateSchema.validate(sanitizedBody);
         console.log("error", error);
         
         if (error) {
-            return next(new AppError("Invalid data", 400));
+            const messages = error.details.map(detail => detail.message);
+            return next(new AppError(messages.join(', '), 400));
         }
+    
         // User exist
         const existingUser = await userMapper.findById(id);
         if (!existingUser) {
             return next(new AppError(`User with ${id} not found`, 404));
         }
+        //  agron2
+        if (value.password) {
+            const hashedPassword = await argon2.hash(value.password);
+            value.password = hashedPassword;
+        }
+
         // Update user
         const updatedUser = await userMapper.update(id, value);
         res.status(200).json(updatedUser);
@@ -109,6 +119,20 @@ const userController = {
         // Update user
         const updatedUser = await userMapper.update(id, value);
         res.status(200).json(updatedUser);
+    }),
+    impactByUserId: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        // Check user id
+        const id = parseInt(req.params.id, 10);
+
+        // User exist
+        const existingUser = await userMapper.findById(id);
+        if (!existingUser) {
+            return next(new AppError(`User with ${id} not found`, 404));
+        }
+
+        // Get impact
+        const impact = await userMapper.environmentalImpact(id);
+        res.status(200).json(impact);
     })
 }
 export default userController;

@@ -8,6 +8,7 @@ import authorizationController from "../controllers/authorizationController";
 import { isGranted } from "../middlewares/isGranted";
 import orderItemController from "../controllers/itemController";
 import itemController from "../controllers/itemController";
+import { searchController } from "../controllers/searchController";
 const routes = express.Router();
 
 // AUTHENTICATION
@@ -37,6 +38,7 @@ routes.delete("/forests/:id", authorizationController, isGranted, forestControll
 //USERS (utilisateurs)
 routes.get("/users", /*authorizationController,*/ userController.users);
 routes.get("/users/:id", authorizationController, isGranted, userController.userById);
+routes.get("/users/:id/impact" , authorizationController, isGranted, userController.impactByUserId);
 routes.post("/users", authorizationController, isGranted, userController.addUser);
 routes.patch("/users/:id/backoffice", authorizationController, isGranted, userController.updateUserBackOffice) //(BACKOFFICE)
 routes.patch("/users/:id", authorizationController, isGranted, userController.updateUser);
@@ -49,9 +51,16 @@ routes.get("/orders/user/:id", authorizationController, isGranted, orderControll
 routes.post("/orders", authorizationController, isGranted, orderController.addOrder);
 routes.patch("/orders/:id", authorizationController, isGranted, orderController.updateOrder);
 
-
 //ORDER ITEMS
 routes.get("/items", itemController.items);
 routes.get("/items/order/:id", itemController.itemsByOrderId);
+<<<<<<< HEAD
+routes.post("/orders-items", itemController.addOrderItem);
+=======
 // routes.post("/orders-items", itemController.addOrderItem);
+
+//SEARCH
+routes.get("/search", searchController);
+>>>>>>> moteur-recherche
+
 export default routes;
