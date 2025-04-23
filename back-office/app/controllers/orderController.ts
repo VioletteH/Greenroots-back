@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { getAll, getOne, update } from '../api/order';
 import { Order } from '../types/index';
 import { formatDate } from '../utils/date';
+import { sanitizeObject } from "../utils/sanitize";
 
 const statusMap: { [key: number]: string } = {
     1: 'En cours',
@@ -53,7 +54,7 @@ const orderController = {
 
     updateOrder: async (req: Request, res: Response) => {
         const id = req.params.id;
-        const order: Order = req.body;
+        const order: Order = sanitizeObject(req.body);
         try {
             await update(req, Number(id), order)
             res.redirect('/order');

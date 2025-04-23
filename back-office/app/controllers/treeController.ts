@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { getAll, getOne, getTreeWithForestsAndStock, remove, add, update } from '../api/tree';
 import { getAll as getAllForests } from '../api/forest';
 import { Tree, TreeForm } from '../types/index';
+import { sanitizeObject } from "../utils/sanitize";
 
 import fs from 'fs';
 import path from 'path';
@@ -33,7 +34,8 @@ const treeController = {
       res.render('tree/new', { forests });
    },
    createTreePost: async (req: Request, res: Response) => {
-      const form = req.body as TreeForm;
+      
+      const form = sanitizeObject(req.body) as TreeForm;
 
       if (req.file) {
          form.image = `/uploads/trees/${req.file.filename}`;
@@ -92,7 +94,7 @@ const treeController = {
 
    updateTree: async (req: Request, res: Response) => {
       const id = req.params.id;
-      const form = req.body as TreeForm;
+      const form = sanitizeObject(req.body) as TreeForm;
       const oldImage = form.oldImage;
 
       if (req.file) {

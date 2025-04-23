@@ -8,8 +8,13 @@ import cookieParser from 'cookie-parser';
 import { isLogged } from './app/middleware/isLogged';
 //import { errorHandler } from './app/middlewares/errorHandler';
 
+import helmet from 'helmet';
+
 const app = express();
 app.use(cors());
+app.use(helmet({
+  contentSecurityPolicy: false, 
+}));
 const PORT = 3000;
 
 app.use(express.static('public'));
