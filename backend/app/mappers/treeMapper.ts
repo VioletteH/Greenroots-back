@@ -143,3 +143,4 @@ export default class TreeMapper extends BaseMapper<any> {
         if (!rows) return []; 
         return rows.map(snakeToCamel) as Tree[];
     }
+}
