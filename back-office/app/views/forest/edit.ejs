@@ -3,6 +3,7 @@
   <h1>Modifier la forêt "<%= forest.name %>"</h1>
 
   <form method="POST" action="/forests/<%= forest.id %>?_method=PATCH" enctype="multipart/form-data">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <div class="mb-3">
       <label class="form-label">Nom</label>
       <input type="text" name="name" value="<%= forest.name %>" class="form-control" required>

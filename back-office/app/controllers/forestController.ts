@@ -12,7 +12,7 @@ const forestController = {
    getAllForests: async (req:Request, res:Response) => {
       try {
          const forests: Forest[] = await getAll();
-         res.render('forest/index', { forests });
+         res.render('forest/index', { forests, csrfToken: req.csrfToken() });
       } catch (error) {
          console.error('Erreur dans getAllForests :', error);
          res.status(500).send('Erreur interne');
@@ -32,7 +32,7 @@ const forestController = {
 
    createForestView: async (req:Request, res:Response) => {
       const trees = await getAllTrees();
-      res.render('forest/new', { trees });
+      res.render('forest/new', { trees, csrfToken: req.csrfToken() });
    },
    createForestPost: async (req:Request, res:Response) => {
       const form = sanitizeObject(req.body) as ForestForm;
@@ -85,7 +85,7 @@ const forestController = {
       try {
          const trees = await getAllTrees();
          const forest = await getForestWithTreesAndStock(id);
-         res.render('forest/edit', {forest, trees});
+         res.render('forest/edit', {forest, trees, csrfToken: req.csrfToken()});
       } catch (error) {
          console.error('Erreur dans editForestView :', error);
          res.status(500).send('Erreur interne');

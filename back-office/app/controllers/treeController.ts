@@ -11,7 +11,7 @@ const treeController = {
    getAllTrees: async (req: Request, res: Response): Promise<void> => {
       try {
          const trees: Tree[] = await getAll();
-         res.render('tree', { trees });
+         res.render('tree', { trees, csrfToken: req.csrfToken() });
       } catch (error) {
          console.error('Erreur dans le contrôleur:', error);
          res.status(500).send('Erreur interne');
@@ -31,7 +31,7 @@ const treeController = {
 
    createTreeView: async (req:Request, res:Response) => {
       const forests = await getAllForests();
-      res.render('tree/new', { forests });
+      res.render('tree/new', { forests, csrfToken: req.csrfToken() });
    },
    createTreePost: async (req: Request, res: Response) => {
       
@@ -85,7 +85,7 @@ const treeController = {
       try {
          const forests = await getAllForests();
          const tree: any = await getTreeWithForestsAndStock(id);
-         res.render('tree/edit', { tree, forests });
+         res.render('tree/edit', { tree, forests, csrfToken: req.csrfToken() });
       } catch (error) {
          console.error('Erreur dans editTreeView :', error);
          res.status(500).send('Erreur interne');

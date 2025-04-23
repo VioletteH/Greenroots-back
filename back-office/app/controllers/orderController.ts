@@ -45,7 +45,7 @@ const orderController = {
         try {
             const order = await getOne(req, id);
             const formattedOrder = formatOrder(order);
-            res.render('order/edit', { order: formattedOrder });
+            res.render('order/edit', { order: formattedOrder, csrfToken: req.csrfToken() });
         } catch (error) {
             console.error('Erreur dans editOrderView :', error);
             res.status(500).send('Erreur interne');

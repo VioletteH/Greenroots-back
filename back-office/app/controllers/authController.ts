@@ -6,7 +6,9 @@ const API_URL = "http://greenroots-backend:3000";
 
 const authController = {
     loginView: (req: Request, res: Response) => {
-        res.render('auth/login');
+        res.render('auth/login', {
+            csrfToken: req.csrfToken()
+        });
     },
 
     loginPost: async (req: Request, res: Response) => {
