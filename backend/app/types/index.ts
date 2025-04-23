@@ -50,3 +50,15 @@ export type Order = {
     createdAt: string;
     updatedAt?: string;
 }
+
+export type OrderItem = {
+  id: number;
+  order_id: number;
+  tree_id: number;
+  forest_id: number;
+  name: string;
+  quantity: number;
+  price: number;
+  createdAt: string;
+  updatedAt?: string;
+}

@@ -3,6 +3,7 @@ import { orderSchema } from "../utils/shemasJoi";
 import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
 import BaseMapper from "../mappers/baseMapper";
+import { updateStock } from "../utils/updateStock";
 
 const orderItemMapper = new BaseMapper("order_item");
 
@@ -24,10 +25,13 @@ const itemController = {
     }),
     addOrderItem: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const data = req.body;
+        console.log(`Req.body : ${Number(data.tree_id)}, ${Number(data.forest_id)}, ${Number(data.quantity)}`);
+        
         const addOrderItemResult = await orderItemMapper.create(data);
         if (!addOrderItemResult) {
           return next(new AppError(`Order item not created`, 400));
         }
+        await updateStock(Number(data.tree_id), Number(data.forest_id), Number(data.quantity));
         res.status(201).json(addOrderItemResult)
       }
     ),

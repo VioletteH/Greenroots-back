@@ -41,10 +41,10 @@ INSERT INTO "order" (user_id, total_price, status) VALUES
 (3, 900, 3);
 
 INSERT INTO "order_item" (order_id, tree_id, forest_id, name, quantity, price) VALUES
-(1, 1, 1, 'Forêt Amazonienne', 'Manguier Africain', 2, 50),  
-(1, 7, 2, 'Forêts Indonésiennes', 'If Commun', 1, 150),  
-(2, 2, 3, 'Zone de Reforestation du Sahel', 'Santal Blanc', 1, 200),  
-(3, 3, 4, 'Forêts de Madagascar', 'Ébène du Gabon', 3, 900);  
+(1, 1, 1, 'Manguier Africain', 2, 50),  
+(1, 7, 2, 'If Commun', 1, 150),  
+(2, 2, 3, 'Santal Blanc', 1, 200),  
+(3, 3, 4, 'Ébène du Gabon', 3, 900);  
 
 INSERT INTO "forest_tree" (forest_id, tree_id, stock) VALUES
 (1, 1, 150),  
