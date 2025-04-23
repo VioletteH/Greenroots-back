@@ -8,6 +8,7 @@ import authorizationController from "../controllers/authorizationController";
 import { isGranted } from "../middlewares/isGranted";
 import orderItemController from "../controllers/itemController";
 import itemController from "../controllers/itemController";
+import { searchController } from "../controllers/searchController";
 const routes = express.Router();
 
 // AUTHENTICATION
@@ -51,6 +52,13 @@ routes.patch("/orders/:id", authorizationController, isGranted, orderController.
 //ORDER ITEMS
 routes.get("/items", itemController.items);
 routes.get("/items/order/:id", itemController.itemsByOrderId);
+<<<<<<< HEAD
 routes.post("/orders-items", itemController.addOrderItem);
+=======
+// routes.post("/orders-items", itemController.addOrderItem);
+
+//SEARCH
+routes.get("/search", searchController);
+>>>>>>> moteur-recherche
 
 export default routes;
