@@ -12,9 +12,9 @@ import helmet from 'helmet';
 
 const app = express();
 app.use(cors());
-app.use(helmet({
-  contentSecurityPolicy: false, 
-}));
+// app.use(helmet({
+//   contentSecurityPolicy: false, 
+// }));
 const PORT = 3000;
 
 app.use(cookieParser());
