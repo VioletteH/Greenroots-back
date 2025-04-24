@@ -7,7 +7,7 @@ import { getAll, getOne, add, update } from '../api/user';
 const userController = {
    getAllUsers: async (req:Request, res:Response) => {
       try {
-         const limit = 5;
+         const limit = 9;
          const page = Number(req.query.page as string) || 1;
          const offset = (page - 1) * limit;
 
@@ -28,7 +28,7 @@ const userController = {
             return res.redirect("/login");
          }
 
-         res.status(500).send('Erreur interne');
+         res.status(500).render('error/500', { error });
       }
    },
 
@@ -36,16 +36,20 @@ const userController = {
       const id = req.params.id;
       try {
          const user: User = await getOne(req, id);
+         if (!user) {
+            return res.status(404).render('error/404', { message: 'Utilisateur non trouvé' });
+         }
          res.render('user/show', { user });
       } catch (error) {
-         console.error('Erreur dans getUser :', error);
-         res.status(500).send('Erreur en interne');
+         console.error('Error fetching user:', error);
+         res.status(500).render('error/500', { error });
       }
    },
 
    createUserView: (req:Request, res:Response) => {
       res.render('user/new');
    },
+
    createUserPost: async (req:Request, res:Response) => {
       const user: User = sanitizeObject(req.body);
       try {
@@ -53,7 +57,7 @@ const userController = {
          res.redirect('/users');
       } catch (error) {
          console.error('Erreur dans createUserPost :', error);
-         res.status(500).send('Erreur interne');
+         res.status(500).render('error/500', { error });
       }
    },
 
@@ -61,10 +65,13 @@ const userController = {
       const id = req.params.id;
       try {
          const user = await getOne(req, id);
+         if (!user) {
+            return res.status(404).render('error/404', { message: 'Utilisateur non trouvé' });
+         }
          res.render('user/edit', {user});
       } catch (error) {
-         console.error('Erreur dans editUserView :', error);
-         res.status(500).send('Erreur interne');
+         console.error('Error fetching user for edit:', error);
+         res.status(500).render('error/500', { error });
       }
    },
 

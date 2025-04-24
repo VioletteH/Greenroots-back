@@ -4,8 +4,8 @@
 
 <form method="POST" action="/orders/<%= order.id %>?_method=PATCH">
   <div class="mb-3">
-    <label class="form-label">Id de l'utilisateur</label>
-    <input type="text" name="userId" value="<%= order.userId %>" class="form-control" disabled>
+    <label class="form-label">Email du client</label>
+    <input type="text" name="customerName" value="<%= order.user.email %>" class="form-control" disabled>
   </div>
   <div class="mb-3">
     <label class="form-label">Prix total</label>

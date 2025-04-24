@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { Forest, ForestForm } from '../types/index';
-import {sanitizeObject} from "../utils/sanitize";
 
 import { getAll, getOne, add, update, remove, getForestWithTreesAndStock } from '../api/forest';
 import { getAllWithoutCount as getAllTrees } from '../api/tree';
@@ -11,7 +10,7 @@ import path from 'path';
 const forestController = {
    getAllForests: async (req:Request, res:Response) => {
       try {
-         const limit = 5;
+         const limit = 9;
          const page = Number(req.query.page as string) || 1;
          const offset = (page - 1) * limit;
 
@@ -26,8 +25,8 @@ const forestController = {
             hasPrevious: page > 1
           });
       } catch (error) {
-         console.error('Erreur dans getAllForests :', error);
-         res.status(500).send('Erreur interne');
+         console.error('Error fetching all forests:', error);
+         res.status(500).render('error/500', { error });
       }
    },
 
@@ -35,19 +34,27 @@ const forestController = {
       const id = req.params.id;
       try {
          const forest = await getForestWithTreesAndStock(id);
+         if (!forest) {
+            return res.status(404).render('error/404');
+         }
          res.render('forest/show', { forest });
       } catch (error) {
-         console.error('Erreur dans getForest :', error);
-         res.status(500).send('Erreur en interne');
+         console.error('Error fetching forest:', error);
+         res.status(500).render('error/500', { error });
       }
    },
 
    createForestView: async (req:Request, res:Response) => {
-      const trees = await getAllTrees();
-      res.render('forest/new', { trees });
+      try {
+         const trees = await getAllTrees();
+         res.render('forest/new', { trees });
+      } catch (error) {
+         console.error('Error fetching trees for new forest:', error);
+         res.status(500).render('error/500', { error });
+      }
    },
+
    createForestPost: async (req:Request, res:Response) => {
-      // const form = sanitizeObject(req.body) as ForestForm;
       const form = req.body as ForestForm;
 
       if (req.file) {
@@ -88,8 +95,8 @@ const forestController = {
          await add(req, forestToInsert as unknown as Forest);
          res.redirect('/forests');
       } catch (error) {
-         console.error('Erreur dans createForestPost :', error);
-         res.status(500).send('Erreur interne');
+         console.error('Error creating forest:', error);
+         res.status(500).render('error/500', { error });
       }
    },
 
@@ -98,17 +105,18 @@ const forestController = {
       try {
          const trees = await getAllTrees();
          const forest = await getForestWithTreesAndStock(id);
+         if (!forest) {
+            return res.status(404).render('error/404');
+         }
          res.render('forest/edit', {forest, trees});
       } catch (error) {
-         console.error('Erreur dans editForestView :', error);
-         res.status(500).send('Erreur interne');
+         console.error('Error fetching forest for edit:', error);
+         res.status(500).render('error/500', { error });
       }
    },
 
    updateForest: async (req:Request, res:Response) => {
       const id = req.params.id;
-
-      // const form = sanitizeObject(req.body) as ForestForm;
       const form = req.body as ForestForm;
       const oldImage = form.oldImage
 
@@ -166,8 +174,8 @@ const forestController = {
          await update(req, Number(id), forestToUpdate as unknown as Forest);
          res.redirect('/forests');
       } catch (error) {
-         console.error('Erreur dans updateForest :', error);
-         res.status(500).send('Erreur interne');
+         console.error('Error updating forest:', error);
+         res.status(500).render('error/500', { error });
       }
    },
 
@@ -175,6 +183,11 @@ const forestController = {
       const id = req.params.id;
       try {
          const forest: Forest = await getOne(id);
+
+         if (!forest) {
+            return res.status(404).render('error/404');
+         }
+
          if (forest.image) {
             const imagePath = path.join(__dirname, '../../public', forest.image);
             fs.unlink(imagePath, (err) => {
@@ -187,8 +200,8 @@ const forestController = {
          await remove(req, Number(id));
          res.redirect('/forests');
       } catch (error) {
-         console.error('Erreur dans deleteForest :', error);
-         res.status(500).send('Erreur interne');
+         console.error('Error deleting forest:', error);
+         res.status(500).render('error/500', { error });
       }
    }      
 

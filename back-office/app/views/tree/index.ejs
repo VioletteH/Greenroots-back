@@ -1,39 +1,42 @@
 <%- include('../partials/header.ejs') %>
 
-<h1>Liste des arbres</h1>
-<a href="/trees/news" class="btn btn-primary mb-3">Ajouter un arbre</a>
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Liste des arbres</h1>
+    <a href="/trees/news" class="btn btn-primary">Ajouter un arbre</a>
+  </div>
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Nom</th>
-      <th>Catégorie</th>
-      <th>Production de CO2 (kg.an-1)</th>
-      <th>Absorption d'O2 (kg.an-1)</th>
-      <th>Prix(euros)</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% trees.forEach(tree => { %>
-      <tr>
-        <td><%= tree.name %></td>
-        <td><%= tree.category %></td>
-        <td><%= tree.co2 %></td>
-        <td><%= tree.o2 %></td>
-        <td><%= tree.price %></td>
-        <td>
-          <a href="/trees/<%= tree.id %>" class="btn btn-info btn-sm">Voir</a>
-          <a href="/trees/<%= tree.id %>/edit" class="btn btn-warning btn-sm">Modifier</a>
-          <form action="/trees/<%= tree.id %>?_method=DELETE" method="POST" style="display:inline;">
-            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer cet arbre ?')">Supprimer</button>
-          </form>
-        </td>
-      </tr>
-    <% }) %>
-  </tbody>
-</table>
+  <% if (trees.length === 0) { %>
+    <div class="alert alert-info">Aucun arbre enregistré pour le moment.</div>
+  <% } else { %>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <% trees.forEach(tree => { %>
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <% if (tree.image) { %>
+              <img src="<%= tree.image %>" class="card-img-top" alt="<%= tree.name %>" style="object-fit: cover; height: 180px;">
+            <% } %>
+            <div class="card-body">
+              <h5 class="card-title"><%= tree.name %></h5>
+              <p class="mb-1"><strong>Catégorie :</strong> <%= tree.category %></p>
+              <p class="mb-1"><strong>CO₂ absorbé :</strong> <%= tree.co2 %> kg/an</p>
+              <p class="mb-1"><strong>O₂ produit :</strong> <%= tree.o2 %> kg/an</p>
+              <p class="mb-1"><strong>Prix :</strong> <%= tree.price %> €</p>
+            </div>
+            <div class="card-footer bg-white d-flex justify-content-around gap-1">
+              <a href="/trees/<%= tree.id %>" class="btn btn-outline-info btn-sm">Voir</a>
+              <a href="/trees/<%= tree.id %>/edit" class="btn btn-outline-warning btn-sm">Modifier</a>
+              <form action="/trees/<%= tree.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Supprimer cet arbre ?')">
+                <button type="submit" class="btn btn-outline-danger btn-sm">Supprimer</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
 
-<%- include('../partials/pagination.ejs') %>
+  <%- include('../partials/pagination.ejs') %>
+</div>
 
 <%- include('../partials/footer.ejs') %>

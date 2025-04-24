@@ -1,35 +1,40 @@
 <%- include('../partials/header.ejs') %>
 
-<h1>Liste des forêts</h1>
-<a href="/forests/news" class="btn btn-primary mb-3">Ajouter une forêt</a>
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Liste des forêts</h1>
+    <a href="/forests/news" class="btn btn-primary">Ajouter une forêt</a>
+  </div>
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Nom</th>
-      <th>Association</th>
-      <th>Pays</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% forests.forEach(forest => { %>
-      <tr>
-        <td><%= forest.name %></td>
-        <td><%= forest.association %></td>
-        <td><%= forest.country %></td>
-        <td>
-          <a href="/forests/<%= forest.id %>" class="btn btn-info btn-sm">Voir</a>
-          <a href="/forests/<%= forest.id %>/edit" class="btn btn-warning btn-sm">Modifier</a>
-          <form action="/forests/<%= forest.id %>?_method=DELETE" method="POST" style="display:inline;">
-            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer cette forêt ?')">Supprimer</button>
-          </form>
-        </td>
-      </tr>
-    <% }) %>
-  </tbody>
-</table>
+  <% if (forests.length === 0) { %>
+    <div class="alert alert-info">Aucune forêt enregistrée pour le moment.</div>
+  <% } else { %>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <% forests.forEach(forest => { %>
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <% if (forest.image) { %>
+              <img src="<%= forest.image %>" class="card-img-top" alt="<%= forest.name %>" style="object-fit: cover; height: 180px;">
+            <% } %>
+            <div class="card-body">
+              <h5 class="card-title"><%= forest.name %></h5>
+              <p class="mb-1"><strong>Association :</strong> <%= forest.association %></p>
+              <p class="mb-1"><strong>Pays :</strong> <%= forest.country %></p>
+            </div>
+            <div class="card-footer bg-white d-flex justify-content-around gap-1">
+              <a href="/forests/<%= forest.id %>" class="btn btn-outline-info btn-sm">Voir</a>
+              <a href="/forests/<%= forest.id %>/edit" class="btn btn-outline-warning btn-sm">Modifier</a>
+              <form action="/forests/<%= forest.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Supprimer cette forêt ?')">
+                <button type="submit" class="btn btn-outline-danger btn-sm">Supprimer</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
 
-<%- include('../partials/pagination.ejs') %>
+  <%- include('../partials/pagination.ejs') %>
+</div>
 
 <%- include('../partials/footer.ejs') %>

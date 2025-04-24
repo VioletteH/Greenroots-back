@@ -34,6 +34,11 @@ app.use(routes);
 
 app.use(isLogged);
 
+// 404
+app.use((req, res, next) => {
+  res.status(404).render('error/404');
+});
+
 app.listen(PORT, () => {
    console.log(`Example app listening on port http://localhost:${PORT}`)
  });

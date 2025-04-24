@@ -192,7 +192,7 @@ const treeController = {
         }
         // Delete tree
         const deletedTree = await treeMapper.delete(id);
-        res.status(200).json(deletedTree);
+        res.status(200).send("Tree deleted");
     })
 }
 export default treeController;

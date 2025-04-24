@@ -5,13 +5,13 @@ import { Request } from "express";
 
 const api_url = 'http://greenroots-backend:3000/trees';
 
-export const getAll = async (limit=5, offset=0): Promise<{ trees: Tree[]; total: number }> => {
+export const getAll = async (limit=9, offset=0): Promise<{ trees: Tree[]; total: number }> => {
     const response = await axios.get(`${api_url}/with-count?limit=${limit}&offset=${offset}`);
     const data = response.data;
     return data;
 };
 
-export const getAllWithoutCount = async (limit=5, offset=0): Promise<{ trees: Tree[]; total: number }> => {
+export const getAllWithoutCount = async (limit=9, offset=0): Promise<{ trees: Tree[]; total: number }> => {
     const response = await axios.get(`${api_url}?limit=${limit}&offset=${offset}`);
     const data = response.data;
     return data;

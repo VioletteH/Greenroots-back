@@ -66,9 +66,6 @@ const userController = {
         // Password hashing
         const hashedPassword = await argon2.hash(value.password);
 
-        // Set role admin
-        value.role = "admin";
-
         // Create new user
         const newUser = await userMapper.create({ ...value, password: hashedPassword });
         res.status(201).json(newUser);
