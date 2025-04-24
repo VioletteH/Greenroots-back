@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { getAll, getOne, getTreeWithForestsAndStock, remove, add, update } from '../api/tree';
 import { getAllWithoutCount as getAllForests } from '../api/forest';
 import { Tree, TreeForm } from '../types/index';
-import { sanitizeObject } from "../utils/sanitize";
 
 import fs from 'fs';
 import path from 'path';
@@ -25,8 +24,8 @@ const treeController = {
             hasPrevious: page > 1
          });
       } catch (error) {
-         console.error('Erreur dans le contrôleur:', error);
-         res.status(500).send('Erreur interne');
+         console.error('Error fetching all trees:', error);
+         res.status(500).render('error/500', { error });
       }
    },
 
@@ -34,20 +33,26 @@ const treeController = {
       const id = req.params.id;
       try {
          const tree = await getTreeWithForestsAndStock(id);
+         if (!tree) {
+            return res.status(404).render('error/404');
+         }
          res.render('tree/show', { tree });
       } catch (error) {
-         console.error('Erreur dans getTree :', error);
-         res.status(500).send('Erreur en interne');
+         console.error('Error fetching tree:', error);
+         res.status(500).render('error/500', { error });
       }
    },
 
    createTreeView: async (req:Request, res:Response) => {
-      const forests = await getAllForests();
-      res.render('tree/new', { forests });
+      try {         
+         const forests = await getAllForests();
+         res.render('tree/new', { forests });
+      } catch (error) {
+         console.error('Error fetching forests for new tree:', error);
+         res.status(500).render('error/500', { error });
+      }
    },
    createTreePost: async (req: Request, res: Response) => {
-      
-      // const form = sanitizeObject(req.body) as TreeForm;
       const form = req.body as TreeForm;
 
       if (req.file) {
@@ -88,8 +93,8 @@ const treeController = {
          await add(req, treeToInsert as unknown as Tree);
          res.redirect('/trees');
       } catch (error) {
-         console.error("Erreur lors de la création d'un arbre:", error);
-         res.status(500).send('Erreur interne');
+         console.error('Error creating tree:', error);
+         res.status(500).render('error/500', { error });
       }
    },
 
@@ -98,16 +103,18 @@ const treeController = {
       try {
          const forests = await getAllForests();
          const tree: any = await getTreeWithForestsAndStock(id);
+         if (!tree) {
+            return res.status(404).render('error/404');
+         }
          res.render('tree/edit', { tree, forests });
       } catch (error) {
-         console.error('Erreur dans editTreeView :', error);
-         res.status(500).send('Erreur interne');
+         console.error('Error fetching tree for edit:', error);
+         res.status(500).render('error/500', { error });
       }
    },
 
    updateTree: async (req: Request, res: Response) => {
       const id = req.params.id;
-      // const form = sanitizeObject(req.body) as TreeForm;
       const form = req.body as TreeForm;
       const oldImage = form.oldImage;
 
@@ -159,8 +166,8 @@ const treeController = {
          await update(req, Number(id), treeToUpdate as unknown as Tree);
          res.redirect('/trees');
       } catch (error) {
-         console.error("Erreur lors de la mise à jour d'un arbre:", error);
-         res.status(500).send('Erreur interne');
+         console.error('Error updating tree:', error);
+         res.status(500).render('error/500', { error });
       }
    },
 
@@ -168,6 +175,11 @@ const treeController = {
       const id = req.params.id;
       try {
          const tree: Tree = await getOne(id);
+
+         if (!tree) {
+            return res.status(404).render('error/404');
+         }
+         
          if (tree.image) {
             const imagePath = path.join(__dirname, '../../public', tree.image);
             fs.unlink(imagePath, (err) => {
@@ -180,8 +192,8 @@ const treeController = {
          await remove(req, Number(id));
          res.redirect('/trees');
       } catch (error) {
-          console.error('Erreur lors de la suppression de l\'arbre:', error);
-          res.status(500).send('Erreur interne');
+         console.error('Error deleting tree:', error);
+         res.status(500).render('error/500', { error });
       }
    },
 };
