@@ -5,8 +5,8 @@ import { Request } from "express";
 
 const api_url = "http://greenroots-backend:3000/forests";
 
-export const getAll = async (): Promise<Forest[]> => {
-  const response = await axios.get(`${api_url}?=limit=15&offset=0`);
+export const getAll = async (limit=5, offset=0): Promise<{ forests: Forest[]; total: number }> => {
+  const response = await axios.get(`${api_url}/with-count?limit=${limit}&offset=${offset}`);
 
   const data = response.data;
   return data;

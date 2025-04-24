@@ -1,13 +1,26 @@
 import { Request, Response } from 'express';
 import { User } from '../types/index';
+import {sanitizeObject} from "../utils/sanitize";
 
 import { getAll, getOne, add, update } from '../api/user';
 
 const userController = {
    getAllUsers: async (req:Request, res:Response) => {
       try {
-         const users: User[] = await getAll(req);
-         res.render('user/index', { users });
+         const limit = 5;
+         const page = Number(req.query.page as string) || 1;
+         const offset = (page - 1) * limit;
+
+         const { users, total } = await getAll(req, limit, offset);
+         const totalPages = Math.ceil(total / limit);
+
+         res.render('user/index', { 
+            users,
+            currentPage: page,
+            totalPages,
+            hasNext: page < totalPages,
+            hasPrevious: page > 1
+         });
       } catch (error) {
          console.error('Erreur dans getAllUsers :', error);
 
@@ -34,7 +47,7 @@ const userController = {
       res.render('user/new');
    },
    createUserPost: async (req:Request, res:Response) => {
-      const user: User = req.body;
+      const user: User = sanitizeObject(req.body);
       try {
          await add(req, user);
          res.redirect('/users');
@@ -57,7 +70,7 @@ const userController = {
 
    updateUser: async (req: Request, res: Response) => {
     const id = req.params.id;
-    const user: User = req.body;
+    const user: User = sanitizeObject(req.body);
   
     const filteredUser: Partial<User> = Object.fromEntries(
       Object.entries(user).filter(([_, value]) => {

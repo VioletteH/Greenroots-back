@@ -7,6 +7,7 @@ import { treeSchema } from '../utils/shemasJoi';
 import loadTreeMapper from '../mappers/treeMapper';
 import { unslugify } from '../utils/unslugify';
 import { limits } from 'argon2';
+import { sanitizeInput } from '../utils/sanitizeInput';
 
 const treeMapper = new loadTreeMapper();
 
@@ -26,12 +27,9 @@ const treeController = {
         if (!trees || trees.length === 0) {
             return next(new AppError("No trees found", 404)); 
         }
-        // const trees = await treeMapper.findAll(limit, offset);
-        // if (trees.length === 0) {
-        //     res.status(200).json("trees not found");
-        // }
         res.status(200).json(trees);
     }),
+
     allTreesWithForests: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const limit = parseInt(req.query.limit as string, 10) || 10;
         const offset = parseInt(req.query.offset as string, 10) || 0;
@@ -48,6 +46,21 @@ const treeController = {
             return next(new AppError("No trees found", 404));
         }
         res.status(200).json(tree);
+    }),
+    treesWithCount: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const limit = parseInt(req.query.limit as string, 10) || 10;
+        const offset = parseInt(req.query.offset as string, 10) || 0; 
+
+        const { data: trees, total } = await treeMapper.findAllWithCount(limit, offset);
+
+        if (!trees || trees.length === 0) {
+            return next(new AppError("No trees found", 404)); 
+        }
+        res.status(200).json({
+            trees,
+            total,
+        });
+
     }),
     treeById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
@@ -103,7 +116,8 @@ const treeController = {
         res.status(200).json(trees);
     }),
     addTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const { error, value } = treeSchema.validate(req.body);
+        const sanitizedBody = sanitizeInput(req.body);
+        const { error, value } = treeSchema.validate(sanitizedBody);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }
@@ -124,8 +138,8 @@ const treeController = {
     }),
     updateTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
-
-        const { error, value } = treeSchema.validate(req.body);
+        const sanitizedBody = sanitizeInput(req.body);
+        const { error, value } = treeSchema.validate(sanitizedBody);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }

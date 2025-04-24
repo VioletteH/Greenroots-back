@@ -5,9 +5,10 @@ import { Request } from "express";
 
 const api_url = 'http://greenroots-backend:3000/trees';
 
-export const getAll = async (): Promise<Tree[]> => {
-    const response = await axios.get(`${api_url}?limit=20`);
-    return response.data; 
+export const getAll = async (limit=5, offset=0): Promise<{ trees: Tree[]; total: number }> => {
+    const response = await axios.get(`${api_url}/with-count?limit=${limit}&offset=${offset}`);
+    const data = response.data;
+    return data;
 };
 
 export const getOne = async (id: string): Promise<Tree> => {

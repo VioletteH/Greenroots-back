@@ -4,6 +4,8 @@ import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
 import BaseMapper from "../mappers/baseMapper";
 import { updateStock } from "../utils/updateStock";
+import { sanitizeInput } from '../utils/sanitizeInput';
+
 
 const orderItemMapper = new BaseMapper("order_item");
 
@@ -25,13 +27,14 @@ const itemController = {
     }),
     addOrderItem: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const data = req.body;
-        console.log(`Req.body : ${Number(data.tree_id)}, ${Number(data.forest_id)}, ${Number(data.quantity)}`);
-        
-        const addOrderItemResult = await orderItemMapper.create(data);
+        const sanitizedData = sanitizeInput(data);  
+        const addOrderItemResult = await orderItemMapper.create(sanitizedData);
+
         if (!addOrderItemResult) {
           return next(new AppError(`Order item not created`, 400));
         }
-        await updateStock(Number(data.tree_id), Number(data.forest_id), Number(data.quantity));
+      
+        await updateStock(Number(sanitizedData.tree_id), Number(sanitizedData.forest_id), Number(sanitizedData.quantity));
         res.status(201).json(addOrderItemResult)
       }
     ),

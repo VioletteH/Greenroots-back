@@ -5,9 +5,9 @@ import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
 import { forestSchema } from '../utils/shemasJoi';
 import loadForestMapper from '../mappers/forestMapper';
+import { sanitizeInput } from '../utils/sanitizeInput';
 
 const forestMapper = new loadForestMapper();
-
 
 const forestController = {   
 
@@ -19,6 +19,20 @@ const forestController = {
             res.json("No forests found");
         }
         res.status(200).json(forests);
+    }),
+    forestsWithCount: catchAsync(async (req: Request, res: Response, next:NextFunction ): Promise<void>  => {
+        const limit = parseInt(req.query.limit as string, 10) || 10;
+        const offset = parseInt(req.query.offset as string, 10) || 0;
+
+        const { data: forests, total } = await forestMapper.findAllWithCount(limit, offset);
+
+        if (forests.length === 0) {
+            res.json("No forests found");
+        }
+        res.status(200).json({
+            forests,
+            total,
+        });
     }),
     forestById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
@@ -47,7 +61,8 @@ const forestController = {
         res.status(200).json(forest);
     }),
     addForest: catchAsync(async (req:Request, res:Response, next: NextFunction ) => {
-        const { error, value } = forestSchema.validate(req.body);
+        const sanitizedBody = sanitizeInput(req.body);
+        const { error, value } = forestSchema.validate(sanitizedBody);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }
@@ -64,8 +79,8 @@ const forestController = {
     }),
     updateForest: catchAsync(async (req:Request, res:Response, next: NextFunction )  => {
         const id = parseInt(req.params.id, 10);
-
-        const { error, value } = forestSchema.validate(req.body);
+        const sanitizedBody = sanitizeInput(req.body);
+        const { error, value } = forestSchema.validate(sanitizedBody);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }

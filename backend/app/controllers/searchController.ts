@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import sanitizer from "sanitizer";
+import { sanitizeInput } from '../utils/sanitizeInput';
 import { searchMapper } from "../mappers/searchMapper";
 
 export const searchController = async (req:Request, res:Response): Promise<void> => {
@@ -9,7 +9,7 @@ export const searchController = async (req:Request, res:Response): Promise<void>
         return;
     }
     // Sanitize the input
-    const sanitizedQuery = sanitizer.sanitize(query);
+    const sanitizedQuery = sanitizeInput(query);
 
     // Perform search
     const searchResults = await searchMapper(sanitizedQuery);

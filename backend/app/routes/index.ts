@@ -4,9 +4,10 @@ import treeController from "../controllers/treeController";
 import forestController from "../controllers/forestController";
 import userController from "../controllers/userController";
 import orderController from "../controllers/orderController";
+import itemController from "../controllers/itemController";
+import stripeController from "../controllers/stripeController";
 import authorizationController from "../controllers/authorizationController";
 import { isGranted } from "../middlewares/isGranted";
-import itemController from "../controllers/itemController";
 import { searchController } from "../controllers/searchController";
 const routes = express.Router();
 
@@ -18,6 +19,7 @@ routes.post("/register", authController.register);
 routes.get("/trees", treeController.trees);
 routes.get("/trees/forests", treeController.allTreesWithForests);
 routes.get("/trees/forests/:id", treeController.oneTreeWithForests);
+routes.get("/trees/with-count", treeController.treesWithCount);
 routes.get("/trees/:id", treeController.treeById);
 routes.get("/trees/:id/forests", forestController.forestsByTree);
 routes.get("/trees/:id/forests-with-stock", treeController.getTreeWithForestsAndStock);
@@ -29,6 +31,7 @@ routes.delete("/trees/:id", authorizationController, isGranted, treeController.d
 
 //FORESTS
 routes.get("/forests", forestController.forests);
+routes.get("/forests/with-count", forestController.forestsWithCount);
 routes.get("/forests/:id", forestController.forestById);
 routes.get("/forests/:id/trees", treeController.treesByForest);
 routes.get("/forests/:id/trees-with-stock", forestController.getForestWithTreesAndStock);
@@ -38,6 +41,7 @@ routes.delete("/forests/:id", authorizationController, isGranted, forestControll
 
 //USERS (utilisateurs)
 routes.get("/users", /*authorizationController,*/ userController.users);
+routes.get("/users/with-count", authorizationController, isGranted, userController.usersWithCount);
 routes.get("/users/:id", authorizationController, isGranted, userController.userById);
 routes.get("/users/:id/impact" , authorizationController, isGranted, userController.impactByUserId);
 routes.post("/users", authorizationController, isGranted, userController.addUser);
@@ -47,7 +51,9 @@ routes.delete("/users/:id", /*authorizationController,*/ userController.deleteUs
 
 //ORDERS
 routes.get("/orders", authorizationController, isGranted, orderController.orders);
+routes.get("/orders/with-count", authorizationController, isGranted, orderController.ordersWithCount);
 routes.get("/orders/:id", authorizationController, isGranted, orderController.orderById);
+routes.get("/orders/:id/with-user", authorizationController, isGranted, orderController.orderByIdWithUser);
 routes.get("/orders/user/:id", authorizationController, isGranted, orderController.ordersByUserId);
 routes.post("/orders", authorizationController, isGranted, orderController.addOrder);
 routes.patch("/orders/:id", authorizationController, isGranted, orderController.updateOrder);
@@ -60,5 +66,8 @@ routes.post("/orders-items", itemController.addOrderItem);
 
 //SEARCH
 routes.get("/search", searchController);
+
+//PAYMENT
+routes.post("/create-payment-intent", stripeController.intent);
 
 export default routes;

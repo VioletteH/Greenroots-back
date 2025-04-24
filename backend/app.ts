@@ -3,23 +3,50 @@ import routes from './app/routes/index';
 import "dotenv/config";
 import { errorHandler } from './app/middlewares/errorHandler';
 import cors from 'cors';
+import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 
-const app = express()
+const app = express();
 const PORT = 3000;
 
-app.use(cors());
+const allowedOrigins = [
+  process.env.BACKOFFICE,
+  process.env.FRONT,
+  'http://localhost:3001',
+  'http://localhost:5173'
+];
 
+// Middleware CORS avec log des blocages
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.error(`Blocked by CORS: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+// Sécurité avec helmet (CSP désactivé pour éviter les conflits si tu injectes du contenu dynamique)
+app.use(helmet({
+  contentSecurityPolicy: false,
+}));
+
+app.use(cookieParser());
+
+// Middleware parsing
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Routes
 app.use(routes);
 
-// app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-//   errorHandler(err, req, res, next);
-// });
-app.use(errorHandler)
+// Gestion globale des erreurs
+app.use(errorHandler);
 
-
+// Démarrage du serveur
 app.listen(PORT, () => {
-  console.log(`Example app listening on port http://localhost:${PORT}`)
-})
+  console.log(`Example app listening on port http://localhost:${PORT}`);
+});

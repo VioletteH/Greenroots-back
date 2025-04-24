@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { getAll, getOne, getTreeWithForestsAndStock, remove, add, update } from '../api/tree';
 import { getAll as getAllForests } from '../api/forest';
 import { Tree, TreeForm } from '../types/index';
+import { sanitizeObject } from "../utils/sanitize";
 
 import fs from 'fs';
 import path from 'path';
@@ -9,8 +10,20 @@ import path from 'path';
 const treeController = {
    getAllTrees: async (req: Request, res: Response): Promise<void> => {
       try {
-         const trees: Tree[] = await getAll();
-         res.render('tree', { trees });
+         const limit = 5;
+         const page = Number(req.query.page as string) || 1;
+         const offset = (page - 1) * limit;
+
+         const { trees, total } = await getAll(limit, offset);
+         const totalPages = Math.ceil(total / limit);
+
+         res.render('tree/index', {
+            trees,
+            currentPage: page,
+            totalPages,
+            hasNext: page < totalPages,
+            hasPrevious: page > 1
+         });
       } catch (error) {
          console.error('Erreur dans le contrôleur:', error);
          res.status(500).send('Erreur interne');
@@ -33,7 +46,8 @@ const treeController = {
       res.render('tree/new', { forests });
    },
    createTreePost: async (req: Request, res: Response) => {
-      const form = req.body as TreeForm;
+      
+      const form = sanitizeObject(req.body) as TreeForm;
 
       if (req.file) {
          form.image = `/uploads/trees/${req.file.filename}`;
@@ -92,7 +106,7 @@ const treeController = {
 
    updateTree: async (req: Request, res: Response) => {
       const id = req.params.id;
-      const form = req.body as TreeForm;
+      const form = sanitizeObject(req.body) as TreeForm;
       const oldImage = form.oldImage;
 
       if (req.file) {

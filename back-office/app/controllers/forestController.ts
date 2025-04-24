@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Forest, ForestForm } from '../types/index';
+import {sanitizeObject} from "../utils/sanitize";
 
 import { getAll, getOne, add, update, remove, getForestWithTreesAndStock } from '../api/forest';
 import { getAll as getAllTrees } from '../api/tree';
@@ -10,8 +11,20 @@ import path from 'path';
 const forestController = {
    getAllForests: async (req:Request, res:Response) => {
       try {
-         const forests: Forest[] = await getAll();
-         res.render('forest/index', { forests });
+         const limit = 5;
+         const page = Number(req.query.page as string) || 1;
+         const offset = (page - 1) * limit;
+
+         const { forests, total } = await getAll(limit, offset);
+         const totalPages = Math.ceil(total / limit);
+
+         res.render('forest/index', { 
+            forests,
+            currentPage: page,
+            totalPages,
+            hasNext: page < totalPages,
+            hasPrevious: page > 1
+          });
       } catch (error) {
          console.error('Erreur dans getAllForests :', error);
          res.status(500).send('Erreur interne');
@@ -34,7 +47,7 @@ const forestController = {
       res.render('forest/new', { trees });
    },
    createForestPost: async (req:Request, res:Response) => {
-      const form = req.body as ForestForm
+      const form = sanitizeObject(req.body) as ForestForm;
 
       if (req.file) {
          form.image = `/uploads/forests/${req.file.filename}`;
@@ -93,7 +106,8 @@ const forestController = {
 
    updateForest: async (req:Request, res:Response) => {
       const id = req.params.id;
-      const form = req.body as ForestForm;
+
+      const form = sanitizeObject(req.body) as ForestForm;
       const oldImage = form.oldImage
 
       if (req.file) {
