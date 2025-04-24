@@ -143,4 +143,53 @@ export default class TreeMapper extends BaseMapper<any> {
         if (!rows) return []; 
         return rows.map(snakeToCamel) as Tree[];
     }
+
+    async getAllTreesWithForests(limit?:number, offset?:number): Promise<any> {
+        const query = `
+            SELECT 
+                t.*,
+                json_agg(
+                    json_build_object(
+                        'id', f.id,
+                        'name', f.name,
+                        'stock', ft.stock
+                    )
+                ) AS forests
+            FROM tree t
+            LEFT JOIN forest_tree ft ON t.id = ft.tree_id
+            LEFT JOIN forest f ON ft.forest_id = f.id
+            GROUP BY t.id
+            ORDER BY created_at DESC
+            LIMIT $1 OFFSET $2
+        `;
+        const { rows } = await pool.query(query, [limit, offset]);
+        if (!rows || rows.length === 0) {
+            return null;
+        }
+        return snakeToCamel(rows);
+    }
+
+    async getOneTreeWithForests(id: number): Promise<any> {
+        const query = `
+            SELECT 
+                t.*,
+                json_agg(
+                    json_build_object(
+                        'id', f.id,
+                        'name', f.name,
+                        'stock', ft.stock
+                    )
+                ) AS forests
+            FROM tree t
+            LEFT JOIN forest_tree ft ON t.id = ft.tree_id
+            LEFT JOIN forest f ON ft.forest_id = f.id
+            WHERE t.id = $1
+            GROUP BY t.id            
+        `;
+        const { rows } = await pool.query(query, [id]);
+        if (!rows || rows.length === 0) {
+            return null;
+        }
+        return snakeToCamel(rows);
+    }
 }

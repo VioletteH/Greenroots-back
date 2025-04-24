@@ -77,6 +77,7 @@ CREATE TABLE "order_item" (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     order_id INT NOT NULL REFERENCES "order"(id),
     tree_id INT NOT NULL REFERENCES "tree"(id),
+    forest_id INT NOT NULL REFERENCES "forest"(id),
     name TEXT NOT NULL,
     quantity INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
