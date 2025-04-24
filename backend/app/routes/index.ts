@@ -20,6 +20,7 @@ routes.get("/trees", treeController.trees);
 routes.get("/trees/forests", treeController.allTreesWithForests);
 routes.get("/trees/forests/:id", treeController.oneTreeWithForests);
 routes.get("/trees/with-count", treeController.treesWithCount);
+routes.get("/trees/custom", treeController.getCustomTrees);
 routes.get("/trees/:id", treeController.treeById);
 routes.get("/trees/:id/forests", forestController.forestsByTree);
 routes.get("/trees/:id/forests-with-stock", treeController.getTreeWithForestsAndStock);

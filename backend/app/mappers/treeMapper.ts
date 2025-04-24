@@ -192,4 +192,29 @@ export default class TreeMapper extends BaseMapper<any> {
         }
         return snakeToCamel(rows);
     }
+
+    async getCustomTreeWithForests(ids: number[]): Promise<any> {
+        const query = `
+            SELECT 
+                t.*,
+                json_agg(
+                    json_build_object(
+                        'id', f.id,
+                        'name', f.name,
+                        'stock', ft.stock
+                    )
+                ) AS forests
+            FROM tree t
+            LEFT JOIN forest_tree ft ON t.id = ft.tree_id
+            LEFT JOIN forest f ON ft.forest_id = f.id
+            WHERE t.id = ANY($1)
+            GROUP BY t.id 
+            ORDER BY created_at DESC
+        `;
+        const { rows } = await pool.query(query, [ids]);
+        if (!rows || rows.length === 0) {
+            return null;
+        }
+        return snakeToCamel(rows);  
+    }
 }

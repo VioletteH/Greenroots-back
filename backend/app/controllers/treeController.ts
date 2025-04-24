@@ -115,6 +115,26 @@ const treeController = {
 
         res.status(200).json(trees);
     }),
+    getCustomTrees: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const { ids } = req.query;
+
+        let idsArray: number[] = [];
+
+        if (Array.isArray(ids)) {
+            idsArray = ids.map(Number).filter(id => !isNaN(id));
+        } else if (typeof ids === 'string') {
+            // Si un seul id envoyé sous forme de string (ex: ?ids=5)
+            idsArray = ids.split(',').map(Number).filter(id => !isNaN(id));
+        }
+
+        if (idsArray.length === 0) {
+            return res.status(400).json({ error: "Paramètre 'ids' requis sous forme de liste d'entiers." });
+        }
+
+        const trees = await treeMapper.getCustomTreeWithForests(idsArray);
+        
+        res.status(200).json(trees);
+    }),
     addTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         // const sanitizedBody = sanitizeInput(req.body);
         const { error, value } = treeSchema.validate(req.body);
