@@ -3,7 +3,7 @@ import { Forest, ForestForm } from '../types/index';
 import {sanitizeObject} from "../utils/sanitize";
 
 import { getAll, getOne, add, update, remove, getForestWithTreesAndStock } from '../api/forest';
-import { getAll as getAllTrees } from '../api/tree';
+import { getAllWithoutCount as getAllTrees } from '../api/tree';
 
 import fs from 'fs';
 import path from 'path';
@@ -47,7 +47,8 @@ const forestController = {
       res.render('forest/new', { trees });
    },
    createForestPost: async (req:Request, res:Response) => {
-      const form = sanitizeObject(req.body) as ForestForm;
+      // const form = sanitizeObject(req.body) as ForestForm;
+      const form = req.body as ForestForm;
 
       if (req.file) {
          form.image = `/uploads/forests/${req.file.filename}`;
@@ -107,7 +108,8 @@ const forestController = {
    updateForest: async (req:Request, res:Response) => {
       const id = req.params.id;
 
-      const form = sanitizeObject(req.body) as ForestForm;
+      // const form = sanitizeObject(req.body) as ForestForm;
+      const form = req.body as ForestForm;
       const oldImage = form.oldImage
 
       if (req.file) {

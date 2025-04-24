@@ -61,8 +61,8 @@ const forestController = {
         res.status(200).json(forest);
     }),
     addForest: catchAsync(async (req:Request, res:Response, next: NextFunction ) => {
-        const sanitizedBody = sanitizeInput(req.body);
-        const { error, value } = forestSchema.validate(sanitizedBody);
+        // const sanitizedBody = sanitizeInput(req.body);
+        const { error, value } = forestSchema.validate(req.body);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }

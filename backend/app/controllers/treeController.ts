@@ -116,8 +116,8 @@ const treeController = {
         res.status(200).json(trees);
     }),
     addTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const sanitizedBody = sanitizeInput(req.body);
-        const { error, value } = treeSchema.validate(sanitizedBody);
+        // const sanitizedBody = sanitizeInput(req.body);
+        const { error, value } = treeSchema.validate(req.body);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }
@@ -138,8 +138,8 @@ const treeController = {
     }),
     updateTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
-        const sanitizedBody = sanitizeInput(req.body);
-        const { error, value } = treeSchema.validate(sanitizedBody);
+        // const sanitizedBody = sanitizeInput(req.body);
+        const { error, value } = treeSchema.validate(req.body);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }

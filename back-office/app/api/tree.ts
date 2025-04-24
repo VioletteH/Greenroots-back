@@ -11,6 +11,12 @@ export const getAll = async (limit=5, offset=0): Promise<{ trees: Tree[]; total:
     return data;
 };
 
+export const getAllWithoutCount = async (limit=5, offset=0): Promise<{ trees: Tree[]; total: number }> => {
+    const response = await axios.get(`${api_url}?limit=${limit}&offset=${offset}`);
+    const data = response.data;
+    return data;
+};
+
 export const getOne = async (id: string): Promise<Tree> => {
     const response = await axios.get(`${api_url}/${id}`);  
     const data = response.data;
