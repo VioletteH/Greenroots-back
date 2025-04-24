@@ -20,6 +20,20 @@ const forestController = {
         }
         res.status(200).json(forests);
     }),
+    forestsWithCount: catchAsync(async (req: Request, res: Response, next:NextFunction ): Promise<void>  => {
+        const limit = parseInt(req.query.limit as string, 10) || 10;
+        const offset = parseInt(req.query.offset as string, 10) || 0;
+
+        const { data: forests, total } = await forestMapper.findAllWithCount(limit, offset);
+
+        if (forests.length === 0) {
+            res.json("No forests found");
+        }
+        res.status(200).json({
+            forests,
+            total,
+        });
+    }),
     forestById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
         const forest = await forestMapper.findById(id);

@@ -21,6 +21,21 @@ export default class BaseMapper <T> {
         return rowsCamel;
     }
 
+    async findAllWithCount(limit?: number, offset?: number): Promise<{ data: T[]; total: number }> {
+        const queryData = `SELECT * FROM "${this.tableName}" ORDER BY created_at DESC LIMIT $1 OFFSET $2`;
+        const queryCount = `SELECT COUNT(*) FROM "${this.tableName}"`;
+    
+        const [dataResult, countResult] = await Promise.all([
+            pool.query(queryData, [limit, offset]),
+            pool.query(queryCount)
+        ]);
+    
+        const data = dataResult.rows.map(snakeToCamel) as T[];
+        const total = parseInt(countResult.rows[0].count, 10);
+    
+        return { data, total };
+    }
+
     async findById(id: number): Promise<T | null> {
         const { rows } = await pool.query(`SELECT * FROM "${this.tableName}" WHERE id = $1`, [id]);
         debugBaseMapper('findById');
@@ -45,7 +60,13 @@ export default class BaseMapper <T> {
     }
 
     async update (id: number, data: Record<string, any>): Promise<T> {
-        const dataSnake = camelToSnake(data);
+        const now = new Date();
+        const dataWithTimestamp = {
+            ...data,
+            updated_at: now
+        };
+
+        const dataSnake = camelToSnake(dataWithTimestamp);
         const columns = Object.keys(dataSnake).map((key, i) => `${key} = $${i + 1}`).join(', ');
         const values = Object.values(dataSnake);
         const { rows } = await pool.query(`UPDATE "${this.tableName}" SET ${columns} WHERE id = $${values.length + 1} RETURNING *`, [...values, id]);

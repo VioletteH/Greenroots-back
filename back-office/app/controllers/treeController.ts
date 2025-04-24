@@ -10,8 +10,21 @@ import path from 'path';
 const treeController = {
    getAllTrees: async (req: Request, res: Response): Promise<void> => {
       try {
-         const trees: Tree[] = await getAll();
-         res.render('tree', { trees, csrfToken: req.csrfToken() });
+         const limit = 5;
+         const page = Number(req.query.page as string) || 1;
+         const offset = (page - 1) * limit;
+
+         const { trees, total } = await getAll(limit, offset);
+         const totalPages = Math.ceil(total / limit);
+
+         res.render('tree/index', {
+            trees,
+            currentPage: page,
+            totalPages,
+            hasNext: page < totalPages,
+            hasPrevious: page > 1,
+            csrfToken: req.csrfToken()
+         });
       } catch (error) {
          console.error('Erreur dans le contrôleur:', error);
          res.status(500).send('Erreur interne');

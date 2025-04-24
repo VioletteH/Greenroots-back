@@ -22,6 +22,8 @@ app.use(cookieParser());
 app.use(csurf({ cookie: true }));
 
 app.use(express.static('public'));
+app.use('/icons', express.static(__dirname + '/node_modules/bootstrap-icons/font'));
+
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

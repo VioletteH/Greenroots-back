@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { getAll, getOne, update } from '../api/order';
 import { Order } from '../types/index';
-import { formatDate } from '../utils/date';
 import { sanitizeObject } from "../utils/sanitize";
 
 const statusMap: { [key: number]: string } = {
@@ -9,31 +8,60 @@ const statusMap: { [key: number]: string } = {
     2: 'Terminée',
     3: 'Annulée'
 };
-const formatOrder = (order: Order): Order => ({
+
+const formatDate = (date: string | Date | null | undefined): string => {
+    if (!date) return "Date inconnue";
+    
+    return new Date(date).toLocaleDateString('fr-FR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'Europe/Paris',
+    });
+};
+
+const formatOrder = (order: Order): Order & {
+    createdAtFormatted: string,
+    updatedAtFormatted: string,
+    statusLabel: string
+} => ({
     ...order,
-    createdAt: formatDate(order.createdAt),
-    updatedAt: formatDate(order.updatedAt),
-    status: statusMap[Number(order.status)] || 'Statut inconnu'
+    createdAtFormatted: formatDate(order.createdAt),
+    updatedAtFormatted: formatDate(order.updatedAt),
+    statusLabel: statusMap[Number(order.status)] || 'Statut inconnu'
 });
 
 const orderController = {
     getAllOrders: async (req: Request, res: Response): Promise<void> => {
         try {
-            const orders: Order[] = await getAll(req);
-            const formattedOrders = orders.map(formatOrder);              
-            res.render('order', { orders: formattedOrders });
+            const limit = 5;
+            const page = Number(req.query.page as string) || 1;
+            const offset = (page - 1) * limit;
+
+            const { orders, total } = await getAll(req, limit, offset);
+            const totalPages = Math.ceil(total / limit);
+
+            const formattedOrders = orders.map(formatOrder);   
+             
+            res.render('order/index', { 
+                orders: formattedOrders,
+                currentPage: page,
+                totalPages,
+                hasNext: page < totalPages,
+                hasPrevious: page > 1,
+            });
         } catch (error) {
             console.error('Erreur dans le contrôleur:', error);
             res.status(500).send('Erreur interne');
         }
     },
-
     getOrder: async (req:Request, res:Response) => {
         const id = req.params.id;
         try {
             const order: Order = await getOne(req, id);
-            const formattedOrder = formatOrder(order);
-            res.render('order/show', { order: formattedOrder });
+            res.render('order/show', { order: formatOrder(order) });
         } catch (error) {
             console.error('Erreur dans getOrder :', error);
             res.status(500).send('Erreur en interne');
@@ -44,8 +72,7 @@ const orderController = {
         const id = req.params.id;
         try {
             const order = await getOne(req, id);
-            const formattedOrder = formatOrder(order);
-            res.render('order/edit', { order: formattedOrder, csrfToken: req.csrfToken() });
+            res.render('order/edit', { order: formatOrder(order), csrfToken: req.csrfToken() });
         } catch (error) {
             console.error('Erreur dans editOrderView :', error);
             res.status(500).send('Erreur interne');
@@ -54,10 +81,10 @@ const orderController = {
 
     updateOrder: async (req: Request, res: Response) => {
         const id = req.params.id;
-        const order: Order = sanitizeObject(req.body);
+        const { status } = sanitizeObject(req.body);
         try {
-            await update(req, Number(id), order)
-            res.redirect('/order');
+            await update(req, Number(id), { status: Number(status) });
+            res.redirect('/orders');
         } catch (error) {
             console.error('Erreur dans le contrôleur:', error);
             res.status(500).send('Erreur interne');
