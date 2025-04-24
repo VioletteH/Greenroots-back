@@ -14,7 +14,7 @@ const allowedOrigins = [
   process.env.BACKOFFICE,
   process.env.FRONT,
   'http://localhost:3001',
-  'http://localhost:5174'
+  'http://localhost:5173'
 ];
 
 // Middleware CORS avec log des blocages
