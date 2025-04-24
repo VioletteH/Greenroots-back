@@ -4,7 +4,7 @@ import { Request } from "express";
 
 const api_url = 'http://greenroots-backend:3000/orders';
 
-export const getAll = async (req: Request, limit=10, offset=0): Promise<{orders: Order[]; total: number }> => {
+export const getAll = async (req: Request, limit=9, offset=0): Promise<{orders: Order[]; total: number }> => {
     const axiosInstance = createAxiosWithAuth(req);
     const response = await axiosInstance.get(`${api_url}/with-count?limit=${limit}&offset=${offset}`);
     return response.data; 

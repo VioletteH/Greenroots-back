@@ -10,7 +10,7 @@ import path from 'path';
 const treeController = {
    getAllTrees: async (req: Request, res: Response): Promise<void> => {
       try {
-         const limit = 10;
+         const limit = 9;
          const page = Number(req.query.page as string) || 1;
          const offset = (page - 1) * limit;
 
