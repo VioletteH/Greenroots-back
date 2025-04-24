@@ -7,7 +7,7 @@ import { getAll, getOne, add, update } from '../api/user';
 const userController = {
    getAllUsers: async (req:Request, res:Response) => {
       try {
-         const limit = 5;
+         const limit = 10;
          const page = Number(req.query.page as string) || 1;
          const offset = (page - 1) * limit;
 

@@ -11,7 +11,7 @@ import path from 'path';
 const forestController = {
    getAllForests: async (req:Request, res:Response) => {
       try {
-         const limit = 5;
+         const limit = 10;
          const page = Number(req.query.page as string) || 1;
          const offset = (page - 1) * limit;
 
