@@ -3,7 +3,6 @@
 <h1>Modifier l'arbre "<%= tree.name %>"</h1>
 
 <form method="POST" action="/trees/<%= tree.id %>?_method=PATCH" enctype="multipart/form-data">
-  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
   <div class="mb-3">
     <label class="form-label">Nom</label>
     <input type="text" name="name" value="<%= tree.name %>" class="form-control" required>

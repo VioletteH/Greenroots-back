@@ -6,7 +6,6 @@
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">Connexion</h2>
                     <form action="/login" method="POST">
-                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <div class="mb-3">
                             <label for="email" class="form-label">Adresse e-mail</label>
                             <input type="email" class="form-control" id="email" name="email" required

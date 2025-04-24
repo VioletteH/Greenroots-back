@@ -5,7 +5,6 @@ import { errorHandler } from './app/middlewares/errorHandler';
 import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
-import csurf from 'csurf'; 
 
 const app = express();
 const PORT = 3000;
@@ -36,16 +35,6 @@ app.use(helmet({
 }));
 
 app.use(cookieParser());
-
-// CSRF activé sauf en dev (facilite les tests avec Postman ou mobile)
-app.use(csurf({
-  cookie: {
-    httpOnly: false,      // <== Pour que le front puisse le lire si besoin
-    sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production'
-  }
-}));
-
 
 // Middleware parsing
 app.use(express.json());

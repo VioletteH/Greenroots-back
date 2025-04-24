@@ -44,7 +44,7 @@ const userController = {
    },
 
    createUserView: (req:Request, res:Response) => {
-      res.render('user/new', { csrfToken: req.csrfToken() });
+      res.render('user/new');
    },
    createUserPost: async (req:Request, res:Response) => {
       const user: User = sanitizeObject(req.body);
@@ -61,7 +61,7 @@ const userController = {
       const id = req.params.id;
       try {
          const user = await getOne(req, id);
-         res.render('user/edit', {user, csrfToken: req.csrfToken()});
+         res.render('user/edit', {user});
       } catch (error) {
          console.error('Erreur dans editUserView :', error);
          res.status(500).send('Erreur interne');

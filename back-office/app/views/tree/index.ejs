@@ -26,7 +26,6 @@
           <a href="/trees/<%= tree.id %>" class="btn btn-info btn-sm">Voir</a>
           <a href="/trees/<%= tree.id %>/edit" class="btn btn-warning btn-sm">Modifier</a>
           <form action="/trees/<%= tree.id %>?_method=DELETE" method="POST" style="display:inline;">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer cet arbre ?')">Supprimer</button>
           </form>
         </td>

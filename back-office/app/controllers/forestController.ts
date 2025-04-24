@@ -23,8 +23,7 @@ const forestController = {
             currentPage: page,
             totalPages,
             hasNext: page < totalPages,
-            hasPrevious: page > 1,
-            csrfToken: req.csrfToken()
+            hasPrevious: page > 1
           });
       } catch (error) {
          console.error('Erreur dans getAllForests :', error);
@@ -45,7 +44,7 @@ const forestController = {
 
    createForestView: async (req:Request, res:Response) => {
       const trees = await getAllTrees();
-      res.render('forest/new', { trees, csrfToken: req.csrfToken() });
+      res.render('forest/new', { trees });
    },
    createForestPost: async (req:Request, res:Response) => {
       const form = sanitizeObject(req.body) as ForestForm;
@@ -98,7 +97,7 @@ const forestController = {
       try {
          const trees = await getAllTrees();
          const forest = await getForestWithTreesAndStock(id);
-         res.render('forest/edit', {forest, trees, csrfToken: req.csrfToken()});
+         res.render('forest/edit', {forest, trees});
       } catch (error) {
          console.error('Erreur dans editForestView :', error);
          res.status(500).send('Erreur interne');

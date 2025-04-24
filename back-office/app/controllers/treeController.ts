@@ -22,8 +22,7 @@ const treeController = {
             currentPage: page,
             totalPages,
             hasNext: page < totalPages,
-            hasPrevious: page > 1,
-            csrfToken: req.csrfToken()
+            hasPrevious: page > 1
          });
       } catch (error) {
          console.error('Erreur dans le contrôleur:', error);
@@ -44,7 +43,7 @@ const treeController = {
 
    createTreeView: async (req:Request, res:Response) => {
       const forests = await getAllForests();
-      res.render('tree/new', { forests, csrfToken: req.csrfToken() });
+      res.render('tree/new', { forests });
    },
    createTreePost: async (req: Request, res: Response) => {
       
@@ -98,7 +97,7 @@ const treeController = {
       try {
          const forests = await getAllForests();
          const tree: any = await getTreeWithForestsAndStock(id);
-         res.render('tree/edit', { tree, forests, csrfToken: req.csrfToken() });
+         res.render('tree/edit', { tree, forests });
       } catch (error) {
          console.error('Erreur dans editTreeView :', error);
          res.status(500).send('Erreur interne');

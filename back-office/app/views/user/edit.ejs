@@ -3,7 +3,6 @@
 <h1>Modifier l'utilisateur "<%= user.email %>"</h1>
 
 <form method="POST" action="/users/<%= user.id %>?_method=PATCH">
-  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
   <div class="mb-3">
     <label class="form-label">Nom</label>
     <input type="text" name="lastname" value="<%= user.lastname %>" class="form-control">
