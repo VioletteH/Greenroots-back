@@ -3,6 +3,7 @@
 <h1>Modifier la commande numéro <%= order.id %></h1>
 
 <form method="POST" action="/orders/<%= order.id %>?_method=PATCH">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
   <div class="mb-3">
     <label class="form-label">Id de l'utilisateur</label>
     <input type="text" name="userId" value="<%= order.userId %>" class="form-control" disabled>

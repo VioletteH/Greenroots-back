@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { getAll, getOne, update } from '../api/order';
 import { Order } from '../types/index';
+import { sanitizeObject } from "../utils/sanitize";
 
 const statusMap: { [key: number]: string } = {
     1: 'En cours',
@@ -71,7 +72,7 @@ const orderController = {
         const id = req.params.id;
         try {
             const order = await getOne(req, id);
-            res.render('order/edit', { order: formatOrder(order) });
+            res.render('order/edit', { order: formatOrder(order), csrfToken: req.csrfToken() });
         } catch (error) {
             console.error('Erreur dans editOrderView :', error);
             res.status(500).send('Erreur interne');
@@ -80,7 +81,7 @@ const orderController = {
 
     updateOrder: async (req: Request, res: Response) => {
         const id = req.params.id;
-        const { status } = req.body;
+        const { status } = sanitizeObject(req.body);
         try {
             await update(req, Number(id), { status: Number(status) });
             res.redirect('/orders');

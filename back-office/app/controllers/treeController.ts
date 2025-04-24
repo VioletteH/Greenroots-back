@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { getAll, getOne, getTreeWithForestsAndStock, remove, add, update } from '../api/tree';
 import { getAll as getAllForests } from '../api/forest';
 import { Tree, TreeForm } from '../types/index';
+import { sanitizeObject } from "../utils/sanitize";
 
 import fs from 'fs';
 import path from 'path';
@@ -21,7 +22,8 @@ const treeController = {
             currentPage: page,
             totalPages,
             hasNext: page < totalPages,
-            hasPrevious: page > 1
+            hasPrevious: page > 1,
+            csrfToken: req.csrfToken()
          });
       } catch (error) {
          console.error('Erreur dans le contrôleur:', error);
@@ -42,10 +44,11 @@ const treeController = {
 
    createTreeView: async (req:Request, res:Response) => {
       const forests = await getAllForests();
-      res.render('tree/new', { forests });
+      res.render('tree/new', { forests, csrfToken: req.csrfToken() });
    },
    createTreePost: async (req: Request, res: Response) => {
-      const form = req.body as TreeForm;
+      
+      const form = sanitizeObject(req.body) as TreeForm;
 
       if (req.file) {
          form.image = `/uploads/trees/${req.file.filename}`;
@@ -95,7 +98,7 @@ const treeController = {
       try {
          const forests = await getAllForests();
          const tree: any = await getTreeWithForestsAndStock(id);
-         res.render('tree/edit', { tree, forests });
+         res.render('tree/edit', { tree, forests, csrfToken: req.csrfToken() });
       } catch (error) {
          console.error('Erreur dans editTreeView :', error);
          res.status(500).send('Erreur interne');
@@ -104,7 +107,7 @@ const treeController = {
 
    updateTree: async (req: Request, res: Response) => {
       const id = req.params.id;
-      const form = req.body as TreeForm;
+      const form = sanitizeObject(req.body) as TreeForm;
       const oldImage = form.oldImage;
 
       if (req.file) {

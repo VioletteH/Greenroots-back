@@ -5,9 +5,9 @@ import { AppError } from '../middlewares/errorHandler';
 import { catchAsync } from '../utils/catchAsync';
 import { forestSchema } from '../utils/shemasJoi';
 import loadForestMapper from '../mappers/forestMapper';
+import { sanitizeInput } from '../utils/sanitizeInput';
 
 const forestMapper = new loadForestMapper();
-
 
 const forestController = {   
 
@@ -61,7 +61,8 @@ const forestController = {
         res.status(200).json(forest);
     }),
     addForest: catchAsync(async (req:Request, res:Response, next: NextFunction ) => {
-        const { error, value } = forestSchema.validate(req.body);
+        const sanitizedBody = sanitizeInput(req.body);
+        const { error, value } = forestSchema.validate(sanitizedBody);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }
@@ -78,8 +79,8 @@ const forestController = {
     }),
     updateForest: catchAsync(async (req:Request, res:Response, next: NextFunction )  => {
         const id = parseInt(req.params.id, 10);
-
-        const { error, value } = forestSchema.validate(req.body);
+        const sanitizedBody = sanitizeInput(req.body);
+        const { error, value } = forestSchema.validate(sanitizedBody);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }

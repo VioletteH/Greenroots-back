@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { User } from '../types/index';
+import {sanitizeObject} from "../utils/sanitize";
 
 import { getAll, getOne, add, update } from '../api/user';
 
@@ -43,10 +44,10 @@ const userController = {
    },
 
    createUserView: (req:Request, res:Response) => {
-      res.render('user/new');
+      res.render('user/new', { csrfToken: req.csrfToken() });
    },
    createUserPost: async (req:Request, res:Response) => {
-      const user: User = req.body;
+      const user: User = sanitizeObject(req.body);
       try {
          await add(req, user);
          res.redirect('/users');
@@ -60,7 +61,7 @@ const userController = {
       const id = req.params.id;
       try {
          const user = await getOne(req, id);
-         res.render('user/edit', {user});
+         res.render('user/edit', {user, csrfToken: req.csrfToken()});
       } catch (error) {
          console.error('Erreur dans editUserView :', error);
          res.status(500).send('Erreur interne');
@@ -69,7 +70,7 @@ const userController = {
 
    updateUser: async (req: Request, res: Response) => {
     const id = req.params.id;
-    const user: User = req.body;
+    const user: User = sanitizeObject(req.body);
   
     const filteredUser: Partial<User> = Object.fromEntries(
       Object.entries(user).filter(([_, value]) => {

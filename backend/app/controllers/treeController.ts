@@ -6,6 +6,7 @@ import { catchAsync } from '../utils/catchAsync';
 import { treeSchema } from '../utils/shemasJoi';
 import loadTreeMapper from '../mappers/treeMapper';
 import { unslugify } from '../utils/unslugify';
+import { sanitizeInput } from '../utils/sanitizeInput';
 
 const treeMapper = new loadTreeMapper();
 
@@ -95,7 +96,8 @@ const treeController = {
         res.status(200).json(trees);
     }),
     addTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const { error, value } = treeSchema.validate(req.body);
+        const sanitizedBody = sanitizeInput(req.body);
+        const { error, value } = treeSchema.validate(sanitizedBody);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }
@@ -116,8 +118,8 @@ const treeController = {
     }),
     updateTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
-
-        const { error, value } = treeSchema.validate(req.body);
+        const sanitizedBody = sanitizeInput(req.body);
+        const { error, value } = treeSchema.validate(sanitizedBody);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }

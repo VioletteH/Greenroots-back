@@ -50,8 +50,8 @@ const userController = {
     }),
 
     addUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        // Validation
-        const { error, value } = userSchema.validate(req.body);
+        const sanitizedBody = sanitizeInput(req.body);
+        const { error, value } = userSchema.validate(sanitizedBody);
         if (error) {
             const messages = error.details.map(detail => detail.message);
             console.log(messages);
@@ -75,11 +75,11 @@ const userController = {
     }),
 
     updateUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const sanitizedBody = sanitizeInput(req.body);
+        // const sanitizedBody = sanitizeInput(req.body);
         const id = parseInt(req.params.id, 10);
 
         // Validation
-        const { error, value } = userUpdateSchema.validate(sanitizedBody);
+        const { error, value } = userUpdateSchema.validate(req.body);
         console.log("error", error);
         
         if (error) {

@@ -3,6 +3,8 @@ import { orderSchema, orderUpdateSchema } from "../utils/shemasJoi";
 import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
 import loadOrderMapper from "../mappers/orderMapper";
+import BaseMapper from "../mappers/baseMapper";
+import { sanitizeInput } from '../utils/sanitizeInput';
 
 const orderMapper = new loadOrderMapper();
 
@@ -62,8 +64,8 @@ const orderController = {
   }),
 
   addOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    // Validation
-    const { error, value } = orderSchema.validate(req.body);
+    const sanitizedBody = sanitizeInput(req.body);
+    const { error, value } = orderSchema.validate(sanitizedBody);
     console.log("error", error);
     console.log("value", value);
     
@@ -82,9 +84,8 @@ const orderController = {
 
   updateOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10);
-    
-    const { error, value } = orderUpdateSchema.validate(req.body);
-
+    const sanitizedBody = sanitizeInput(req.body);
+    const { error, value } = orderUpdateSchema.validate(sanitizedBody);
     if (error) {
       return next(new AppError(`Invalid data`, 400));
     }

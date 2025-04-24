@@ -22,6 +22,7 @@
           <a href="/forests/<%= forest.id %>" class="btn btn-info btn-sm">Voir</a>
           <a href="/forests/<%= forest.id %>/edit" class="btn btn-warning btn-sm">Modifier</a>
           <form action="/forests/<%= forest.id %>?_method=DELETE" method="POST" style="display:inline;">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer cette forêt ?')">Supprimer</button>
           </form>
         </td>
