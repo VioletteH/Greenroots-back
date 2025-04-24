@@ -11,7 +11,7 @@ export const getAll = async (req: Request, limit=5, offset=0): Promise<{orders: 
 };
 export const getOne = async (req: Request, id: string): Promise<Order> => {
     const axiosInstance = createAxiosWithAuth(req);
-    const response = await axiosInstance.get(`${api_url}/${id}`);  
+    const response = await axiosInstance.get(`${api_url}/${id}/with-user`);  
     return response.data; 
 };
 

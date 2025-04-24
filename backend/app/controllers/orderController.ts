@@ -2,10 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { orderSchema, orderUpdateSchema } from "../utils/shemasJoi";
 import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
-import BaseMapper from "../mappers/baseMapper";
-// import { userLogged } from "../utils/userLogged";
+import loadOrderMapper from "../mappers/orderMapper";
 
-const orderMapper = new BaseMapper("order");
+const orderMapper = new loadOrderMapper();
 
 const orderController = {
   orders: catchAsync(async (req: Request, res: Response) => {
@@ -21,7 +20,7 @@ const orderController = {
     const limit = parseInt(req.query.limit as string, 10) || 10;
     const offset = parseInt(req.query.offset as string, 10) || 0;
 
-    const { data: orders, total } = await orderMapper.findAllWithCount(limit, offset);
+    const { data: orders, total } = await orderMapper.findAllWithCountWithUser(limit, offset);
 
     if (orders.length === 0) {
       res.status(200).json("No orders found");
@@ -40,6 +39,15 @@ const orderController = {
     }
     const orders = await orderMapper.findByField("user_id", id);
     res.status(200).json(orders);
+  }),
+  orderByIdWithUser: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const id = parseInt(req.params.id, 10);
+
+    const order = await orderMapper.findByIdWithUser(id);
+    if (!order) {
+      return next(new AppError(`Order ${id} not found`, 404));
+    }
+    res.status(200).json(order);
   }),
 
   orderById: catchAsync(async (req: Request, res: Response, next: NextFunction) => {

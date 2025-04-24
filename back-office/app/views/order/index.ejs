@@ -5,7 +5,7 @@
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th>Id de l'utilisateur</th>
+      <th>Email l'utilisateur</th>
       <th>Numéro commande</th>
       <th>Prix total</th>
       <th>Statut de la commande</th>
@@ -16,7 +16,7 @@
   <tbody>
     <% orders.forEach(order => { %>
       <tr>
-        <td><%= order.userId %></td>
+        <td><%= order.email %></td>
         <td><%= order.id %></td>
         <td><%= order.totalPrice %></td>
         <td><%= order.statusLabel %></td>
