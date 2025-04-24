@@ -38,6 +38,7 @@ routes.delete("/forests/:id", authorizationController, isGranted, forestControll
 
 //USERS (utilisateurs)
 routes.get("/users", /*authorizationController,*/ userController.users);
+routes.get("/users/with-count", authorizationController, isGranted, userController.usersWithCount);
 routes.get("/users/:id", authorizationController, isGranted, userController.userById);
 routes.get("/users/:id/impact" , authorizationController, isGranted, userController.impactByUserId);
 routes.post("/users", authorizationController, isGranted, userController.addUser);
