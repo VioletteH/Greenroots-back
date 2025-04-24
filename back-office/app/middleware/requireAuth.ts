@@ -9,7 +9,12 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
 
   try {
     const user = JSON.parse(userCookie);
-    if (!user) return res.redirect("/login");
+
+    if (!user || user.role !== "admin") {
+      return res.status(403).render("auth/login", {
+        error: "Accès interdit : administrateurs uniquement.",
+      });
+    }
 
     res.locals.currentUser = user;
     next();

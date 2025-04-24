@@ -18,6 +18,13 @@ const authController = {
 
             const { token, user } = response.data;
 
+            if (user.role !== 'admin') {
+                return res.status(403).render('auth/login', {
+                    email,
+                    error: 'Accès réservé aux administrateurs.',
+                });
+            }
+
             res.cookie('token', token, {
                 httpOnly: true,
                 sameSite: 'strict',
