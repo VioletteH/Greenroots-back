@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 export function isLogged(req: Request, res: Response, next: NextFunction) {
-  const userCookie = req.cookies?.user;
+  const userCookie = req.cookies?.userbo;
 
   if (userCookie) {
     try {

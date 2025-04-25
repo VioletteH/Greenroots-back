@@ -6,7 +6,7 @@ const API_URL = "http://greenroots-backend:3000"
 
 export function createAxiosWithAuth(req: Request) {
   const cookies = cookieLib.parse(req.headers.cookie || "");
-  const token = cookies.token;
+  const token = cookies.tokenbo;
 
   return axios.create({
     baseURL: API_URL,
