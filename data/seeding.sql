@@ -14,25 +14,45 @@ INSERT INTO "user" (firstname, lastname, email, password, phone, address, zipcod
 ('Admin', '', 'master@greenroots.com', '$argon2id$v=19$m=65536,t=3,p=4$+p6idzhGlx1E5Eoxp7TTkw$Uk4xOlghkt8h2Qsr7yFjDnWdll6m33BjJULgl0mgVh0', '', '', '', '', 'admin');
 
 INSERT INTO "tree" (name, scientific_name, image, category, description, co2, o2, price) VALUES
-('Manguier Africain', 'Cordyla africana', 'manguier_africain.jpg', 'Fruitier', 'Fournit des fruits nutritifs, du bois et de l''ombre, Aide à la restauration des terres dégradées', 10, 30, 50),
-('Santal Blanc', 'Santalum album', 'santal_blanc.jpg', 'Bois précieux', 'Bois précieux pour son huile essentielle et son utilisation culturelle, Nécessite souvent un arbre hôte pour ses racines', 25, 30, 200),
-('Ébène du Gabon', 'Diospyros crassiflora', 'ebene_du_gabon.jpg', 'Bois précieux', 'Surexploité, Sa replantation est cruciale pour la biodiversité et l''économie locale durable', 40, 50, 300),
-('Arolle', 'Pinus cembra', 'arolle.jpg', 'Conifère', 'Stabilise les sols en haute altitude, Important pour la faune, notamment le casse-noix, Ses graines sont comestibles', 50, 60, 120),
-('Acajou d''Honduras', 'Swietenia macrophylla', 'acajou_honduras.jpg', 'Bois recherché', 'A subi une déforestation importante, Sa replantation durable est essentielle', 30, 50, 250),
-('Baobab Africain', 'Adansonia digitata', 'baobab_africain.jpg', 'Emblématique', 'Stocke de l''eau, Ses fruits sont nutritifs, Ses feuilles et son écorce ont des usages traditionnels, Résilient à la sécheresse', 10, 50, 80),
-('If Commun', 'Taxus baccata', 'if_commun.jpg', 'Conifère', 'Arbre à croissance lente, très important pour la biodiversité, Fournit abri et nourriture, Usages médicinaux (taxol), A subi des pertes dues à la déforestation et à son utilisation', 40, 50, 150),
-('Kauri', 'Agathis australis', 'kauri.jpg', 'Emblématique', 'Arbre géant emblématique, Massivement exploité, Les efforts de replantation sont cruciaux pour restaurer les forêts indigènes et la biodiversité unique de la Nouvelle-Zélande', 20, 30, 500),
-('Palmier de Jatata', 'Attalea phalerata', 'palmier_jatata.jpg', 'Palmier', 'Fournit des noix comestibles, de l''huile, des fibres et des matériaux de construction importants pour les communautés locales, Sa replantation soutient l''économie locale et la conservation des forêts', 40, 60, 90),
-('Chêne Liège', 'Quercus suber', 'chene_liege.jpg', 'Bois précieux', 'Source de liège, une ressource renouvelable importante, Les forêts de chênes-lièges sont des écosystèmes riches en biodiversité, Jouent un rôle crucial dans la prévention de la désertification', 50, 30, 180);
+('Acacia', 'Acacia spp.', '/uploads/trees/acacia.webp', 'Résineux', 'Utilisé pour la stabilisation des sols et l’alimentation du bétail.', 12, 25, 70),
+('Acajou', 'Swietenia macrophylla', '/uploads/trees/acajou.webp', 'Bois précieux', 'Utilisé pour la fabrication de meubles. Victime de déforestation massive.', 30, 50, 250),
+('Arbre à Encens', 'Boswellia sacra', '/uploads/trees/arbres_a_encens.webp', 'Résineux', 'Utilisé pour la production d’encens. Croît en milieux arides.', 15, 20, 90),
+('Arganier', 'Argania spinosa', '/uploads/trees/arganier.webp', 'Fruitier', 'Produit l’huile d’argan. Essentiel pour les écosystèmes arides.', 10, 30, 110),
+('Bambou Géant', 'Dendrocalamus giganteus', '/uploads/trees/bambous_geants.webp', 'Graminée', 'Croissance rapide. Utilisé en construction et artisanat.', 20, 50, 60),
+('Baobab Africain', 'Adansonia digitata', '/uploads/trees/baobab_africain.webp', 'Emblématique', 'Stocke l’eau. Fruits nutritifs. Résilient à la sécheresse.', 10, 50, 80),
+('Bouleau Blanc', 'Betula pendula', '/uploads/trees/bouleau_blanc.webp', 'Feuillu', 'Résistant au froid. Contribue à la régénération forestière.', 20, 30, 75),
+('Caoutchouc', 'Hevea brasiliensis', '/uploads/trees/caoutchouc.webp', 'Industriel', 'Produit du latex. Cultivé dans les zones tropicales.', 25, 40, 95),
+('Cèdre Rouge', 'Thuja plicata', '/uploads/trees/cedre_rouge.webp', 'Conifère', 'Bois durable, aromatique. Utilisé en menuiserie.', 30, 45, 100),
+('Cèdre Tropical', 'Cedrela odorata', '/uploads/trees/cedre_tropical.webp', 'Tropical', 'Bois parfumé et résistant. Croissance rapide.', 35, 40, 120),
+('Cerisier Japonais', 'Prunus serrulata', '/uploads/trees/cerisier_japonais.webp', 'Ornemental', 'Célèbre pour sa floraison. Symbole culturel au Japon.', 15, 20, 130),
+('Chêne Rouge', 'Quercus rubra', '/uploads/trees/chene_ouge.webp', 'Feuillu', 'Très résistant. Fournit bois et habitat pour la faune.', 40, 35, 150),
+('Érable à Sucre', 'Acer saccharum', '/uploads/trees/erable_a_sucre.webp', 'Feuillu', 'Produit le sirop d’érable. Couleurs automnales spectaculaires.', 25, 40, 140),
+('Figuier Géant', 'Ficus macrophylla', '/uploads/trees/figuiers_geants.webp', 'Tropical', 'Arbre massif aux racines aériennes. Habitat naturel pour de nombreuses espèces.', 30, 60, 160),
+('Ginkgo Biloba', 'Ginkgo biloba', '/uploads/trees/ginkgo_biloba.webp', 'Relictuel', 'Arbre ancien. Résistant à la pollution. Utilisé en phytothérapie.', 20, 30, 200),
+('Mélèze de Sibérie', 'Larix sibirica', '/uploads/trees/meleze_de_siberie.webp', 'Conifère', 'Adapté aux climats extrêmes. Bois léger et résistant.', 50, 60, 120),
+('Moabi', 'Baillonella toxisperma', '/uploads/trees/moabi.webp', 'Bois précieux', 'Bois très dur. Utilisé en charpente et pour la parfumerie.', 35, 45, 300),
+('Eucalyptus d’Océanie', 'Eucalyptus globulus', '/uploads/trees/oceanie_eucalyptus.webp', 'Arbre aromatique', 'Croissance rapide. Utilisé pour l’huile et le bois.', 40, 50, 90),
+('Palmier Amazonien', 'Mauritia flexuosa', '/uploads/trees/palmiers_amazonniens.webp', 'Palmier', 'Source d’aliments, abris et matériaux de construction.', 40, 60, 90),
+('Pin de Sibérie', 'Pinus sibirica', '/uploads/trees/pin_de_siberie.webp', 'Conifère', 'Supporte des températures très basses. Produit des pignons.', 50, 55, 110),
+('Pin Rouge Japonais', 'Pinus densiflora', '/uploads/trees/pin_ouge_japonais.webp', 'Ornemental', 'Très décoratif, apprécié pour les jardins japonais.', 30, 35, 125),
+('Pohutukawa', 'Metrosideros excelsa', '/uploads/trees/pohutukawa.webp', 'Côtier', 'Protège les littoraux. Floraison rouge spectaculaire.', 20, 30, 135),
+('Rauri', 'Taxus spp.', '/uploads/trees/rauri.webp', 'Conifère', 'Croissance lente. Source du taxol (anti-cancer).', 40, 50, 150),
+('Séquoia Géant', 'Sequoiadendron giganteum', '/uploads/trees/sequoia_gant.webp', 'Géant', 'Un des plus grands arbres du monde. Capture massive de CO₂.', 100, 200, 500),
+('Teck', 'Tectona grandis', '/uploads/trees/teck.webp', 'Bois précieux', 'Résistant à l’eau. Très utilisé en construction navale.', 35, 45, 270);
+
+
 
 INSERT INTO "forest" (name, association, image, description, country, location_x, location_y) VALUES
-('Forêt Amazonienne', 'GreenRoots', 'imageforet1.jpg', 'Vaste forêt tropicale humide nécessitant une reforestation.', 'Bresil',  -5.0000, -60.0000),
-('Forêts Indonésiennes', 'GreenRoots', 'imageforet2.jpg', 'Archipel avec des forêts tropicales humides critiques pour la biodiversité.','Indonésie', -2.0000, 118.0000),
-('Zone de Reforestation du Sahel', 'GreenRoots', 'imageforet3.jpg', 'Région aride nécessitant des efforts de reforestation contre la désertification.', 'Maurritanie', 15.0000, 20.0000),
-('Forêts de Madagascar', 'GreenRoots', 'imageforet4.jpg', 'Île avec une biodiversité unique et une déforestation importante.', 'Madagascar', -18.0000, 47.0000),
-('Forêts des Philippines', 'GreenRoots', 'imageforet5.jpg', 'Archipel tropical avec des forêts ayant subi une déforestation.', 'Philippines', 13.0000, 122.0000),
-('Zones de Reforestation sur Himalaya', 'GreenRoots', 'imageforet6.jpg', 'Région montagneuse où la reforestation est cruciale contre lérosion.', 'Népal', 30.0000, 85.0000),
-('Zones de Reforestation à Haïti', 'GreenRoots', 'imageforet7.jpg', 'Pays ayant subi une déforestation sévère avec un besoin urgent de reforestation.', 'Haïti', 19.0000, -72.0000);
+('Forêts des Philippines', 'GreenRoots', '/uploads/forests/forest_oceanie.webp', 'Archipel tropical avec des forêts ayant subi une déforestation.', 'Philippines', 13.0000, 122.0000),
+('Zones de Reforestation sur Himalaya', 'GreenRoots', '/uploads/forests/Forest_temperee.webp', 'Région montagneuse où la reforestation est cruciale contre l’érosion.', 'Népal', 30.0000, 85.0000),
+('Forêts de Madagascar', 'GreenRoots', '/uploads/forests/Forest_tropicale.webp', 'Île avec une biodiversité unique et une déforestation importante.', 'Madagascar', -18.0000, 47.0000),
+('Zones de Reforestation à Haïti', 'GreenRoots', '/uploads/forests/forests_am_nord.webp', 'Pays ayant subi une déforestation sévère avec un besoin urgent de reforestation.', 'Haïti', 19.0000, -72.0000),
+('Forêts Françaises', 'GreenRoots', '/uploads/forests/forest_fr.webp', 'Massifs forestiers métropolitains à préserver et restaurer.', 'France', 46.6034, 1.8883),
+('Forêts d''Asie du Sud-Est', 'GreenRoots', '/uploads/forests/forest_asie.webp', 'Forêts tropicales menacées, essentielles pour la biodiversité.', 'Indonésie', -2.5489, 118.0149),
+('Forêts Amazoniennes', 'GreenRoots', '/uploads/forests/forest_am_sud.webp', 'Poumon vert de la planète, en reforestation urgente.', 'Brésil', -3.4653, -62.2159),
+('Zone de Reforestation du Sahel', 'GreenRoots', '/uploads/forests/foretes_africaine.webp', 'Région aride nécessitant des efforts de reforestation contre la désertification.', 'Mauritanie', 15.0000, 20.0000);
+
+
 
 INSERT INTO "order" (user_id, total_price, status) VALUES
 (1, 100, 1),
@@ -47,19 +67,32 @@ INSERT INTO "order_item" (order_id, tree_id, forest_id, name, quantity, price) V
 (3, 3, 4, 'Ébène du Gabon', 3, 900);  
 
 INSERT INTO "forest_tree" (forest_id, tree_id, stock) VALUES
-(1, 1, 150),  
-(1, 6, 200),  
-(2, 2, 100),  
-(2, 8, 50),   
-(3, 1, 300),  
-(3, 6, 400),  
-(4, 4, 120),  
-(4, 6, 250),  
-(5, 5, 80),  
-(5, 9, 180),  
-(6, 4, 90),   
-(6, 7, 110),  
-(7, 1, 500),  
-(7, 10, 300); 
+(1, 18, 150),  
+(1, 5, 200),   
+(1, 8, 120), 
+(2, 16, 90),   
+(2, 7, 150),   
+(2, 22, 60),   
+(3, 6, 250),  
+(3, 14, 120),
+(4, 3, 120),   
+(4, 6, 300),   
+(4, 1, 180),  
+(5, 12, 100),  
+(5, 13, 90),  
+(5, 21, 60),   
+(5, 23, 50),   
+(5, 15, 40),   
+(6, 2, 80),  
+(6, 8, 100),
+(6, 5, 150),
+(6, 18, 100), 
+(7, 19, 180),
+(7, 2, 100), 
+(7, 24, 50), 
+(8, 1, 300),
+(8, 6, 200),   
+(8, 4, 150);   
+
 
 COMMIT;
