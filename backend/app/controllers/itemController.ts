@@ -27,14 +27,13 @@ const itemController = {
     }),
     addOrderItem: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const data = req.body;
-        const sanitizedData = sanitizeInput(data);  
-        const addOrderItemResult = await orderItemMapper.create(sanitizedData);
+        const addOrderItemResult = await orderItemMapper.create(data);
 
         if (!addOrderItemResult) {
           return next(new AppError(`Order item not created`, 400));
         }
       
-        await updateStock(Number(sanitizedData.tree_id), Number(sanitizedData.forest_id), Number(sanitizedData.quantity));
+        await updateStock(Number(data.tree_id), Number(data.forest_id), Number(data.quantity));
         res.status(201).json(addOrderItemResult)
       }
     ),

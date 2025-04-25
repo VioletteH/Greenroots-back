@@ -64,8 +64,8 @@ const orderController = {
   }),
 
   addOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const sanitizedBody = sanitizeInput(req.body);
-    const { error, value } = orderSchema.validate(sanitizedBody);
+    //const sanitizedBody = sanitizeInput(req.body);
+    const { error, value } = orderSchema.validate(req.body);
     console.log("error", error);
     console.log("value", value);
     

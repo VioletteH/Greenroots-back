@@ -22,7 +22,17 @@ export default class TreeMapper extends BaseMapper<any> {
 
     async treeByCountry(slug: string): Promise<Tree[]> {
         const query = `
-            SELECT *
+            SELECT 
+            'tree' AS type,
+            t.id,
+            t.name,
+            t.scientific_name AS "scientificName",
+            t.image,
+            t.category,
+            t.description,
+            t.co2::float,
+            t.o2::float,
+            t.price::float
             FROM tree t
             JOIN forest_tree ft ON t.id = ft.tree_id
             JOIN forest f ON ft.forest_id = f.id

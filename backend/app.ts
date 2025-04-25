@@ -30,9 +30,9 @@ app.use(cors({
 }));
 
 // Sécurité avec helmet (CSP désactivé pour éviter les conflits si tu injectes du contenu dynamique)
-app.use(helmet({
-  contentSecurityPolicy: false,
-}));
+// app.use(helmet({
+//   contentSecurityPolicy: false,
+// }));
 
 app.use(cookieParser());
 
