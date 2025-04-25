@@ -53,7 +53,7 @@ routes.delete("/users/:id", /*authorizationController,*/ userController.deleteUs
 //ORDERS
 routes.get("/orders", authorizationController, isGranted, orderController.orders);
 routes.get("/orders/with-count", authorizationController, isGranted, orderController.ordersWithCount);
-routes.get("/orders/:id", authorizationController, isGranted, orderController.orderById);
+routes.get("/orders/:id", authorizationController, orderController.orderById);
 routes.get("/orders/:id/with-user", authorizationController, isGranted, orderController.orderByIdWithUser);
 routes.get("/orders/user/:id", authorizationController, isGranted, orderController.ordersByUserId);
 routes.post("/orders", authorizationController, isGranted, orderController.addOrder);
