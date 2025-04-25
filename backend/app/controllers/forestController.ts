@@ -79,8 +79,8 @@ const forestController = {
     }),
     updateForest: catchAsync(async (req:Request, res:Response, next: NextFunction )  => {
         const id = parseInt(req.params.id, 10);
-        const sanitizedBody = sanitizeInput(req.body);
-        const { error, value } = forestSchema.validate(sanitizedBody);
+        // const sanitizedBody = sanitizeInput(req.body);
+        const { error, value } = forestSchema.validate(req.body);
         if (error) {
             return next(new AppError("Invalid data", 400));
         }
