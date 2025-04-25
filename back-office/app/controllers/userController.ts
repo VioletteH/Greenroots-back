@@ -24,7 +24,7 @@ const userController = {
       } catch (error) {
          console.error('Erreur dans getAllUsers :', error);
 
-         if (error instanceof Error && error.message.includes("token")) {
+         if (error instanceof Error && error.message.includes("tokenbo")) {
             return res.redirect("/login");
          }
 

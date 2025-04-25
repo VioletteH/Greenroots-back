@@ -28,13 +28,13 @@ const authController = {
                 });
             }
 
-            res.cookie('token', token, {
+            res.cookie('tokenbo', token, {
                 httpOnly: true,
                 sameSite: 'strict',
                 maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
             });
 
-            res.cookie('user', JSON.stringify(user), {
+            res.cookie('userbo', JSON.stringify(user), {
                 httpOnly: false,
                 sameSite: 'strict',
                 maxAge: 7 * 24 * 60 * 60 * 1000, // 7 jours
@@ -51,8 +51,8 @@ const authController = {
     },
 
     logout: (req: Request, res: Response) => {
-        res.clearCookie('token');
-        res.clearCookie('user');
+        res.clearCookie('tokenbo');
+        res.clearCookie('userbo');
         return res.redirect('/login');
     }
 };
