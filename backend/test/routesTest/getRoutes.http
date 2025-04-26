@@ -1,0 +1,67 @@
+#  ✅ Operational
+#  🛠️ Controller to do
+
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbWFpbGluYXRvci5jb20iLCJpYXQiOjE3NDUzMTQ1MDgsImV4cCI6MTc0NTM1NzcwOH0.Rll-gDR5YFBpaek7Ai8HTNjQwpexgh4eiOAz3iJjL3Y
+
+### TREES 
+
+### ✅ routes.get("/trees", treeController.trees);
+GET http://localhost:3000/trees
+
+### ✅ routes.get("/trees/:id", treeController.treesById);
+GET http://localhost:3000/trees/1
+
+### ✅ routes.get("/trees", treeController.trees);
+GET http://localhost:3000/trees/?limit=2&offset=3
+
+### ✅ routes.get("/forests/:id/trees", treeController.treesByForest);
+GET http://localhost:3000/forests/1/trees
+
+### ✅ routes.get("/trees/country/:slug", treeController.treesByCountry);
+GET http://localhost:3000/trees/country/bresil
+
+### ✅ routes.get("/trees/category/:slug", treeController.treesByCategory);
+GET http://localhost:3000/trees/category/conifere
+
+### FORESTS
+
+### ✅ routes.get("/forests", forestController.forests);
+GET http://localhost:3000/forests
+
+### ✅ routes.get("/forests/:id", forestController.forestById);
+GET http://localhost:3000/forests/1
+
+### ✅ routes.get("/trees/:id/forests", forestController.forestsByTree);
+GET http://localhost:3000/trees/1/forests
+
+### USERS
+
+### ✅ routes.get("/users", userController.users);
+GET http://localhost:3000/users
+
+### routes.get("/users/:id", userController.userById);
+GET ✅ http://localhost:3000/users/11
+Authorization: Bearer {{authToken}}
+
+### ORDERS
+
+### routes.get("/orders", orderController.orders);
+GET 🛠️ http://localhost:3000/orders
+Authorization: Bearer {{authToken}}
+
+### routes.get("/orders/user/:id", orderController.ordersByUserId);
+GET ✅ http://localhost:3000/orders/user/1
+Authorization: Bearer {{authToken}}
+
+### routes.get("/orders/:id", orderController.orderById);
+GET 🛠️ http://localhost:3000/orders/1
+Authorization: Bearer {{authToken}}
+
+### ITEMS 
+### routes.get("/items", orderItemController.items);
+GET ✅ http://localhost:3000/items
+
+###routes.get("/items/order/:id", orderItemController.itemsByOrderId);
+GET ✅ http://localhost:3000/items/order/8
+
+

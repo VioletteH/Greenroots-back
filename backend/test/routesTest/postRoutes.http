@@ -1,0 +1,99 @@
+#  ✅ Operational
+#  🛠️ Controller to do
+
+### AUTHENTICATION
+
+###  🛠️ Test Login
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "test"
+}
+
+### 🛠️ Test Register
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+  "firstname": "Admin",
+  "email": "admin@gmail.com",
+  "password": "azertyuiop",
+  "role": "admin"
+}
+
+### TREES
+
+### ✅ Test addTree
+POST http://localhost:3000/trees
+Content-Type: application/json
+
+{
+    "name": "Figuier",
+    "scientific_name": "Figuerus",
+    "image": "figuier.jpg",
+    "category": "Fruitier",
+    "description": "Arbre a confiture",
+    "co2": 32,
+    "o2": 54,
+    "price": 75
+}
+
+### FOREST
+
+### ✅ Test addForest
+POST http://localhost:3000/forests
+Content-Type: application/json
+
+{
+    "name": "Forêt des Pyrénées Orientales",
+    "association": "GreenRoots",
+    "image": "imageforet9.jpg",
+    "description": "Une super forêt sur une super montagne",
+    "country": "France",
+    "locationX": 20.000000,
+    "locationY": -75.000000
+}
+
+### USERS
+
+### ✅ Test addUser
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "firstname": "thibaut",
+    "lastname": "thibaut",
+    "email": "thibaut@thibaut.com",
+    "password": "azertyuiop",
+    "phone": "0788888888",
+    "address": "10 av du capitole",
+    "zipcode": "31000",
+    "city": "Washigton",
+    "role": "admin"
+}
+
+### ORDERS
+
+### 🛠️ Test addOrder
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+    "user_id": 11,
+    "total_price": 200,
+    "status": 2
+}
+
+### ✅ Test addOrderItem // activer la route + controller pour le test
+# POST http://localhost:3000/orders-items
+# Content-Type: application/json
+
+# {
+#     "order_id": 6,
+#     "tree_id": 1,
+#     "name": "sapin",
+#     "quantity": 2,
+#     "price": 50
+# }
