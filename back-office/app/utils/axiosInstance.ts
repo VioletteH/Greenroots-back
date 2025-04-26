@@ -2,7 +2,7 @@ import axios from "axios";
 import * as cookieLib from "cookie";
 import { Request } from "express";
 
-const API_URL = "http://greenroots-backend:3000"
+const API_URL = process.env.API_BASE_URL;
 
 export function createAxiosWithAuth(req: Request) {
   const cookies = cookieLib.parse(req.headers.cookie || "");

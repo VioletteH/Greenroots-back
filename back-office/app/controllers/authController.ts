@@ -2,7 +2,7 @@ import axios from "axios";
 import { Request, Response } from "express";
 import {sanitizeObject} from "../utils/sanitize";
 
-const API_URL = "http://greenroots-backend:3000";
+const API_URL = process.env.API_BASE_URL;
 
 const authController = {
     loginView: async (req: Request, res: Response) => {

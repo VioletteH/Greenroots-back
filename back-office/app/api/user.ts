@@ -3,7 +3,8 @@ import { User } from "../types/index";
 import { createAxiosWithAuth } from "../utils/axiosInstance";
 import { Request } from "express";
 
-const api_url = "http://greenroots-backend:3000/users";
+const BASE_URL = process.env.API_BASE_URL;
+const api_url = BASE_URL + '/users';
 
 export const getAll = async (req: Request, limit=9, offset=0): Promise<{ users: User[]; total: number }> => {
   const axiosInstance = createAxiosWithAuth(req);

@@ -3,7 +3,8 @@ import { Forest, ForestWithTreesAndStock } from "../types/index";
 import { createAxiosWithAuth } from "../utils/axiosInstance";
 import { Request } from "express";
 
-const api_url = "http://greenroots-backend:3000/forests";
+const BASE_URL = process.env.API_BASE_URL;
+const api_url = BASE_URL + '/forests';
 
 export const getAll = async (limit=9, offset=0): Promise<{ forests: Forest[]; total: number }> => {
   const response = await axios.get(`${api_url}/with-count?limit=${limit}&offset=${offset}`);
