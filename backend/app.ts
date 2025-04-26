@@ -11,9 +11,8 @@ const PORT = 3000;
 
 const allowedOrigins = [
   process.env.BACKOFFICE,
-  process.env.FRONT,
-  'http://localhost:3001',
-  'http://localhost:5173'
+  process.env.FRONTA,
+  process.env.FRONTB,
 ];
 
 // Middleware CORS avec log des blocages
