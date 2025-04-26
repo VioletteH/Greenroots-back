@@ -1,0 +1,21 @@
+services:
+  greenroots-db:
+    image: postgres:17.4-alpine
+    volumes:
+      - ./pg-greenroots:/var/lib/postgresql/data
+      - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./data/seeding.sql:/docker-entrypoint-initdb.d/seeding.sql
+    ports:
+      - "5433:5432"
+
+  greenroots-backend:
+    build:
+      context: ./backend
+    ports:
+      - "3003:3000"
+
+  greenroots-backoffice:
+    build:
+      context: ./back-office
+    ports:
+      - "3004:3000"
