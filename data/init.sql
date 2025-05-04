@@ -1,5 +1,6 @@
--- SQLBook: Code
 BEGIN;
+
+-- Fonction remove accents
 
 CREATE OR REPLACE FUNCTION remove_accents(text)
 RETURNS text AS $$
@@ -9,12 +10,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
+-- Réinitialisation des tables
+
 DROP TABLE IF EXISTS "order_item";
 DROP TABLE IF EXISTS "forest_tree";
 DROP TABLE IF EXISTS "order";
 DROP TABLE IF EXISTS "forest";
 DROP TABLE IF EXISTS "tree";
 DROP TABLE IF EXISTS "user";
+
+-- Création des tables
 
 CREATE TABLE "user" (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -94,6 +99,8 @@ CREATE TABLE "forest_tree" (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT unique_forest_tree UNIQUE (forest_id, tree_id)
 );
+
+-- Réinitialisation des id à 1
 
 ALTER TABLE "user" ALTER COLUMN id RESTART WITH 1;
 ALTER TABLE "tree" ALTER COLUMN id RESTART WITH 1;

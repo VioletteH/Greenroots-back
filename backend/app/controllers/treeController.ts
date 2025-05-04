@@ -11,42 +11,51 @@ import { sanitizeInput } from '../utils/sanitizeInput';
 
 const treeMapper = new loadTreeMapper();
 
-const treeController = {   
+const treeController = { 
+
+    // all trees
+
     trees: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+
         const limit = parseInt(req.query.limit as string, 10) || 10;
         const offset = parseInt(req.query.offset as string, 10) || 0; 
         const sortBy = req.query.sortBy as string;
-        let trees;
+        const withCount = req.query.withCount === 'true';
+
+        let trees: Tree[] = [];
+        let total: number | undefined;
 
         if (sortBy === 'price') {
-            trees = await treeMapper.treeByPrice();
-        } else {
+            trees = await treeMapper.treesByPrice();
+        }else if (withCount) {
+            const result = await treeMapper.findAllWithCount(limit, offset);
+            trees = result.data;
+            total = result.total;
+        }else {
             trees = await treeMapper.findAll(limit, offset); 
         }
-    
+
         if (!trees || trees.length === 0) {
             return next(new AppError("No trees found", 404)); 
         }
+
+        if (withCount) {
+            return res.status(200).json({ trees, total });
+        }
+        
         res.status(200).json(trees);
     }),
 
-    allTreesWithForests: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+    treesWithForests: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const limit = parseInt(req.query.limit as string, 10) || 10;
         const offset = parseInt(req.query.offset as string, 10) || 0;
-        const trees = await treeMapper.getAllTreesWithForests(limit, offset);
+        const trees = await treeMapper.treesWithForests(limit, offset);
         if (!trees || trees.length === 0) {
             return next(new AppError("No trees found", 404));
         }
         res.status(200).json(trees);
     }),    
-    oneTreeWithForests: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const id = parseInt(req.params.id, 10);
-        const tree = await treeMapper.getOneTreeWithForests(id);
-        if (!tree || tree.length === 0) {
-            return next(new AppError("No trees found", 404));
-        }
-        res.status(200).json(tree);
-    }),
+
     treesWithCount: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const limit = parseInt(req.query.limit as string, 10) || 10;
         const offset = parseInt(req.query.offset as string, 10) || 0; 
@@ -62,6 +71,31 @@ const treeController = {
         });
 
     }),
+
+    treeWithForests: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const id = parseInt(req.params.id, 10);
+        const tree = await treeMapper.treeWithForests(id);
+
+        if (!tree || tree.length === 0) {
+            return next(new AppError("No trees found", 404));
+        }
+        res.status(200).json(tree);
+    }),
+
+    
+    treeWithForestsAndStock: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        const id = parseInt(req.params.id, 10);
+
+        const existingTree = await treeMapper.findById(id);
+        if (!existingTree) {
+            return next(new AppError(`Tree with ${id} not found`, 404));
+        }
+
+        const trees = await treeMapper.treeWithForestsAndStock(id);
+
+        res.status(200).json(trees);
+    }),
+
     treeById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
         // Tree exist
@@ -79,7 +113,7 @@ const treeController = {
         if (!existingTree) {
             return next(new AppError(`Tree with ${id} not found`, 404));
         }
-        const trees = await treeMapper.treeByForest(id);
+        const trees = await treeMapper.treesByForest(id);
         if (trees.length === 0) {
             return next(new AppError(`No trees found for forest with id ${id}`, 404));
         }
@@ -88,7 +122,7 @@ const treeController = {
     treesByCountry: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const slug = req.params.slug;
 
-        const trees = await treeMapper.treeByCountry(slug);
+        const trees = await treeMapper.treesByCountry(slug);
         if (trees.length === 0) {
             return next(new AppError(`No trees found for slug ${slug}`, 404));
         }
@@ -97,24 +131,13 @@ const treeController = {
     treesByCategory: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const slug = req.params.slug;
 
-        const trees = await treeMapper.treeByCategory(slug);
+        const trees = await treeMapper.treesByCategory(slug);
         if (trees.length === 0) {
             return next(new AppError(`No trees found for slug ${slug}`, 404));
         }
         res.status(200).json(trees);
     }),
-    getTreeWithForestsAndStock: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const id = parseInt(req.params.id, 10);
-
-        const existingTree = await treeMapper.findById(id);
-        if (!existingTree) {
-            return next(new AppError(`Tree with ${id} not found`, 404));
-        }
-
-        const trees = await treeMapper.getTreeWithForestsAndStock(id);
-
-        res.status(200).json(trees);
-    }),
+    
     getCustomTrees: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const { ids } = req.query;
 

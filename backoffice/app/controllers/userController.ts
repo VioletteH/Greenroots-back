@@ -5,14 +5,15 @@ import {sanitizeObject} from "../utils/sanitize";
 import { getAll, getOne, add, update } from '../api/user';
 
 const userController = {
-   getAllUsers: async (req:Request, res:Response) => {
+
+   getAllUsers: async (req:Request, res:Response): Promise<void> => {
       try {
          const limit = 9;
          const page = Number(req.query.page as string) || 1;
          const offset = (page - 1) * limit;
 
-         const { users, total } = await getAll(req, limit, offset);
-         const totalPages = Math.ceil(total / limit);
+         const { users, total } = await getAll(req, limit, offset, true);
+         const totalPages = total ? Math.ceil(total / limit) : 1;
 
          res.render('user/index', { 
             users,
@@ -22,11 +23,13 @@ const userController = {
             hasPrevious: page > 1
          });
       } catch (error) {
-         console.error('Erreur dans getAllUsers :', error);
+         console.error('Error fetching all forests:', error);
 
-         if (error instanceof Error && error.message.includes("tokenbo")) {
-            return res.redirect("/login");
-         }
+         // console.error('Erreur dans getAllUsers :', error);
+
+         // if (error instanceof Error && error.message.includes("tokenbo")) {
+         //    return res.redirect("/login");
+         // }
 
          res.status(500).render('error/500', { error });
       }

@@ -1,26 +1,29 @@
-import { snakeToCamel } from '../utils/toggleCase';
-import BaseMapper from './baseMapper';
 import { pool } from './db';
+
+import BaseMapper from './baseMapper';
+
+import { snakeToCamel } from '../utils/toggleCase';
+
 import { Forest } from '../types/index';
 
 export default class ForestMapper extends BaseMapper<any> {
-    constructor() {
-        super('forest');
+	constructor() {
+		super('forest');
+	}
+
+    async forestsByTree(id : number): Promise<Forest[]> {
+			const query = `
+                SELECT DISTINCT f.*, ft.stock
+                FROM forest f
+                JOIN forest_tree ft ON ft.forest_id = f.id
+                WHERE ft.tree_id = $1;
+			`;
+			const { rows } = await pool.query(query, [id]);
+			if (!rows) return []; 
+			return rows.map(snakeToCamel) as Forest[];
     }
 
-    async forestByTree(id : number): Promise<Forest[]> {
-        const query = `
-            SELECT DISTINCT f.*
-            FROM forest f
-            JOIN forest_tree ft ON ft.forest_id = f.id
-            WHERE ft.tree_id = $1
-        `;
-        const { rows } = await pool.query(query, [id]);
-        if (!rows) return []; 
-        return rows.map(snakeToCamel) as Forest[];
-    }
-
-    async getForestWithTreesAndStock(forestId: number): Promise<any> {
+    async forestWithTreesAndStock(forestId: number): Promise<any> {
         const query = `
             SELECT forest.*,
                 array_remove(array_agg(tree.name ORDER BY tree.name), NULL) AS treesName,

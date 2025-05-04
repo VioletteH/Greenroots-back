@@ -16,6 +16,6 @@ services:
 
   greenroots-backoffice:
     build:
-      context: ./back-office
+      context: ./backoffice
     ports:
       - "3004:3000"

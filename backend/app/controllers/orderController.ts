@@ -5,33 +5,54 @@ import { catchAsync } from "../utils/catchAsync";
 import loadOrderMapper from "../mappers/orderMapper";
 import BaseMapper from "../mappers/baseMapper";
 import { sanitizeInput } from '../utils/sanitizeInput';
+import { Order } from '../types/index';
 
 const orderMapper = new loadOrderMapper();
 
 const orderController = {
-  orders: catchAsync(async (req: Request, res: Response) => {
-    const orders = await orderMapper.findAll();
-    console.log("orders", orders);
-    if (orders.length === 0) {
-      res.status(200).json("ordders not found");
+
+  orders: catchAsync(async (req:Request, res:Response, next:NextFunction): Promise<void | Response> => {
+
+    const limit = parseInt(req.query.limit as string, 10) || 10;
+    const offset = parseInt(req.query.offset as string, 10) || 0;
+    const withCount = req.query.withCount === 'true';
+
+    let orders: Order[] = [];
+    let total: number | undefined;
+
+    if (withCount) {
+        const result = await orderMapper.findAllWithCount(limit, offset);
+        orders = result.data;
+        total = result.total;
+    }else {
+        orders = await orderMapper.findAll(limit, offset);
     }
+
+    if (!orders || orders.length === 0) {
+      return next(new AppError("No users found", 404)); 
+    }
+
+    if (withCount) {
+      return res.status(200).json({ orders, total });
+    }
+
     res.status(200).json(orders);
   }),
 
-  ordersWithCount: catchAsync(async (req: Request, res: Response) => {
-    const limit = parseInt(req.query.limit as string, 10) || 10;
-    const offset = parseInt(req.query.offset as string, 10) || 0;
+  // ordersWithCount: catchAsync(async (req: Request, res: Response) => {
+  //   const limit = parseInt(req.query.limit as string, 10) || 10;
+  //   const offset = parseInt(req.query.offset as string, 10) || 0;
 
-    const { data: orders, total } = await orderMapper.findAllWithCountWithUser(limit, offset);
+  //   const { data: orders, total } = await orderMapper.findAllWithCountWithUser(limit, offset);
 
-    if (orders.length === 0) {
-      res.status(200).json("No orders found");
-    }
-    res.status(200).json({
-      orders,
-      total,
-    });
-  }),
+  //   if (orders.length === 0) {
+  //     res.status(200).json("No orders found");
+  //   }
+  //   res.status(200).json({
+  //     orders,
+  //     total,
+  //   });
+  // }),
 
   ordersByUserId: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 

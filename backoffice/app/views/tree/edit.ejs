@@ -47,11 +47,12 @@
     <label class="form-label d-block mb-2 fw-bold">Associer à une ou plusieurs forêts</label>
 
     <div class="row g-2">
-      <% forests.forEach(forest => { 
+      <% forests.forEach(forest => {
         const index = tree.forestname.indexOf(forest.name);
         const isChecked = index !== -1;
         const stockValue = isChecked ? tree.stock[index] : '';
-      %>
+        %>
+      
         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
           <div class="border rounded p-2 bg-light h-100 shadow-sm small-card">
             <div class="form-check mb-2">
@@ -80,7 +81,7 @@
             </div>
           </div>
         </div>
-      <% }) %>
+        <% }) %>
     </div>
   </div>
 

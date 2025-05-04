@@ -40,8 +40,6 @@ INSERT INTO "tree" (name, scientific_name, image, category, description, co2, o2
 ('Séquoia Géant', 'Sequoiadendron giganteum', '/uploads/trees/sequoia_gant.webp', 'Géant', 'Un des plus grands arbres du monde. Capture massive de CO₂.', 100, 200, 500),
 ('Teck', 'Tectona grandis', '/uploads/trees/teck.webp', 'Bois précieux', 'Résistant à l’eau. Très utilisé en construction navale.', 35, 45, 270);
 
-
-
 INSERT INTO "forest" (name, association, image, description, country, location_x, location_y) VALUES
 ('Forêts des Philippines', 'GreenRoots', '/uploads/forests/forest_oceanie.webp', 'Archipel tropical avec des forêts ayant subi une déforestation.', 'Philippines', 13.0000, 122.0000),
 ('Zones de Reforestation sur Himalaya', 'GreenRoots', '/uploads/forests/Forest_temperee.webp', 'Région montagneuse où la reforestation est cruciale contre l’érosion.', 'Népal', 30.0000, 85.0000),
@@ -51,8 +49,6 @@ INSERT INTO "forest" (name, association, image, description, country, location_x
 ('Forêts d''Asie du Sud-Est', 'GreenRoots', '/uploads/forests/forest_asie.webp', 'Forêts tropicales menacées, essentielles pour la biodiversité.', 'Indonésie', -2.5489, 118.0149),
 ('Forêts Amazoniennes', 'GreenRoots', '/uploads/forests/forest_am_sud.webp', 'Poumon vert de la planète, en reforestation urgente.', 'Brésil', -3.4653, -62.2159),
 ('Zone de Reforestation du Sahel', 'GreenRoots', '/uploads/forests/foretes_africaine.webp', 'Région aride nécessitant des efforts de reforestation contre la désertification.', 'Mauritanie', 15.0000, 20.0000);
-
-
 
 INSERT INTO "order" (user_id, total_price, status) VALUES
 (1, 100, 1),
@@ -104,5 +100,6 @@ INSERT INTO "forest_tree" (forest_id, tree_id, stock) VALUES
 (5, 20, 60),
 (6, 25, 90),  
 (7, 25, 50),
-(8, 4, 150);   
+(8, 4, 150);  
+ 
 COMMIT;

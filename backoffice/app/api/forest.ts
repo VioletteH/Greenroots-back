@@ -6,18 +6,23 @@ import { Request } from "express";
 const BASE_URL = process.env.API_BASE_URL;
 const api_url = BASE_URL + '/forests';
 
-export const getAll = async (limit=9, offset=0): Promise<{ forests: Forest[]; total: number }> => {
-  const response = await axios.get(`${api_url}/with-count?limit=${limit}&offset=${offset}`);
+// export const getAll = async (limit=9, offset=0): Promise<{ forests: Forest[]; total: number }> => {
+//   const response = await axios.get(`${api_url}/with-count?limit=${limit}&offset=${offset}`);
 
-  const data = response.data;
-  return data;
-};
+//   const data = response.data;
+//   return data;
+// };
 
-export const getAllWithoutCount = async (limit=9, offset=0): Promise<{ forests: Forest[]; total: number }> => {
-  const response = await axios.get(`${api_url}?limit=${limit}&offset=${offset}`);
+// export const getAllWithoutCount = async (limit=9, offset=0): Promise<{ forests: Forest[]; total: number }> => {
+//   const response = await axios.get(`${api_url}?limit=${limit}&offset=${offset}`);
 
-  const data = response.data;
-  return data;
+//   const data = response.data;
+//   return data;
+// };
+
+export const getAll = async (limit = 9, offset = 0, withCount = true): Promise<{ forests: Forest[]; total?: number }> => {
+  const response = await axios.get(`${api_url}?limit=${limit}&offset=${offset}${withCount ? '&withCount=true' : ''}`);
+  return response.data;
 };
 
 export const getOne = async (id: string): Promise<Forest> => {
@@ -27,9 +32,8 @@ export const getOne = async (id: string): Promise<Forest> => {
   return data;
 };
 
-export const getForestWithTreesAndStock = async (id: string): Promise<ForestWithTreesAndStock> => {
+export const forestWithTreesAndStock = async (id: string): Promise<ForestWithTreesAndStock> => {
   const response = await axios.get(`${api_url}/${id}/trees-with-stock`);
-
   const data = response.data;
   return data;
 };

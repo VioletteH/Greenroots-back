@@ -56,6 +56,7 @@ const authController = {
             user: userData
         });
     }),
+    
     register: catchAsync(async(req:Request, res:Response, next: NextFunction) : Promise<void> => {
         const sanitizedBody = sanitizeInput(req.body);
         //step 1 - data validation

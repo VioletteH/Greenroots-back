@@ -1,61 +1,58 @@
-import { snakeToCamel } from '../utils/toggleCase';
-import BaseMapper from './baseMapper';
 import { pool } from './db';
-import { Forest, Tree } from '../types/index';
+
+import BaseMapper from './baseMapper';
+
+import { snakeToCamel } from '../utils/toggleCase';
+
+import { Tree } from '../types/index';
 
 export default class TreeMapper extends BaseMapper<any> {
     constructor() {
         super('tree');
     }
 
-    async treeByForest(id : number): Promise<Tree[]> {
-        const query = `
-            SELECT DISTINCT t.*
-            FROM tree t
-            JOIN forest_tree ft ON ft.tree_id = t.id
-            WHERE ft.forest_id = $1
-        `;
-        const { rows } = await pool.query(query, [id]);
-        if (!rows) return []; 
-        return rows.map(snakeToCamel) as Tree[];
-    }
-
-    async treeByCountry(slug: string): Promise<Tree[]> {
+    async treesWithForests(limit?:number, offset?:number): Promise<any> {
         const query = `
             SELECT 
-            'tree' AS type,
-            t.id,
-            t.name,
-            t.scientific_name AS "scientificName",
-            t.image,
-            t.category,
-            t.description,
-            t.co2::float,
-            t.o2::float,
-            t.price::float
+                t.*,
+                json_agg(
+                    json_build_object('id', f.id, 'name', f.name,'stock', ft.stock)
+                ) AS forests
             FROM tree t
-            JOIN forest_tree ft ON t.id = ft.tree_id
-            JOIN forest f ON ft.forest_id = f.id
-            WHERE f.country_slug = $1;
+            LEFT JOIN forest_tree ft ON t.id = ft.tree_id
+            LEFT JOIN forest f ON ft.forest_id = f.id
+            GROUP BY t.id
+            ORDER BY created_at DESC
+            LIMIT $1 OFFSET $2
         `;
-        const { rows } = await pool.query(query, [slug]);
-        if (!rows) return []; 
-        return rows.map(snakeToCamel) as Tree[];
+        const { rows } = await pool.query(query, [limit, offset]);
+        if (!rows || rows.length === 0) {
+            return null;
+        }
+        return snakeToCamel(rows);
     }
 
-    async treeByCategory(slug: string): Promise<Tree[]> {
-        console.log("slug in treeByCategory:", slug);
+    async treeWithForests(id: number): Promise<any> {
         const query = `
-            SELECT *
-            FROM tree
-            WHERE category_slug = $1
+            SELECT 
+                t.*,
+                json_agg(
+                    json_build_object('id', f.id, 'name', f.name, 'stock', ft.stock)
+                ) AS forests
+            FROM tree t
+            LEFT JOIN forest_tree ft ON t.id = ft.tree_id
+            LEFT JOIN forest f ON ft.forest_id = f.id
+            WHERE t.id = $1
+            GROUP BY t.id            
         `;
-        const { rows } = await pool.query(query, [slug]);
-        if (!rows) return []; 
-        return rows.map(snakeToCamel) as Tree[];
+        const { rows } = await pool.query(query, [id]);
+        if (!rows || rows.length === 0) {
+            return null;
+        }
+        return snakeToCamel(rows);
     }
 
-    async getTreeWithForestsAndStock(treeId: number): Promise<any> {
+    async treeWithForestsAndStock(treeId: number): Promise<any> {
         const query = `
             SELECT tree.*,
                 array_remove(array_agg(forest.name ORDER BY forest.name), NULL) AS forestName,
@@ -71,7 +68,61 @@ export default class TreeMapper extends BaseMapper<any> {
         return snakeToCamel(rows[0]);
     }
 
+    // Filtres des arbres
+
+    async treesByForest(id : number): Promise<Tree[]> {
+        const query = `
+            SELECT DISTINCT t.*, ft.stock
+            FROM tree t
+            JOIN forest_tree ft ON ft.tree_id = t.id
+            WHERE ft.forest_id = $1
+        `;
+        const { rows } = await pool.query(query, [id]);
+        if (!rows) return []; 
+        return rows.map(snakeToCamel) as Tree[];
+    }
+
+    async treesByCountry(slug: string): Promise<Tree[]> {
+        const query = `
+            SELECT 
+            'tree' AS type,
+            t.*
+            FROM tree t
+            JOIN forest_tree ft ON t.id = ft.tree_id
+            JOIN forest f ON ft.forest_id = f.id
+            WHERE f.country_slug = $1;
+        `;
+        const { rows } = await pool.query(query, [slug]);
+        if (!rows) return []; 
+        return rows.map(snakeToCamel) as Tree[];
+    }
+
+    async treesByCategory(slug: string): Promise<Tree[]> {
+        const query = `
+            SELECT *
+            FROM tree
+            WHERE category_slug = $1
+        `;
+        const { rows } = await pool.query(query, [slug]);
+        if (!rows) return []; 
+        return rows.map(snakeToCamel) as Tree[];
+    }
+
+    async treesByPrice(): Promise<Tree[]> {
+        const query = `
+            SELECT *
+            FROM tree
+            ORDER BY price
+        `;
+        const { rows } = await pool.query(query);
+        if (!rows) return []; 
+        return rows.map(snakeToCamel) as Tree[];
+    }
+
+    // 
+
     async addTreeToForests(treeId: number, forestAssociations: { forestId: number, stock: number }[]): Promise<void> {
+        
         // S'il n'y a pas d'associations, on ne fait rien
         if (!forestAssociations || forestAssociations.length === 0) return;
 
@@ -81,13 +132,9 @@ export default class TreeMapper extends BaseMapper<any> {
         `;
         const client = await pool.connect();
         try {
-            // On commence une transaction pour s'assurer que toutes les insertions réussissent ou échouent ensemble
             await client.query('BEGIN');
-            // Parcours de chaque association de forêt pour insérer une ligne dans la table 'forest_tree' pour chaque forêt associée à l'arbre.
             for (const { forestId, stock } of forestAssociations) {
-                // Exécution de la requête pour chaque paire `forestId` et `stock`.
-                // L'ordre des valeurs dans le tableau [treeId, forestId, stock] correspond aux placeholders $1, $2 et $3 dans la requête SQL.
-                await client.query(query, [treeId, forestId, stock]);
+-                await client.query(query, [treeId, forestId, stock]);
             }
             await client.query('COMMIT');
         } catch (err) {
@@ -141,66 +188,6 @@ export default class TreeMapper extends BaseMapper<any> {
         } finally {
             client.release();
         }
-    }
-
-    async treeByPrice(): Promise<Tree[]> {
-        const query = `
-            SELECT *
-            FROM tree
-            ORDER BY price
-        `;
-        const { rows } = await pool.query(query);
-        if (!rows) return []; 
-        return rows.map(snakeToCamel) as Tree[];
-    }
-
-    async getAllTreesWithForests(limit?:number, offset?:number): Promise<any> {
-        const query = `
-            SELECT 
-                t.*,
-                json_agg(
-                    json_build_object(
-                        'id', f.id,
-                        'name', f.name,
-                        'stock', ft.stock
-                    )
-                ) AS forests
-            FROM tree t
-            LEFT JOIN forest_tree ft ON t.id = ft.tree_id
-            LEFT JOIN forest f ON ft.forest_id = f.id
-            GROUP BY t.id
-            ORDER BY created_at DESC
-            LIMIT $1 OFFSET $2
-        `;
-        const { rows } = await pool.query(query, [limit, offset]);
-        if (!rows || rows.length === 0) {
-            return null;
-        }
-        return snakeToCamel(rows);
-    }
-
-    async getOneTreeWithForests(id: number): Promise<any> {
-        const query = `
-            SELECT 
-                t.*,
-                json_agg(
-                    json_build_object(
-                        'id', f.id,
-                        'name', f.name,
-                        'stock', ft.stock
-                    )
-                ) AS forests
-            FROM tree t
-            LEFT JOIN forest_tree ft ON t.id = ft.tree_id
-            LEFT JOIN forest f ON ft.forest_id = f.id
-            WHERE t.id = $1
-            GROUP BY t.id            
-        `;
-        const { rows } = await pool.query(query, [id]);
-        if (!rows || rows.length === 0) {
-            return null;
-        }
-        return snakeToCamel(rows);
     }
 
     async getCustomTreeWithForests(ids: number[]): Promise<any> {

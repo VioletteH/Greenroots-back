@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { sanitizeInput } from '../utils/sanitizeInput';
 import { searchMapper } from "../mappers/searchMapper";
 
-export const searchController = async (req:Request, res:Response): Promise<void> => {
+const searchController = async (req:Request, res:Response): Promise<void> => {
     const query = req.query.search as string;
     if(!query) {
         res.status(400).json({ message: "Search query is required" });
@@ -20,3 +20,5 @@ export const searchController = async (req:Request, res:Response): Promise<void>
     }
     res.status(200).json(searchResults);
 }
+
+export default searchController;

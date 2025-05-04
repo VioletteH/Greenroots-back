@@ -34,14 +34,16 @@ const formatOrder = (order: Order): Order & {
 });
 
 const orderController = {
+
     getAllOrders: async (req: Request, res: Response): Promise<void> => {
+
         try {
             const limit = 9;
             const page = Number(req.query.page as string) || 1;
             const offset = (page - 1) * limit;
 
-            const { orders, total } = await getAll(req, limit, offset);
-            const totalPages = Math.ceil(total / limit);
+            const { orders, total } = await getAll(req, limit, offset, true);
+            const totalPages = total ? Math.ceil(total / limit) : 1;
 
             const formattedOrders = orders.map(formatOrder);   
              
@@ -57,7 +59,8 @@ const orderController = {
             res.status(500).render('error/500', { error });
         }
     },
-    
+
+
     getOrder: async (req:Request, res:Response) => {
         const id = req.params.id;
         try {

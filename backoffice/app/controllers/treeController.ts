@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { getAll, getOne, getTreeWithForestsAndStock, remove, add, update } from '../api/tree';
-import { getAllWithoutCount as getAllForests } from '../api/forest';
+import { getAll, getOne, forestsByTree, treeWithforestsAndStock, remove, add, update } from '../api/tree';
+import { getAll as getAllForests } from '../api/forest';
 import { Tree, TreeForm } from '../types/index';
 
 import fs from 'fs';
@@ -13,8 +13,8 @@ const treeController = {
          const page = Number(req.query.page as string) || 1;
          const offset = (page - 1) * limit;
 
-         const { trees, total } = await getAll(limit, offset);
-         const totalPages = Math.ceil(total / limit);
+         const { trees, total } = await getAll(limit, offset, true);
+         const totalPages = total ? Math.ceil(total / limit) : 1;
 
          res.render('tree/index', {
             trees,
@@ -32,10 +32,12 @@ const treeController = {
    getTree: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
-         const tree = await getTreeWithForestsAndStock(id);
+         const tree = await treeWithforestsAndStock(id);
+         // const tree = treeArray[0]; // Si on suppose que tu reçois un tableau
          if (!tree) {
             return res.status(404).render('error/404');
          }
+         console.log("BO - TC - getTree", tree)
          res.render('tree/show', { tree });
       } catch (error) {
          console.error('Error fetching tree:', error);
@@ -100,9 +102,17 @@ const treeController = {
 
    editTreeView: async (req:Request, res:Response) => {
       const id = req.params.id;
+      console.log("treeController - editTreeView - Tree id", id)
       try {
-         const forests = await getAllForests();
-         const tree: any = await getTreeWithForestsAndStock(id);
+         const forestsResponse = await getAllForests();
+         const forests = forestsResponse.forests ?? forestsResponse;
+         const tree = await treeWithforestsAndStock(id);
+
+         // const forests = await getAllForests();
+         // const treeArray = await treeWithForests(id);
+         // const tree = treeArray[0];
+         console.log("treeController - editTreeView - forest", forests);
+         console.log("treeController - editTreeView - tree", tree);
          if (!tree) {
             return res.status(404).render('error/404');
          }

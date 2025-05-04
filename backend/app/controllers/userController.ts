@@ -14,27 +14,49 @@ const userAuthMapper = new AuthMapper();
 
 const userController = {   
 
-    users: catchAsync(async (req:Request, res:Response ) => {
-        const users = await userMapper.findAll();
-        if (users.length === 0) {
-            res.status(200).json("No users found");
-        }
-        res.status(200).json(users);
-    }),
-    usersWithCount: catchAsync(async (req:Request, res:Response ) => {
+    users: catchAsync(async (req:Request, res:Response, next:NextFunction): Promise<void | Response> => {
+        
         const limit = parseInt(req.query.limit as string, 10) || 10;
         const offset = parseInt(req.query.offset as string, 10) || 0;
+        const withCount = req.query.withCount === 'true';
+    
+        let users: User[] = [];
+        let total: number | undefined;
 
-        const { data: users, total } = await userMapper.findAllWithCount(limit, offset);
-
-        if (users.length === 0) {
-            res.status(200).json("No users found");
+        if (withCount) {
+            const result = await userMapper.findAllWithCount(limit, offset);
+            users = result.data;
+            total = result.total;
+        }else {
+            users = await userMapper.findAll(limit, offset);
         }
-        res.status(200).json({
-            users,
-            total,
-        });
+ 
+        if (!users || users.length === 0) {
+            return next(new AppError("No users found", 404)); 
+        }
+
+        if (withCount) {
+            return res.status(200).json({ users, total });
+        }
+
+        res.status(200).json(users);
     }),
+
+    // usersWithCount: catchAsync(async (req:Request, res:Response ) => {
+    //     const limit = parseInt(req.query.limit as string, 10) || 10;
+    //     const offset = parseInt(req.query.offset as string, 10) || 0;
+
+    //     const { data: users, total } = await userMapper.findAllWithCount(limit, offset);
+
+    //     if (users.length === 0) {
+    //         res.status(200).json("No users found");
+    //     }
+    //     res.status(200).json({
+    //         users,
+    //         total,
+    //     });
+    // }),
+
     userById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         // Check user id
         const id = parseInt(req.params.id, 10);

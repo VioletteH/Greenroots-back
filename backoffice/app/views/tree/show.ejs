@@ -58,18 +58,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% if (tree.forestname && tree.forestname.length > 0) { %>
-                        <% for (let i = 0; i < tree.forestname.length; i++) { %>
-                            <tr>
-                                <td><%= tree.forestname[i] %></td>
-                                <td><%= tree.stock[i] %></td>
-                            </tr>
+                    <% if (tree.forestname && Array.isArray(tree.forestname) && tree.stock && Array.isArray(tree.stock) && tree.forestname.length > 0) { %>
+                        <% for (let i = 0; i < tree.forestname.length; i++){ %>
+                          <tr>
+                            <td><%= tree.forestname %></td>
+                            <td><%= tree.stock %></td>
+                          </tr>
                         <% } %>
-                    <% } else { %>
+                      <% } else { %>
                         <tr>
-                            <td colspan="2" class="text-center text-muted">Aucune forêt associée</td>
+                          <td colspan="2" class="text-center text-muted">Aucune forêt associée</td>
                         </tr>
-                    <% } %>
+                      <% } %>
                 </tbody>
             </table>
         </div>

@@ -46,7 +46,7 @@ export const searchMapper = async (search: string): Promise<any[]> => {
         FROM forest f
         WHERE remove_accents(f.name) ILIKE remove_accents($1)
     `;
-    const { rows } = await pool.query(query, [`%${search}%`]);
+    const {rows} = await pool.query(query, [`%${search}%`]);
     if (!rows) {
         return [];
     }

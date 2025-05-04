@@ -27,8 +27,8 @@ routes.get("/", (req, res) => {
 routes.get("/trees", treeController.getAllTrees);
 routes.get("/trees/news", treeController.createTreeView);
 routes.post("/trees/news", upload.single('image'), treeController.createTreePost);
-routes.get("/trees/:id", treeController.getTree);
-routes.get("/trees/:id/edit", treeController.editTreeView);
+routes.get("/trees/:id", treeController.getTree); // KO
+routes.get("/trees/:id/edit", treeController.editTreeView); // KO
 routes.patch("/trees/:id", upload.single('image'), treeController.updateTree);
 routes.delete("/trees/:id", treeController.deleteTree);
 

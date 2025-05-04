@@ -7,6 +7,7 @@ const { Pool } = pg;
 // Création d'un espace de log dédié à la BDD
 const dbDebug = debug("app:db");
 
+// connection à la BDD
 export const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -18,10 +19,10 @@ export const pool = new Pool({
 export const connectDB = async () => {
   try {
     const client = await pool.connect();
-    dbDebug("✅ PostgreSQL is connected.");
+    dbDebug("PostgreSQL is connected.");
     client.release();
   } catch (error) {
-    dbDebug("❌ Failed to connect to PostgreSQL:", error);
+    dbDebug("Failed to connect to PostgreSQL:", error);
     process.exit(1);
   }
 };
@@ -29,12 +30,12 @@ export const connectDB = async () => {
 export const query = async (text: string, params?: any[]) => {
   const client = await pool.connect();
   try {
-    dbDebug(`📤 Executing query: ${text} with params ${JSON.stringify(params)}`);
+    dbDebug(`Executing query: ${text} with params ${JSON.stringify(params)}`);
     const result = await client.query(text, params);
-    dbDebug(`✅ Query success: ${result.rowCount} rows returned`);
+    dbDebug(`Query success: ${result.rowCount} rows returned`);
     return result.rows;
   } catch (error) {
-    dbDebug("❌ Query error:", error);
+    dbDebug("Query error:", error);
     throw error;
   } finally {
     client.release();

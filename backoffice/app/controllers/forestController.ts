@@ -1,21 +1,21 @@
 import { Request, Response } from 'express';
 import { Forest, ForestForm } from '../types/index';
 
-import { getAll, getOne, add, update, remove, getForestWithTreesAndStock } from '../api/forest';
-import { getAllWithoutCount as getAllTrees } from '../api/tree';
+import { getAll, getOne, add, update, remove, forestWithTreesAndStock } from '../api/forest';
+import { getAll as getAllTrees } from '../api/tree';
 
 import fs from 'fs';
 import path from 'path';
 
 const forestController = {
-   getAllForests: async (req:Request, res:Response) => {
+   getAllForests: async (req:Request, res:Response): Promise<void> => {
       try {
          const limit = 9;
          const page = Number(req.query.page as string) || 1;
          const offset = (page - 1) * limit;
 
-         const { forests, total } = await getAll(limit, offset);
-         const totalPages = Math.ceil(total / limit);
+         const { forests, total } = await getAll(limit, offset, true);
+         const totalPages = total ? Math.ceil(total / limit) : 1;
 
          res.render('forest/index', { 
             forests,
@@ -33,7 +33,7 @@ const forestController = {
    getForest: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
-         const forest = await getForestWithTreesAndStock(id);
+         const forest = await forestWithTreesAndStock(id);
          if (!forest) {
             return res.status(404).render('error/404');
          }
@@ -103,8 +103,12 @@ const forestController = {
    editForestView: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
-         const trees = await getAllTrees();
-         const forest = await getForestWithTreesAndStock(id);
+         const treesResponse = await getAllTrees();
+         const trees = treesResponse.trees ?? treesResponse;
+         console.log("forestController - editForestView - tree", trees);
+         const forest = await forestWithTreesAndStock(id);
+         console.log("forestController - editForestView - forest", forest);
+
          if (!forest) {
             return res.status(404).render('error/404');
          }
