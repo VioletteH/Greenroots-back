@@ -87,7 +87,7 @@ Content-Type: application/json
 }
 
 ### ✅ Test addOrderItem // activer la route + controller pour le test
-# POST http://localhost:3000/orders-items
+# POST http://localhost:3000/orders/:id/items
 # Content-Type: application/json
 
 # {

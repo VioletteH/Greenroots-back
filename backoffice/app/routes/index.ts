@@ -54,5 +54,6 @@ routes.post("/users/news", userController.createUserPost);
 routes.get("/users/:id", userController.getUser);
 routes.get("/users/:id/edit", userController.editUserView);
 routes.patch("/users/:id", userController.updateUser);
+routes.delete("/users/:id", userController.deleteUser);
 
 export default routes;

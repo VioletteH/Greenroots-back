@@ -38,10 +38,16 @@ export const add = async (req: Request, user: User): Promise<User> => {
 
 export const update = async (req: Request, id: number, user: Partial<User>): Promise<User> => {
   const axiosInstance = createAxiosWithAuth(req);
-  const response = await axiosInstance.patch(`${api_url}/${id}/backoffice`, user);
+  try{
+    const response = await axiosInstance.patch(`${api_url}/${id}?backoffice=true`, user);
 
   const data = response.data;
   return data;
+  } catch (error) {
+    console.error('Error in update function:', error);
+    throw error;
+  }
+  
 };
 
 export const remove = async (id: number): Promise<void> => {

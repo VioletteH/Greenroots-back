@@ -11,6 +11,7 @@ const stripe = (() => {
 })();
 
 const stripeController = {
+    
     intent : catchAsync (async (req: Request, res: Response, next: NextFunction) => {
         const { amount, currency } = req.body;
         if (!amount || !currency) {

@@ -27,10 +27,9 @@ routes.get("/trees/forests", treeController.treesWithForests);
 
 // one tree
 routes.get("/trees/:id", treeController.treeById); 
-// routes.get("/trees/:id/forests", treeController.treeWithForests); // inclut le stock
-routes.get("/trees/:id/forests-with-stock", treeController.treeWithForestsAndStock);  //
+routes.get("/trees/:id/forests-and-stock", treeController.treeWithForestsAndStock); 
 
-// filtres
+// association & filtres
 routes.get("/forests/:id/trees", treeController.treesByForest);
 routes.get("/trees/country/:slug", treeController.treesByCountry);
 routes.get("/trees/category/:slug", treeController.treesByCategory);
@@ -40,8 +39,6 @@ routes.post("/trees", authorizationController, isGranted, treeController.addTree
 routes.patch("/trees/:id", authorizationController, isGranted, treeController.updateTree);
 routes.delete("/trees/:id", authorizationController, isGranted, treeController.deleteTree);
 
-// routes.get("/trees/custom", treeController.getCustomTrees);
-
 //FORESTS
 
 // all forests
@@ -49,10 +46,10 @@ routes.get("/forests", forestController.forests);
 
 // one forest
 routes.get("/forests/:id", forestController.forestById);
-routes.get("/forests/:id/trees-with-stock", forestController.forestWithTreesAndStock);
+routes.get("/forests/:id/trees-and-stock", forestController.forestWithTreesAndStock);
 
 // association
-routes.get("/trees/:id/forests", forestController.forestsByTree); // (renvoie uniquement les forêts) > ou c'est utilisé?
+routes.get("/trees/:id/forests", forestController.forestsByTree); 
 
 // post, patch et delete
 routes.post("/forests", authorizationController, isGranted, forestController.addForest);
@@ -70,7 +67,7 @@ routes.get("/users/:id/impact" , authorizationController, isGranted, userControl
 
 // post, patch et delete
 routes.post("/users", authorizationController, isGranted, userController.addUser);
-routes.patch("/users/:id/backoffice", authorizationController, isGranted, userController.updateUserBackOffice) //fusionner les 2 routes?
+// routes.patch("/users/:id/bo", /*authorizationController, isGranted,*/ userController.updateUser) //fusionner les 2 routes?
 routes.patch("/users/:id", authorizationController, isGranted, userController.updateUser);
 routes.delete("/users/:id", /*authorizationController,*/ userController.deleteUser);
 
@@ -81,8 +78,8 @@ routes.get("/orders", authorizationController, isGranted, orderController.orders
 
 // one order
 routes.get("/orders/:id", authorizationController, orderController.orderById);
-routes.get("/orders/:id/with-user", authorizationController, isGranted, orderController.orderByIdWithUser);
-routes.get("/orders/user/:id", authorizationController, isGranted, orderController.ordersByUserId); // doublon avec celle du dessus
+routes.get("/user/:id/orders", authorizationController, isGranted, orderController.ordersByUserId); // doublon avec celle du dessus
+routes.get("/orders/:id/full", authorizationController, isGranted, orderController.orderByIdWithUser);
 
 // post et patch
 routes.post("/orders", authorizationController, isGranted, orderController.addOrder);
@@ -90,9 +87,9 @@ routes.patch("/orders/:id", authorizationController, isGranted, orderController.
 
 //ORDER ITEMS
 
-routes.get("/items", itemController.items);
-routes.get("/items/order/:id", itemController.itemsByOrderId);
-routes.post("/orders-items", itemController.addOrderItem); // url...
+// routes.get("/items", itemController.items);
+routes.get("/order/:id/items", itemController.itemsByOrderId);
+routes.post("/orders/:id/items", itemController.addOrderItem); 
 
 //SEARCH
 

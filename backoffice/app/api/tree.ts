@@ -30,22 +30,22 @@ export const getOne = async (id: string): Promise<Tree> => {
 };
 
 export const treeWithforestsAndStock = async (id: string): Promise<TreeWithForestsAndStock> => {
-    const response = await axios.get(`${api_url}/${id}/forests-with-stock`);
+    const response = await axios.get(`${api_url}/${id}/forests-and-stock`);
     const data = response.data;
     return data;
   };
 
-export const forestsByTree = async (id: string): Promise<Forest[]> => {
-    const response = await axios.get(`${api_url}/${id}/forests`);  
-    const data = response.data;
-    return data;
-    // return Object.values(data) as Forest[];
-};
+// export const forestsByTree = async (id: string): Promise<Forest[]> => {
+//     const response = await axios.get(`${api_url}/${id}/forests`);  
+//     const data = response.data;
+//     return data;
+//     // return Object.values(data) as Forest[];
+// };
 
-export const updateTree = async (id:string, updatedData: Partial<Tree>): Promise<Tree> => {
-    const response = await axios.patch(`${api_url}/${id}`, updatedData);
-    return response.data; 
-};
+// export const updateTree = async (id:string, updatedData: Partial<Tree>): Promise<Tree> => {
+//     const response = await axios.patch(`${api_url}/${id}`, updatedData);
+//     return response.data; 
+// };
 
 export const remove = async (req: Request, id: number): Promise<void> => {
     const axiosInstance = createAxiosWithAuth(req);

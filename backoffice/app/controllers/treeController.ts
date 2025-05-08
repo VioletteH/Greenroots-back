@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getAll, getOne, forestsByTree, treeWithforestsAndStock, remove, add, update } from '../api/tree';
+import { getAll, getOne, treeWithforestsAndStock, remove, add, update } from '../api/tree';
 import { getAll as getAllForests } from '../api/forest';
 import { Tree, TreeForm } from '../types/index';
 

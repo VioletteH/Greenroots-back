@@ -56,33 +56,19 @@ const treeController = {
         res.status(200).json(trees);
     }),    
 
-    treesWithCount: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const limit = parseInt(req.query.limit as string, 10) || 10;
-        const offset = parseInt(req.query.offset as string, 10) || 0; 
+    // one tree
 
-        const { data: trees, total } = await treeMapper.findAllWithCount(limit, offset);
-
-        if (!trees || trees.length === 0) {
-            return next(new AppError("No trees found", 404)); 
-        }
-        res.status(200).json({
-            trees,
-            total,
-        });
-
-    }),
-
-    treeWithForests: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+    treeById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
-        const tree = await treeMapper.treeWithForests(id);
-
-        if (!tree || tree.length === 0) {
-            return next(new AppError("No trees found", 404));
+        // Tree exist
+        const existingTree = await treeMapper.findById(id);
+        if (!existingTree) {
+            return next(new AppError(`Tree with ${id} not found`, 404));
         }
-        res.status(200).json(tree);
+        res.status(200).json(existingTree);
+
     }),
 
-    
     treeWithForestsAndStock: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
 
@@ -96,16 +82,8 @@ const treeController = {
         res.status(200).json(trees);
     }),
 
-    treeById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const id = parseInt(req.params.id, 10);
-        // Tree exist
-        const existingTree = await treeMapper.findById(id);
-        if (!existingTree) {
-            return next(new AppError(`Tree with ${id} not found`, 404));
-        }
-        res.status(200).json(existingTree);
+    // association & filtres
 
-    }),
     treesByForest: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
         // Tree exist
@@ -119,6 +97,7 @@ const treeController = {
         }
         res.status(200).json(trees);
     }),
+
     treesByCountry: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const slug = req.params.slug;
 
@@ -128,6 +107,7 @@ const treeController = {
         }
         res.status(200).json(trees);
     }),
+    
     treesByCategory: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const slug = req.params.slug;
 
@@ -137,27 +117,9 @@ const treeController = {
         }
         res.status(200).json(trees);
     }),
-    
-    getCustomTrees: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const { ids } = req.query;
 
-        let idsArray: number[] = [];
+    // post, patch et delete
 
-        if (Array.isArray(ids)) {
-            idsArray = ids.map(Number).filter(id => !isNaN(id));
-        } else if (typeof ids === 'string') {
-            // Si un seul id envoyé sous forme de string (ex: ?ids=5)
-            idsArray = ids.split(',').map(Number).filter(id => !isNaN(id));
-        }
-
-        if (idsArray.length === 0) {
-            return res.status(400).json({ error: "Paramètre 'ids' requis sous forme de liste d'entiers." });
-        }
-
-        const trees = await treeMapper.getCustomTreeWithForests(idsArray);
-        
-        res.status(200).json(trees);
-    }),
     addTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         // const sanitizedBody = sanitizeInput(req.body);
         const { error, value } = treeSchema.validate(req.body);
@@ -179,6 +141,7 @@ const treeController = {
 
         res.status(201).json(newTree);
     }),
+
     updateTree: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10);
         // const sanitizedBody = sanitizeInput(req.body);
@@ -206,6 +169,7 @@ const treeController = {
         
         res.status(200).json(updatedTree);
     }),
+    
     deleteTree: catchAsync(async (req:Request, res:Response) => {
         const id = parseInt(req.params.id, 10);
         // Tree exist
@@ -216,6 +180,46 @@ const treeController = {
         // Delete tree
         const deletedTree = await treeMapper.delete(id);
         res.status(200).send("Tree deleted");
-    })
+    }),
+
+    // treesWithCount: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+    //     const limit = parseInt(req.query.limit as string, 10) || 10;
+    //     const offset = parseInt(req.query.offset as string, 10) || 0; 
+    //     const { data: trees, total } = await treeMapper.findAllWithCount(limit, offset);
+    //     if (!trees || trees.length === 0) {
+    //         return next(new AppError("No trees found", 404)); 
+    //     }
+    //     res.status(200).json({
+    //         trees,
+    //         total,
+    //     });
+    // }),
+
+    // treeWithForests: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+    //     const id = parseInt(req.params.id, 10);
+    //     const tree = await treeMapper.treeWithForests(id);
+    //     if (!tree || tree.length === 0) {
+    //         return next(new AppError("No trees found", 404));
+    //     }
+    //     res.status(200).json(tree);
+    // }),
+
+    // getCustomTrees: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+    //     const { ids } = req.query;
+    //     let idsArray: number[] = [];
+    //     if (Array.isArray(ids)) {
+    //         idsArray = ids.map(Number).filter(id => !isNaN(id));
+    //     } else if (typeof ids === 'string') {
+    //         // Si un seul id envoyé sous forme de string (ex: ?ids=5)
+    //         idsArray = ids.split(',').map(Number).filter(id => !isNaN(id));
+    //     }
+    //     if (idsArray.length === 0) {
+    //         return res.status(400).json({ error: "Paramètre 'ids' requis sous forme de liste d'entiers." });
+    //     }
+    //     const trees = await treeMapper.getCustomTreeWithForests(idsArray);       
+    //     res.status(200).json(trees);
+    // }),
+
+
 }
 export default treeController;

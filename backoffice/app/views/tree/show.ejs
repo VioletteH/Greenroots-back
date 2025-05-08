@@ -61,8 +61,8 @@
                     <% if (tree.forestname && Array.isArray(tree.forestname) && tree.stock && Array.isArray(tree.stock) && tree.forestname.length > 0) { %>
                         <% for (let i = 0; i < tree.forestname.length; i++){ %>
                           <tr>
-                            <td><%= tree.forestname %></td>
-                            <td><%= tree.stock %></td>
+                            <td><%= tree.forestname[i] %></td>
+                            <td><%= tree.stock[i] %></td>
                           </tr>
                         <% } %>
                       <% } else { %>

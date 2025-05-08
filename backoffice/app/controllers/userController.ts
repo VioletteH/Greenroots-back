@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import { User } from '../types/index';
 import {sanitizeObject} from "../utils/sanitize";
 
-import { getAll, getOne, add, update } from '../api/user';
+import { getAll, getOne, add, update, remove } from '../api/user';
+import { userInfo } from 'os';
 
 const userController = {
 
@@ -14,7 +15,7 @@ const userController = {
 
          const { users, total } = await getAll(req, limit, offset, true);
          const totalPages = total ? Math.ceil(total / limit) : 1;
-
+         console.log("DEBUG3 users", users);
          res.render('user/index', { 
             users,
             currentPage: page,
@@ -82,21 +83,41 @@ const userController = {
     const id = req.params.id;
     const user: User = sanitizeObject(req.body);
   
+    console.log("DEBUG id", id);
+    console.log("DEBUG user", user);
     const filteredUser: Partial<User> = Object.fromEntries(
       Object.entries(user).filter(([_, value]) => {
         return typeof value === 'string' ? value.trim() !== '' : true;
       })
     );
-  
+    console.log("DEBUG filteredUser", filteredUser);
     try {
+      console.log(`DEBUG Updating user with id ${id} and data:`, filteredUser);
       await update(req, Number(id), filteredUser);
+      console.log(`DEBUG User with id ${id} updated ok:`);
       res.redirect('/users');
     } catch (error) {
-      console.error('Erreur dans updateUser :', error);
+      console.error('DEBUG Erreur dans updateUser :', error);
       res.status(500).send('Erreur interne');
     }
   },     
 
+     deleteUser: async (req: Request, res: Response) => {
+        const id = req.params.id;
+        try {
+           const user: User = await getOne(req, id);
+  
+           if (!user) {
+              return res.status(404).render('error/404');
+           }
+           
+           await remove(Number(id));
+           res.redirect('/users');
+        } catch (error) {
+           console.error('Error deleting user:', error);
+           res.status(500).render('error/500', { error });
+        }
+     },
 }
 
 export default userController;

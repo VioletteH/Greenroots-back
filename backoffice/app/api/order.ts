@@ -13,7 +13,7 @@ export const getAll = async (req: Request, limit = 9, offset = 0, withCount = tr
 
 export const getOne = async (req: Request, id: string): Promise<Order> => {
     const axiosInstance = createAxiosWithAuth(req);
-    const response = await axiosInstance.get(`${api_url}/${id}/with-user`);  
+    const response = await axiosInstance.get(`${api_url}/${id}/full`);  
     return response.data; 
 };
 

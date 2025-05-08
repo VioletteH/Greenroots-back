@@ -25,14 +25,9 @@ docker compose up -d
 
 ## TODO
 
-- passer tous les with-count (utiles pour pagination) en query parameter
-- voir les composants qui utilisent /trees/forests > est ce qu'ils ne peuvent pas utiliser trees slt?
-- utiliser /forests/:id/trees pour le filtre par foret
-- passer les with-stock en query parameters
-
-router : 
-- renommer les fonctions
-- revoir les url
+bugs 
+- arbre ou foret modifié arrive ensuite en dernier
+- modifier arbre > les forets ne s'affichent pas toutes + pas de message d'erreur si on sélectionner une forêt sans préciser de stock
 
 regarder 
 - controllers

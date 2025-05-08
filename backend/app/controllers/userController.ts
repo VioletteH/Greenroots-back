@@ -14,6 +14,8 @@ const userAuthMapper = new AuthMapper();
 
 const userController = {   
 
+    // all users
+
     users: catchAsync(async (req:Request, res:Response, next:NextFunction): Promise<void | Response> => {
         
         const limit = parseInt(req.query.limit as string, 10) || 10;
@@ -42,20 +44,7 @@ const userController = {
         res.status(200).json(users);
     }),
 
-    // usersWithCount: catchAsync(async (req:Request, res:Response ) => {
-    //     const limit = parseInt(req.query.limit as string, 10) || 10;
-    //     const offset = parseInt(req.query.offset as string, 10) || 0;
-
-    //     const { data: users, total } = await userMapper.findAllWithCount(limit, offset);
-
-    //     if (users.length === 0) {
-    //         res.status(200).json("No users found");
-    //     }
-    //     res.status(200).json({
-    //         users,
-    //         total,
-    //     });
-    // }),
+    // one user
 
     userById: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         // Check user id
@@ -70,6 +59,23 @@ const userController = {
         // Get user
         res.status(200).json(existingUser);
     }),
+
+    impactByUserId: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+        // Check user id
+        const id = parseInt(req.params.id, 10);
+
+        // User exist
+        const existingUser = await userMapper.findById(id);
+        if (!existingUser) {
+            return next(new AppError(`User with ${id} not found`, 404));
+        }
+
+        // Get impact
+        const impact = await userMapper.environmentalImpact(id);
+        res.status(200).json(impact);
+    }),
+
+    // post, patch et delete
 
     addUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         const sanitizedBody = sanitizeInput(req.body);
@@ -93,35 +99,63 @@ const userController = {
         res.status(201).json(newUser);
     }),
 
-    updateUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        // const sanitizedBody = sanitizeInput(req.body);
-        const id = parseInt(req.params.id, 10);
+    // updateUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+    //     // const sanitizedBody = sanitizeInput(req.body);
+    //     const id = parseInt(req.params.id, 10);
+    //     // Validation
+    //     const { error, value } = userUpdateSchema.validate(req.body);  
+    //     if (error) {
+    //         const messages = error.details.map(detail => detail.message);
+    //         return next(new AppError(messages.join(', '), 400));
+    //     }
+    //     // User exist
+    //     const existingUser = await userMapper.findById(id);
+    //     if (!existingUser) {
+    //         return next(new AppError(`User with ${id} not found`, 404));
+    //     }
+    //     //  agron2
+    //     if (value.password) {
+    //         const hashedPassword = await argon2.hash(value.password);
+    //         value.password = hashedPassword;
+    //     }
+    //     // Update user
+    //     const updatedUser = await userMapper.update(id, value);
+    //     res.status(200).json(updatedUser);
+    // }),
 
-        // Validation
-        const { error, value } = userUpdateSchema.validate(req.body);
-        console.log("error", error);
-        
+    updateUser: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const id = parseInt(req.params.id, 10);
+        console.log("DEBUG2 id", id);
+        // Déterminer si c'est un appel backoffice, par exemple :
+        const isBackOffice = req.query.backoffice === 'true'; 
+        console.log("DEBUG2 isBackOffice", isBackOffice);
+        // Choix du schéma
+        const schema = isBackOffice ? userUpdateSchemaBackOffice : userUpdateSchema;
+        console.log("DEBUG2 schema", schema);
+        const { error, value } = schema.validate(req.body);
+    
         if (error) {
-            const messages = error.details.map(detail => detail.message);
-            return next(new AppError(messages.join(', '), 400));
+            const messages = error.details?.map(detail => detail.message).join(', ') || 'Invalid update data';
+            return next(new AppError(messages, 400));
         }
     
-        // User exist
+        // Vérification de l'existence du user
         const existingUser = await userMapper.findById(id);
+        console.log("DEBUG2 existingUser", existingUser);
         if (!existingUser) {
-            return next(new AppError(`User with ${id} not found`, 404));
+            return next(new AppError(`User with id ${id} not found`, 404));
         }
-        //  agron2
-        if (value.password) {
-            const hashedPassword = await argon2.hash(value.password);
-            value.password = hashedPassword;
+    
+        // Hachage mot de passe si nécessaire
+        if (!isBackOffice && value.password) {
+            value.password = await argon2.hash(value.password);
         }
-
-        // Update user
+    
         const updatedUser = await userMapper.update(id, value);
+        console.log("DEBUG2 updatedUser", updatedUser);
         res.status(200).json(updatedUser);
     }),
-
+    
     deleteUser: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         // Check user id
         const id = parseInt(req.params.id, 10);
@@ -134,37 +168,36 @@ const userController = {
         await userMapper.delete(id);
         res.status(200).send("User deleted");
     }),
-    updateUserBackOffice: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        const id = parseInt(req.params.id, 10);
-        // Validation
-        const { error, value } = userUpdateSchemaBackOffice.validate(req.body);
-        if (error) {
-            return next(new AppError("Invalid update data", 400));
-        }
 
-        // User exist?
-        const user = await userMapper.findById(Number(req.params.id));
-        if (!user) {
-            return next(new AppError("Utilisateur introuvable", 404));
-        }
+    // updateUserBackOffice: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
+    //     const id = parseInt(req.params.id, 10);
+    //     // Validation
+    //     const { error, value } = userUpdateSchemaBackOffice.validate(req.body);
+    //     if (error) {
+    //         return next(new AppError("Invalid update data", 400));
+    //     }
+    //     // User exist?
+    //     const user = await userMapper.findById(Number(req.params.id));
+    //     if (!user) {
+    //         return next(new AppError("Utilisateur introuvable", 404));
+    //     }
+    //     // Update user
+    //     const updatedUser = await userMapper.update(id, value);
+    //     res.status(200).json(updatedUser);
+    // }),
 
-        // Update user
-        const updatedUser = await userMapper.update(id, value);
-        res.status(200).json(updatedUser);
-    }),
-    impactByUserId: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        // Check user id
-        const id = parseInt(req.params.id, 10);
-
-        // User exist
-        const existingUser = await userMapper.findById(id);
-        if (!existingUser) {
-            return next(new AppError(`User with ${id} not found`, 404));
-        }
-
-        // Get impact
-        const impact = await userMapper.environmentalImpact(id);
-        res.status(200).json(impact);
-    })
+    // usersWithCount: catchAsync(async (req:Request, res:Response ) => {
+    //     const limit = parseInt(req.query.limit as string, 10) || 10;
+    //     const offset = parseInt(req.query.offset as string, 10) || 0;
+    //     const { data: users, total } = await userMapper.findAllWithCount(limit, offset);
+    //     if (users.length === 0) {
+    //         res.status(200).json("No users found");
+    //     }
+    //     res.status(200).json({
+    //         users,
+    //         total,
+    //     });
+    // }),
+    
 }
 export default userController;

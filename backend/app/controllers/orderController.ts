@@ -11,6 +11,8 @@ const orderMapper = new loadOrderMapper();
 
 const orderController = {
 
+  // all orders
+
   orders: catchAsync(async (req:Request, res:Response, next:NextFunction): Promise<void | Response> => {
 
     const limit = parseInt(req.query.limit as string, 10) || 10;
@@ -39,23 +41,20 @@ const orderController = {
     res.status(200).json(orders);
   }),
 
-  // ordersWithCount: catchAsync(async (req: Request, res: Response) => {
-  //   const limit = parseInt(req.query.limit as string, 10) || 10;
-  //   const offset = parseInt(req.query.offset as string, 10) || 0;
+  // one order
 
-  //   const { data: orders, total } = await orderMapper.findAllWithCountWithUser(limit, offset);
+  orderById: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    // Check user id
+    const id = parseInt(req.params.id, 10);
 
-  //   if (orders.length === 0) {
-  //     res.status(200).json("No orders found");
-  //   }
-  //   res.status(200).json({
-  //     orders,
-  //     total,
-  //   });
-  // }),
+    const order = await orderMapper.findById(id);
+    if (!order) {
+      return next(new AppError(`Order ${id} already exists `, 400));
+    }
+    res.status(200).json(order);
+ }),
 
   ordersByUserId: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-
     const id = parseInt(req.params.id, 10);
     if (id === null) {
       return next(new AppError("Invalid user ID", 400));
@@ -63,6 +62,7 @@ const orderController = {
     const orders = await orderMapper.findByField("user_id", id);
     res.status(200).json(orders);
   }),
+
   orderByIdWithUser: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10);
 
@@ -73,16 +73,7 @@ const orderController = {
     res.status(200).json(order);
   }),
 
-  orderById: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-     // Check user id
-     const id = parseInt(req.params.id, 10);
-
-    const order = await orderMapper.findById(id);
-    if (!order) {
-      return next(new AppError(`Order ${id} already exists `, 400));
-    }
-    res.status(200).json(order);
-  }),
+  // post et patch
 
   addOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     //const sanitizedBody = sanitizeInput(req.body);
@@ -119,5 +110,20 @@ const orderController = {
     const updatedOrder = await orderMapper.update(id, value);
     res.status(200).json(updatedOrder);
   }),
+
+  // ordersWithCount: catchAsync(async (req: Request, res: Response) => {
+  //   const limit = parseInt(req.query.limit as string, 10) || 10;
+  //   const offset = parseInt(req.query.offset as string, 10) || 0;
+  //   const { data: orders, total } = await orderMapper.findAllWithCountWithUser(limit, offset);
+  //   if (orders.length === 0) {
+  //     res.status(200).json("No orders found");
+  //   }
+  //   res.status(200).json({
+  //     orders,
+  //     total,
+  //   });
+  // }),
+
 };
+
 export default orderController;

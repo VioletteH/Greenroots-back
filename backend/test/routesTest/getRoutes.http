@@ -49,8 +49,8 @@ Authorization: Bearer {{authToken}}
 GET 🛠️ http://localhost:3000/orders
 Authorization: Bearer {{authToken}}
 
-### routes.get("/orders/user/:id", orderController.ordersByUserId);
-GET ✅ http://localhost:3000/orders/user/1
+### routes.get("/user/:id/orders", orderController.ordersByUserId);
+GET ✅ http://localhost:3000/user/1/orders
 Authorization: Bearer {{authToken}}
 
 ### routes.get("/orders/:id", orderController.orderById);
@@ -61,7 +61,7 @@ Authorization: Bearer {{authToken}}
 ### routes.get("/items", orderItemController.items);
 GET ✅ http://localhost:3000/items
 
-###routes.get("/items/order/:id", orderItemController.itemsByOrderId);
-GET ✅ http://localhost:3000/items/order/8
+###routes.get("/order/:id/items", orderItemController.itemsByOrderId);
+GET ✅ http://localhost:3000/order/8/items
 
 

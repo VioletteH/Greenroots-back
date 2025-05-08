@@ -33,7 +33,7 @@ export const getOne = async (id: string): Promise<Forest> => {
 };
 
 export const forestWithTreesAndStock = async (id: string): Promise<ForestWithTreesAndStock> => {
-  const response = await axios.get(`${api_url}/${id}/trees-with-stock`);
+  const response = await axios.get(`${api_url}/${id}/trees-and-stock`);
   const data = response.data;
   return data;
 };
