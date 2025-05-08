@@ -20,7 +20,7 @@ const api_url = BASE_URL + '/forests';
 //   return data;
 // };
 
-export const getAll = async (limit = 9, offset = 0, withCount = true): Promise<{ forests: Forest[]; total?: number }> => {
+export const getAll = async (limit?: number, offset: number = 0, withCount: boolean = true): Promise<{ forests: Forest[]; total?: number }> => {
   const response = await axios.get(`${api_url}?limit=${limit}&offset=${offset}${withCount ? '&withCount=true' : ''}`);
   return response.data;
 };

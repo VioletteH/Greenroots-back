@@ -104,7 +104,7 @@ const treeController = {
       const id = req.params.id;
       console.log("treeController - editTreeView - Tree id", id)
       try {
-         const forestsResponse = await getAllForests();
+         const forestsResponse = await getAllForests(1000);
          const forests = forestsResponse.forests ?? forestsResponse;
          const tree = await treeWithforestsAndStock(id);
 

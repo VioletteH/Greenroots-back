@@ -26,7 +26,7 @@ docker compose up -d
 ## TODO
 
 bugs 
-- arbre ou foret modifié arrive ensuite en dernier
+- user ou arbre ou foret modifié arrive ensuite en dernier
 - modifier arbre > les forets ne s'affichent pas toutes + pas de message d'erreur si on sélectionner une forêt sans préciser de stock
 
 regarder 

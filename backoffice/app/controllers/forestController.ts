@@ -103,7 +103,7 @@ const forestController = {
    editForestView: async (req:Request, res:Response) => {
       const id = req.params.id;
       try {
-         const treesResponse = await getAllTrees();
+         const treesResponse = await getAllTrees(1000);
          const trees = treesResponse.trees ?? treesResponse;
          console.log("forestController - editForestView - tree", trees);
          const forest = await forestWithTreesAndStock(id);
