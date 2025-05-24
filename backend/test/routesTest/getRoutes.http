@@ -54,7 +54,7 @@ GET ✅ http://localhost:3000/user/1/orders
 Authorization: Bearer {{authToken}}
 
 ### routes.get("/orders/:id", orderController.orderById);
-GET 🛠️ http://localhost:3000/orders/1
+GET 🛠️ http://localhost:3000/orders/9
 Authorization: Bearer {{authToken}}
 
 ### ITEMS 

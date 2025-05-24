@@ -27,7 +27,6 @@ export const getAll = async (limit?: number, offset: number = 0, withCount: bool
 
 export const getOne = async (id: string): Promise<Forest> => {
   const response = await axios.get(`${api_url}/${id}`);
-
   const data = response.data;
   return data;
 };

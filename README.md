@@ -27,9 +27,16 @@ docker compose up -d
 
 bugs 
 - user ou arbre ou foret modifié arrive ensuite en dernier
-- modifier arbre > les forets ne s'affichent pas toutes + pas de message d'erreur si on sélectionner une forêt sans préciser de stock
+- modifier arbre > pas de message d'erreur si on sélectionner une forêt sans préciser de stock
 
 regarder 
 - controllers
 - mappers
 - mw / utils
+
+Ajouter controller wrapper dans BO
+Check sanitize front + BO
+Mettre updateStock dans les mappers > changer itemController
+
+Virer unslugify et updateStock dans utils
+Virer Authorization dans controllers

@@ -3,7 +3,6 @@ import { orderSchema, orderUpdateSchema } from "../utils/shemasJoi";
 import { AppError } from "../middlewares/errorHandler";
 import { catchAsync } from "../utils/catchAsync";
 import loadOrderMapper from "../mappers/orderMapper";
-import BaseMapper from "../mappers/baseMapper";
 import { sanitizeInput } from '../utils/sanitizeInput';
 import { Order } from '../types/index';
 
@@ -11,7 +10,7 @@ const orderMapper = new loadOrderMapper();
 
 const orderController = {
 
-  // all orders
+  // ALL ORDERS
 
   orders: catchAsync(async (req:Request, res:Response, next:NextFunction): Promise<void | Response> => {
 
@@ -41,19 +40,6 @@ const orderController = {
     res.status(200).json(orders);
   }),
 
-  // one order
-
-  orderById: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    // Check user id
-    const id = parseInt(req.params.id, 10);
-
-    const order = await orderMapper.findById(id);
-    if (!order) {
-      return next(new AppError(`Order ${id} already exists `, 400));
-    }
-    res.status(200).json(order);
- }),
-
   ordersByUserId: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10);
     if (id === null) {
@@ -62,6 +48,19 @@ const orderController = {
     const orders = await orderMapper.findByField("user_id", id);
     res.status(200).json(orders);
   }),
+
+  // ONE ORDER
+
+  orderById: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    
+    const id = parseInt(req.params.id, 10);
+
+    const order = await orderMapper.findById(id);
+    if (!order) {
+      return next(new AppError(`Order ${id} already exists `, 400));
+    }
+    res.status(200).json(order);
+ }),
 
   orderByIdWithUser: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const id = parseInt(req.params.id, 10);
@@ -73,18 +72,17 @@ const orderController = {
     res.status(200).json(order);
   }),
 
-  // post et patch
+  // POST AND PATCH
 
   addOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    //const sanitizedBody = sanitizeInput(req.body);
-    const { error, value } = orderSchema.validate(req.body);
-    console.log("error", error);
-    console.log("value", value);
-    
+
+    const sanitizedBody = sanitizeInput(req.body);
+    const { error, value } = orderSchema.validate(sanitizedBody);
+
     if (error) {
       return next(new AppError(`Invalid data`, 400));
     }
-    // Order exist
+    // Check if order exists
     const existingOrder = await orderMapper.findById(value.id);
     if (existingOrder) {
       return next(new AppError(`Order ${value.id} already exists`, 400));
@@ -95,9 +93,11 @@ const orderController = {
   }),
 
   updateOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    
     const id = parseInt(req.params.id, 10);
-    const sanitizedBody = sanitizeInput(req.body);
-    const { error, value } = orderUpdateSchema.validate(sanitizedBody);
+    
+    const { error, value } = orderUpdateSchema.validate(req.body);
+    
     if (error) {
       return next(new AppError(`Invalid data`, 400));
     }

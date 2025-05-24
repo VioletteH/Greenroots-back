@@ -17,7 +17,6 @@ const stripeController = {
         if (!amount || !currency) {
             return next(new AppError("Amount and currency are required", 400));
         }
-        console.log("🔍 Données envoyées à Stripe:", { amount, currency });
         try {
             const paymentIntent = await stripe.paymentIntents.create({
                 amount,
@@ -30,7 +29,6 @@ const stripeController = {
                 clientSecret: paymentIntent.client_secret,
               });
         } catch (error) {
-            console.error("❌ Stripe error:", error); // 👈 Ajoute ceci
             return next(new AppError(`Payment intent creation failed: ${(error as Error).message}`, 500));
           }
     })

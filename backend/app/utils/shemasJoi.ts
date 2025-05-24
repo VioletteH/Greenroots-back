@@ -1,6 +1,6 @@
 import Joi, { optional } from 'joi';
 
-//JOI - LoginShema
+// loginShema
 export const loginSchema = Joi.object({
   email: Joi.string()
     .email()
@@ -23,7 +23,7 @@ export const loginSchema = Joi.object({
 });
 
 
-//JOI - RegisterShema 
+// registerShema 
 export const registerSchema = Joi.object({
   email: Joi.string()
     .email()
@@ -33,7 +33,6 @@ export const registerSchema = Joi.object({
       'string.empty': "L'adresse e-mail est requise.",
       'any.required': "L'adresse e-mail est requise.",
     }),
-
   password: Joi.string()
     .min(8)
     .required()
@@ -42,7 +41,6 @@ export const registerSchema = Joi.object({
       'string.empty': "Le mot de passe est requis.",
       'any.required': "Le mot de passe est requis.",
     }),
-
   firstname: Joi.string()
     .trim()
     .max(255)
@@ -54,41 +52,7 @@ export const registerSchema = Joi.object({
     }),
 });
 
-
-//JOI - ForestShema
-
-export const forestSchema = Joi.object({
-  name: Joi.string().required(),
-  association: Joi.string().required(),
-  image: Joi.string().required(),
-  description: Joi.string().required(),
-  country: Joi.string().required(),
-  location_x: Joi.number().precision(6).required(),
-  location_y: Joi.number().precision(6).required(),
-  treeAssociations: Joi.array().items(
-    Joi.object({
-      treeId: Joi.number().integer().positive().required(),
-      stock: Joi.number().integer().positive().required(),
-    })
-  ).optional()
-});
-
-//JOI - orderShema
-export const orderSchema = Joi.object({
-  user_id: Joi.number().integer().positive().required(),
-  total_price: Joi.number().precision(2).positive().required(),
-  status: Joi.number().integer().required()
-});
-
-// Joi - PATCH orderSchema (pour mise à jour partielle)
-export const orderUpdateSchema = Joi.object({
-  user_id: Joi.number().integer().positive(),
-  total_price: Joi.number().precision(2).positive(),
-  status: Joi.number().integer().valid(1, 2, 3)
-});
-
-//JOI - treeShema
-
+// treeShema
 export const treeSchema = Joi.object({
   name: Joi.string().required(),
   scientific_name: Joi.string().required(),
@@ -106,7 +70,38 @@ export const treeSchema = Joi.object({
   ).optional()
 });
 
-// JOI - userShema
+// forestShema
+export const forestSchema = Joi.object({
+  name: Joi.string().required(),
+  association: Joi.string().required(),
+  image: Joi.string().required(),
+  description: Joi.string().required(),
+  country: Joi.string().required(),
+  location_x: Joi.number().precision(6).required(),
+  location_y: Joi.number().precision(6).required(),
+  treeAssociations: Joi.array().items(
+    Joi.object({
+      treeId: Joi.number().integer().positive().required(),
+      stock: Joi.number().integer().positive().required(),
+    })
+  ).optional()
+});
+
+// orderShema
+export const orderSchema = Joi.object({
+  user_id: Joi.number().integer().positive().required(),
+  total_price: Joi.number().precision(2).positive().required(),
+  status: Joi.number().integer().required()
+});
+
+// PATCH orderSchema (for partial update) 
+export const orderUpdateSchema = Joi.object({
+  user_id: Joi.number().integer().positive(),
+  total_price: Joi.number().precision(2).positive(),
+  status: Joi.number().integer().valid(1, 2, 3)
+});
+
+// userShema
 export const userSchema = Joi.object({
   email: Joi.string()
   .email()
@@ -135,7 +130,7 @@ export const userSchema = Joi.object({
   phone: Joi.string().optional().allow(''),
 });
 
-// JOI - userUpdateShema
+// userUpdateShema
 export const userUpdateSchema = Joi.object({
   firstname: Joi.string()
     .trim()
@@ -198,8 +193,7 @@ export const userUpdateSchema = Joi.object({
     }),
 });
 
-
-// JOI - userUpdateSchema
+// userUpdateSchemaBO
 export const userUpdateSchemaBackOffice = Joi.object({
   firstname: Joi.string().trim().max(255).optional(),
   lastname: Joi.string().trim().max(255).optional(),

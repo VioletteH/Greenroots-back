@@ -1,13 +1,16 @@
 import type { Request, Response } from "express";
 import { sanitizeInput } from '../utils/sanitizeInput';
 import { searchMapper } from "../mappers/searchMapper";
+import { catchAsync } from "../utils/catchAsync";
 
-const searchController = async (req:Request, res:Response): Promise<void> => {
+const searchController = catchAsync(async (req:Request, res:Response): Promise<void> => {
+
     const query = req.query.search as string;
     if(!query) {
         res.status(400).json({ message: "Search query is required" });
         return;
     }
+    
     // Sanitize the input
     const sanitizedQuery = sanitizeInput(query);
 
@@ -19,6 +22,6 @@ const searchController = async (req:Request, res:Response): Promise<void> => {
         return;
     }
     res.status(200).json(searchResults);
-}
+});
 
 export default searchController;

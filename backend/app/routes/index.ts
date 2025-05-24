@@ -23,21 +23,21 @@ routes.post("/register", authController.register);
 
 // all trees
 routes.get("/trees", treeController.trees); // QP = limit, offset, sortBy, with-count
-routes.get("/trees/forests", treeController.treesWithForests); 
+routes.get("/trees/forests", treeController.treesWithForests); // QP = limit, offset
 
 // one tree
 routes.get("/trees/:id", treeController.treeById); 
 routes.get("/trees/:id/forests-and-stock", treeController.treeWithForestsAndStock); 
 
-// association & filtres
+// association & filters
 routes.get("/forests/:id/trees", treeController.treesByForest);
 routes.get("/trees/country/:slug", treeController.treesByCountry);
 routes.get("/trees/category/:slug", treeController.treesByCategory);
 
 // post, patch et delete
-routes.post("/trees", authorizationController, isGranted, treeController.addTree);
-routes.patch("/trees/:id", authorizationController, isGranted, treeController.updateTree);
-routes.delete("/trees/:id", authorizationController, isGranted, treeController.deleteTree);
+routes.post("/trees", isGranted, treeController.addTree);
+routes.patch("/trees/:id", isGranted, treeController.updateTree);
+routes.delete("/trees/:id", isGranted, treeController.deleteTree);
 
 //FORESTS
 
@@ -52,42 +52,40 @@ routes.get("/forests/:id/trees-and-stock", forestController.forestWithTreesAndSt
 routes.get("/trees/:id/forests", forestController.forestsByTree); 
 
 // post, patch et delete
-routes.post("/forests", authorizationController, isGranted, forestController.addForest);
-routes.patch("/forests/:id", authorizationController, isGranted, forestController.updateForest);
-routes.delete("/forests/:id", authorizationController, isGranted, forestController.deleteForest);
+routes.post("/forests", isGranted, forestController.addForest);
+routes.patch("/forests/:id", isGranted, forestController.updateForest);
+routes.delete("/forests/:id", isGranted, forestController.deleteForest);
 
 //USERS
 
 // all users
-routes.get("/users", authorizationController, isGranted, userController.users);
+routes.get("/users", isGranted, userController.users);
 
 // one user
-routes.get("/users/:id", authorizationController, isGranted, userController.userById);
-routes.get("/users/:id/impact" , authorizationController, isGranted, userController.impactByUserId);
+routes.get("/users/:id", isGranted, userController.userById);
+routes.get("/users/:id/impact" , isGranted, userController.impactByUserId);
+routes.get("/user/:id/orders", isGranted, orderController.ordersByUserId); 
 
 // post, patch et delete
-routes.post("/users", authorizationController, isGranted, userController.addUser);
-// routes.patch("/users/:id/bo", /*authorizationController, isGranted,*/ userController.updateUser) //fusionner les 2 routes?
-routes.patch("/users/:id", authorizationController, isGranted, userController.updateUser);
-routes.delete("/users/:id", /*authorizationController,*/ userController.deleteUser);
+routes.post("/users", isGranted, userController.addUser);
+routes.patch("/users/:id", isGranted, userController.updateUser);
+routes.delete("/users/:id", isGranted, userController.deleteUser);
 
 //ORDERS
 
 // all orders
-routes.get("/orders", authorizationController, isGranted, orderController.orders);
+routes.get("/orders", isGranted, orderController.orders);
 
 // one order
-routes.get("/orders/:id", authorizationController, orderController.orderById);
-routes.get("/user/:id/orders", authorizationController, isGranted, orderController.ordersByUserId); // doublon avec celle du dessus
-routes.get("/orders/:id/full", authorizationController, isGranted, orderController.orderByIdWithUser);
+routes.get("/orders/:id", isGranted, orderController.orderById);
+routes.get("/orders/:id/full", isGranted, orderController.orderByIdWithUser);
 
 // post et patch
-routes.post("/orders", authorizationController, isGranted, orderController.addOrder);
-routes.patch("/orders/:id", authorizationController, isGranted, orderController.updateOrder);
+routes.post("/orders", isGranted, orderController.addOrder);
+routes.patch("/orders/:id", isGranted, orderController.updateOrder);
 
 //ORDER ITEMS
 
-// routes.get("/items", itemController.items);
 routes.get("/order/:id/items", itemController.itemsByOrderId);
 routes.post("/orders/:id/items", itemController.addOrderItem); 
 

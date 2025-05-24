@@ -18,22 +18,18 @@ export default class BaseMapper <T> {
 		const { rows } = await pool.query(query, values);
 		const rowsCamel = rows.map(snakeToCamel)as T[];
 		debugBaseMapper('findAll');
-		console.log("find",rowsCamel);
 		return rowsCamel;
 	}
 
 	async findAllWithCount(limit?: number, offset?: number): Promise<{ data: T[]; total: number }> {
 		const queryData = `SELECT * FROM "${this.tableName}" ORDER BY created_at DESC LIMIT $1 OFFSET $2`;
 		const queryCount = `SELECT COUNT(*) FROM "${this.tableName}"`;
-
 		const [dataResult, countResult] = await Promise.all([
 				pool.query(queryData, [limit, offset]),
 				pool.query(queryCount)
 		]);
-
 		const data = dataResult.rows.map(snakeToCamel) as T[];
 		const total = parseInt(countResult.rows[0].count, 10);
-
 		return { data, total };
 	}
 

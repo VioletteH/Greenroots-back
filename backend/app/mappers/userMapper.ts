@@ -8,7 +8,7 @@ export default class UserMapper extends BaseMapper<any> {
         super('user');
     }
 
-    async environmentalImpact(id : number): Promise<Forest[]> {
+    async userImpact(id : number): Promise<Forest[]> {
         const query = `
             SELECT
                 SUM(t.co2 * oi.quantity) AS total_co2,

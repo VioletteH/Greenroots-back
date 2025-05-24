@@ -46,7 +46,8 @@ const forestController = {
 
    createForestView: async (req:Request, res:Response) => {
       try {
-         const trees = await getAllTrees();
+         const {trees} = await getAllTrees();
+         console.log("Réponse de getAllTrees:", trees);
          res.render('forest/new', { trees });
       } catch (error) {
          console.error('Error fetching trees for new forest:', error);

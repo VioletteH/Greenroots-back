@@ -1,9 +1,6 @@
 import { pool } from './db';
-
 import BaseMapper from './baseMapper';
-
 import { snakeToCamel } from '../utils/toggleCase';
-
 import { Forest } from '../types/index';
 
 export default class ForestMapper extends BaseMapper<any> {
@@ -11,18 +8,7 @@ export default class ForestMapper extends BaseMapper<any> {
 		super('forest');
 	}
 
-    async forestsByTree(id : number): Promise<Forest[]> {
-			const query = `
-                SELECT DISTINCT f.*, ft.stock
-                FROM forest f
-                JOIN forest_tree ft ON ft.forest_id = f.id
-                WHERE ft.tree_id = $1;
-			`;
-			const { rows } = await pool.query(query, [id]);
-			if (!rows) return []; 
-			return rows.map(snakeToCamel) as Forest[];
-    }
-
+    // ONE FOREST
     async forestWithTreesAndStock(forestId: number): Promise<any> {
         const query = `
             SELECT forest.*,
@@ -39,8 +25,24 @@ export default class ForestMapper extends BaseMapper<any> {
         return snakeToCamel(rows[0]);
     }
 
+    // ASSOCIATIONS
+
+    async forestsByTree(id : number): Promise<Forest[]> {
+			const query = `
+                SELECT DISTINCT f.*, ft.stock
+                FROM forest f
+                JOIN forest_tree ft ON ft.forest_id = f.id
+                WHERE ft.tree_id = $1;
+			`;
+			const { rows } = await pool.query(query, [id]);
+			if (!rows) return []; 
+			return rows.map(snakeToCamel) as Forest[];
+    }
+
+    // POST, PATCH, DELETE
+
     async addForestToTrees(forestId: number, treeAssociations: { treeId: number, stock: number }[]): Promise<void> {
-        // S'il n'y a pas d'associations, on ne fait rien
+
         if (!treeAssociations || treeAssociations.length === 0) return;
 
         const query = `
