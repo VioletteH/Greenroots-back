@@ -22,4 +22,12 @@ export default class UserMapper extends BaseMapper<any> {
         if (!rows) return []; 
         return rows.map(snakeToCamel) as Forest[];
     }
+
+    async hasOrders(userId: number): Promise<boolean> {
+        const { rows } = await pool.query(
+          'SELECT 1 FROM order_item WHERE user_id = $1 LIMIT 1',
+          [userId]
+        );
+        return rows.length > 0;
+      }
 }

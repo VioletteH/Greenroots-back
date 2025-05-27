@@ -9,6 +9,7 @@ export default class ForestMapper extends BaseMapper<any> {
 	}
 
     // ONE FOREST
+
     async forestWithTreesAndStock(forestId: number): Promise<any> {
         const query = `
             SELECT forest.*,
@@ -39,7 +40,7 @@ export default class ForestMapper extends BaseMapper<any> {
 			return rows.map(snakeToCamel) as Forest[];
     }
 
-    // POST, PATCH, DELETE
+    // POST AND PATCH
 
     async addForestToTrees(forestId: number, treeAssociations: { treeId: number, stock: number }[]): Promise<void> {
 
@@ -100,5 +101,13 @@ export default class ForestMapper extends BaseMapper<any> {
         finally {
             client.release();
         }
+    }
+
+    async hasOrders(forestId: number): Promise<boolean> {
+        const { rows } = await pool.query(
+          'SELECT 1 FROM order_item WHERE forest_id = $1 LIMIT 1',
+          [forestId]
+        );
+        return rows.length > 0;
     }
 }

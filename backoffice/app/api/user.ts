@@ -6,14 +6,6 @@ import { Request } from "express";
 const BASE_URL = process.env.API_BASE_URL;
 const api_url = BASE_URL + '/users';
 
-// export const getAll = async (req: Request, limit=9, offset=0): Promise<{ users: User[]; total: number }> => {
-//   const axiosInstance = createAxiosWithAuth(req);
-//   const response = await axiosInstance.get(`${api_url}/with-count?limit=${limit}&offset=${offset}`);
-
-//   const data = response.data;
-//   return data;
-// };
-
 export const getAll = async (req: Request, limit = 9, offset = 0, withCount = true): Promise<{ users: User[]; total?: number }> => {
   const axiosInstance = createAxiosWithAuth(req);
   const response = await axiosInstance.get(`${api_url}?limit=${limit}&offset=${offset}${withCount ? '&withCount=true' : ''}`);
@@ -23,33 +15,29 @@ export const getAll = async (req: Request, limit = 9, offset = 0, withCount = tr
 export const getOne = async (req: Request, id: string): Promise<User> => {
   const axiosInstance = createAxiosWithAuth(req);
   const response = await axiosInstance.get(`${api_url}/${id}`);
-
-  const data = response.data;
-  return data;
+  return response.data;
 };
 
-export const add = async (req: Request, user: User): Promise<User> => {
+export const create = async (req: Request, user: User): Promise<User> => {
   const axiosInstance = createAxiosWithAuth(req);
   const response = await axiosInstance.post(`${api_url}`, user);
-
-  const data = response.data;
-  return data;
+  return response.data;
 };
 
 export const update = async (req: Request, id: number, user: Partial<User>): Promise<User> => {
   const axiosInstance = createAxiosWithAuth(req);
-  try{
-    const response = await axiosInstance.patch(`${api_url}/${id}?backoffice=true`, user);
-
-  const data = response.data;
-  return data;
-  } catch (error) {
-    console.error('Error in update function:', error);
-    throw error;
-  }
-  
+  const response = await axiosInstance.patch(`${api_url}/${id}?backoffice=true`, user);
+  return response.data;
 };
 
-export const remove = async (id: number): Promise<void> => {
-  await axios.delete(`${api_url}/${id}`);
+export const remove = async (req: Request, id: number): Promise<void> => {
+  const axiosInstance = createAxiosWithAuth(req);
+    try {
+        await axiosInstance.delete(`${api_url}/${id}`);
+    } catch (error: any) {
+        if (error.response) {
+            throw new Error(error.response.data.message || 'Erreur API');
+        }
+        throw new Error("Erreur inconnue lors de la suppression.");
+    }
 };

@@ -14,7 +14,6 @@ const forestController = {
 
     forests: catchAsync(async (req: Request, res: Response, next:NextFunction ): Promise<void | Response>  => {
         
-        // Query parameters
         const limit = parseInt(req.query.limit as string, 10) || 10;
         const offset = parseInt(req.query.offset as string, 10) || 0;
         const withCount = req.query.withCount === 'true';
@@ -22,7 +21,6 @@ const forestController = {
         let forests: Forest[] = [];
         let total: number | undefined;
         
-        // Check if sortBy or withCount are defined
         if (withCount) {
             const result = await forestMapper.findAllWithCount(limit, offset);
             forests = result.data;
@@ -35,7 +33,6 @@ const forestController = {
             return next(new AppError("No trees found", 404)); 
         }
 
-        // Send data
         if (withCount) {
             return res.status(200).json({ forests, total });
         }
@@ -148,6 +145,18 @@ const forestController = {
             return res.status(404).json({ message: "Forest not found" });
         }
         
+        const forestWithTrees = await forestMapper.forestWithTreesAndStock(id);
+        if (forestWithTrees && forestWithTrees.forestName && forestWithTrees.forestName.length > 0) {
+            return res.status(400).json({ message: "Impossible de supprimer cet arbre car il est associé à une ou plusieurs forêts." });
+        }
+
+        const hasOrders = await forestMapper.hasOrders(id);
+        if (hasOrders) {
+            return res.status(400).json({
+            message: "Impossible de supprimer cette forêt car il est lié à une ou plusieurs commandes.",
+            });
+        }
+
         await forestMapper.delete(id);
 
         res.status(200).send("Forest deleted");

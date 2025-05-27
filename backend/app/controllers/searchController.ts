@@ -11,10 +11,8 @@ const searchController = catchAsync(async (req:Request, res:Response): Promise<v
         return;
     }
     
-    // Sanitize the input
     const sanitizedQuery = sanitizeInput(query);
 
-    // Perform search
     const searchResults = await searchMapper(sanitizedQuery);
 
     if (searchResults.length === 0) {

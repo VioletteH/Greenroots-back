@@ -15,7 +15,7 @@ const allowedOrigins = [
   process.env.FRONTB,
 ];
 
-// Middleware CORS avec log des blocages
+// Middleware CORS
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -34,18 +34,11 @@ app.use(cors({
 // }));
 
 app.use(cookieParser());
-
-// Middleware parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Routes
 app.use(routes);
-
-// Gestion globale des erreurs
 app.use(errorHandler);
 
-// Démarrage du serveur
 app.listen(PORT, () => {
   console.log(`Example app listening on port http://localhost:${PORT}`);
 });

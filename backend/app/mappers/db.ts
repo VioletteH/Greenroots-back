@@ -4,10 +4,10 @@ import "dotenv/config";
 
 const { Pool } = pg;
 
-// Création d'un espace de log dédié à la BDD
+// Creation of a debug instance for database operations
 const dbDebug = debug("app:db");
 
-// connection à la BDD
+// databse connection
 export const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,

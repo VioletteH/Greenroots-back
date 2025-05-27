@@ -1,7 +1,7 @@
 #  ✅ Operational
 #  🛠️ Controller to do
 
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AbWFpbGluYXRvci5jb20iLCJpYXQiOjE3NDUzMTQ1MDgsImV4cCI6MTc0NTM1NzcwOH0.Rll-gDR5YFBpaek7Ai8HTNjQwpexgh4eiOAz3iJjL3Y
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoibWFzdGVyQGdyZWVucm9vdHMuY29tIiwiaWF0IjoxNzQ4MTE5MjM5LCJleHAiOjE3NDgxNjI0Mzl9.RhPNaB9WaXmWWHtQ62JMsAsllwITtdVXKrFxfqp4vuk
 
 ### TREES 
 
@@ -38,30 +38,29 @@ GET http://localhost:3000/trees/1/forests
 
 ### ✅ routes.get("/users", userController.users);
 GET http://localhost:3000/users
+Authorization: Bearer {{authToken}}
 
-### routes.get("/users/:id", userController.userById);
-GET ✅ http://localhost:3000/users/11
+### ✅ routes.get("/users/:id", userController.userById);
+GET http://localhost:3000/users/11
 Authorization: Bearer {{authToken}}
 
 ### ORDERS
 
-### routes.get("/orders", orderController.orders);
-GET 🛠️ http://localhost:3000/orders
+### ✅ routes.get("/orders", orderController.orders);
+GET http://localhost:3000/orders
 Authorization: Bearer {{authToken}}
 
-### routes.get("/user/:id/orders", orderController.ordersByUserId);
-GET ✅ http://localhost:3000/user/1/orders
+### ✅ routes.get("/user/:id/orders", orderController.ordersByUserId);
+GET http://localhost:3000/user/1/orders
 Authorization: Bearer {{authToken}}
 
-### routes.get("/orders/:id", orderController.orderById);
-GET 🛠️ http://localhost:3000/orders/9
+### ✅ routes.get("/orders/:id", orderController.orderById);
+GET http://localhost:3000/orders/9
 Authorization: Bearer {{authToken}}
 
 ### ITEMS 
-### routes.get("/items", orderItemController.items);
-GET ✅ http://localhost:3000/items
 
-###routes.get("/order/:id/items", orderItemController.itemsByOrderId);
-GET ✅ http://localhost:3000/order/8/items
+### ✅ routes.get("/order/:id/items", orderItemController.itemsByOrderId);
+GET http://localhost:3000/order/8/items
 
 

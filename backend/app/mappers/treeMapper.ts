@@ -31,26 +31,6 @@ export default class TreeMapper extends BaseMapper<any> {
         return snakeToCamel(rows);
     }
 
-    // async treeWithForests(id: number): Promise<any> {
-    //     const query = `
-    //         SELECT 
-    //             t.*,
-    //             json_agg(
-    //                 json_build_object('id', f.id, 'name', f.name, 'stock', ft.stock)
-    //             ) AS forests
-    //         FROM tree t
-    //         LEFT JOIN forest_tree ft ON t.id = ft.tree_id
-    //         LEFT JOIN forest f ON ft.forest_id = f.id
-    //         WHERE t.id = $1
-    //         GROUP BY t.id            
-    //     `;
-    //     const { rows } = await pool.query(query, [id]);
-    //     if (!rows || rows.length === 0) {
-    //         return null;
-    //     }
-    //     return snakeToCamel(rows);
-    // }
-
     // ONE TREE
 
     async treeWithForestsAndStock(treeId: number): Promise<any> {
@@ -190,28 +170,12 @@ export default class TreeMapper extends BaseMapper<any> {
         }
     }
 
-    // async getCustomTreeWithForests(ids: number[]): Promise<any> {
-    //     const query = `
-    //         SELECT 
-    //             t.*,
-    //             json_agg(
-    //                 json_build_object(
-    //                     'id', f.id,
-    //                     'name', f.name,
-    //                     'stock', ft.stock
-    //                 )
-    //             ) AS forests
-    //         FROM tree t
-    //         LEFT JOIN forest_tree ft ON t.id = ft.tree_id
-    //         LEFT JOIN forest f ON ft.forest_id = f.id
-    //         WHERE t.id = ANY($1)
-    //         GROUP BY t.id 
-    //         ORDER BY created_at DESC
-    //     `;
-    //     const { rows } = await pool.query(query, [ids]);
-    //     if (!rows || rows.length === 0) {
-    //         return null;
-    //     }
-    //     return snakeToCamel(rows);  
-    // }
+    async hasOrders(treeId: number): Promise<boolean> {
+        const { rows } = await pool.query(
+          'SELECT 1 FROM order_item WHERE tree_id = $1 LIMIT 1',
+          [treeId]
+        );
+        return rows.length > 0;
+      }
+
 }

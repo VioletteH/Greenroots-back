@@ -1,11 +1,13 @@
 #  ✅ Operational
 #  🛠️ Controller to do
 
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoibWFzdGVyQGdyZWVucm9vdHMuY29tIiwiaWF0IjoxNzQ4Mzc0MjY5LCJleHAiOjE3NDg0MTc0Njl9.OWOu-dmaajp0tRcx0iZNPKNw42x1ZE40b-XBRU3qHW4
 ### TREES
 
 ### 🛠️ Test deleteTree
 DELETE http://localhost:3000/trees/7
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 ### FOREST
 

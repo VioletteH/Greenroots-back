@@ -5,6 +5,7 @@ import { catchAsync } from "../utils/catchAsync";
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
 export const isGranted = catchAsync(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    
     // Get user role from token
     const token = req.headers.authorization?.split(' ')[1];
     

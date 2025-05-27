@@ -7,7 +7,6 @@ import userController from "../controllers/userController";
 import orderController from "../controllers/orderController";
 import itemController from "../controllers/itemController";
 import stripeController from "../controllers/stripeController";
-import authorizationController from "../controllers/authorizationController";
 import searchController from "../controllers/searchController";
 
 import { isGranted } from "../middlewares/isGranted";
@@ -22,8 +21,8 @@ routes.post("/register", authController.register);
 // TREES 
 
 // all trees
-routes.get("/trees", treeController.trees); // QP = limit, offset, sortBy, with-count
-routes.get("/trees/forests", treeController.treesWithForests); // QP = limit, offset
+routes.get("/trees", treeController.trees); 
+routes.get("/trees/forests", treeController.treesWithForests); 
 
 // one tree
 routes.get("/trees/:id", treeController.treeById); 

@@ -46,7 +46,6 @@ const treeController = {
 
     treesWithForests: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
         
-        // Query parameters
         const limit = parseInt(req.query.limit as string, 10) || 10;
         const offset = parseInt(req.query.offset as string, 10) || 0;
         
@@ -185,6 +184,18 @@ const treeController = {
         const tree = await treeMapper.findById(id);
         if (!tree) {
             return res.status(404).json({ message: "Tree not found" });
+        }
+
+        const treeWithForests = await treeMapper.treeWithForestsAndStock(id);
+        if (treeWithForests && treeWithForests.forestName && treeWithForests.forestName.length > 0) {
+            return res.status(400).json({ message: "Impossible de supprimer cet arbre car il est associé à une ou plusieurs forêts." });
+        }
+
+        const hasOrders = await treeMapper.hasOrders(id);
+        if (hasOrders) {
+            return res.status(400).json({
+            message: "Impossible de supprimer cet arbre car il est lié à une ou plusieurs commandes.",
+            });
         }
 
         await treeMapper.delete(id);

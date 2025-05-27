@@ -2,7 +2,7 @@
 
 <h1>Nouvel arbre</h1>
 
-<form action="/trees/news" method="POST" enctype="multipart/form-data">
+<form action="/trees/add" method="POST" enctype="multipart/form-data">
   <div class="mb-3">
     <label class="form-label">Nom</label>
     <input type="text" name="name" class="form-control" required>
@@ -55,6 +55,7 @@
                 <%= forest.name %>
               </label>
             </div>
+            
             <div class="d-flex align-items-center gap-2">
               <label for="stock-<%= forest.id %>" class="form-label m-0 small text-muted">Stock</label>
               <input 

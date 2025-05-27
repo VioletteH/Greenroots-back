@@ -139,6 +139,13 @@ const userController = {
             return res.status(404).json({ message: "User not found" });
         }
 
+        const hasOrders = await userMapper.hasOrders(id);
+        if (hasOrders) {
+            return res.status(400).json({
+            message: "Impossible de supprimer cet utilisateur car il est lié à une ou plusieurs commandes.",
+            });
+        }
+
         await userMapper.delete(id);
 
         res.status(200).send("User deleted");

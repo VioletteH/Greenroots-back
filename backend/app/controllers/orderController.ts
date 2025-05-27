@@ -82,12 +82,12 @@ const orderController = {
     if (error) {
       return next(new AppError(`Invalid data`, 400));
     }
-    // Check if order exists
+
     const existingOrder = await orderMapper.findById(value.id);
     if (existingOrder) {
       return next(new AppError(`Order ${value.id} already exists`, 400));
     }
-    // Create new order
+
     const newOrder = await orderMapper.create(value);
     res.status(201).json(newOrder);
   }),
@@ -110,19 +110,6 @@ const orderController = {
     const updatedOrder = await orderMapper.update(id, value);
     res.status(200).json(updatedOrder);
   }),
-
-  // ordersWithCount: catchAsync(async (req: Request, res: Response) => {
-  //   const limit = parseInt(req.query.limit as string, 10) || 10;
-  //   const offset = parseInt(req.query.offset as string, 10) || 0;
-  //   const { data: orders, total } = await orderMapper.findAllWithCountWithUser(limit, offset);
-  //   if (orders.length === 0) {
-  //     res.status(200).json("No orders found");
-  //   }
-  //   res.status(200).json({
-  //     orders,
-  //     total,
-  //   });
-  // }),
 
 };
 

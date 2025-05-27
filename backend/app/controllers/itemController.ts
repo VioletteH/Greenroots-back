@@ -9,14 +9,6 @@ const itemMapper = new loadItemMapper();
 
 const itemController = {
 
-  // items: catchAsync(async (req: Request, res: Response) => {
-  //     const items = await orderItemMapper.findAll();
-  //     if (items.length === 0) {
-  //       res.status(200).json("items not found");
-  //     }
-  //     res.status(200).json(items);
-  //   }),
-
   itemsByOrderId: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
     const id = (req.params.id as unknown) as number;

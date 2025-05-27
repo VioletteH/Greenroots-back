@@ -1,15 +1,17 @@
 #  ✅ Operational
-#  🛠️ Controller to do
+#  🛠️ Broken
+
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoibWFzdGVyQGdyZWVucm9vdHMuY29tIiwiaWF0IjoxNzQ4MTE5MjM5LCJleHAiOjE3NDgxNjI0Mzl9.RhPNaB9WaXmWWHtQ62JMsAsllwITtdVXKrFxfqp4vuk
 
 ### AUTHENTICATION
 
-###  🛠️ Test Login
+###  ✅ Test Login
 POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-  "email": "john.doe@example.com",
-  "password": "test"
+  "email": "master@greenroots.com",
+  "password": "masterGreenroots#1"
 }
 
 ### 🛠️ Test Register
@@ -25,9 +27,10 @@ Content-Type: application/json
 
 ### TREES
 
-### ✅ Test addTree
+### 🛠️ Test addTree
 POST http://localhost:3000/trees
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
     "name": "Figuier",
@@ -42,9 +45,10 @@ Content-Type: application/json
 
 ### FOREST
 
-### ✅ Test addForest
+### 🛠️ Test addForest
 POST http://localhost:3000/forests
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
     "name": "Forêt des Pyrénées Orientales",
@@ -61,6 +65,7 @@ Content-Type: application/json
 ### ✅ Test addUser
 POST http://localhost:3000/users
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
     "firstname": "thibaut",
@@ -76,9 +81,10 @@ Content-Type: application/json
 
 ### ORDERS
 
-### 🛠️ Test addOrder
+### ✅ Test addOrder
 POST http://localhost:3000/orders
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
     "user_id": 11,
