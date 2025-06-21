@@ -4,28 +4,27 @@ import { catchAsync } from "../utils/catchAsync";
 import BaseMapper from "../mappers/baseMapper";
 import loadItemMapper from "../mappers/itemMapper";
 
-const orderItemMapper = new BaseMapper("order_item");
+const baseMapper = new BaseMapper("order_item");
 const itemMapper = new loadItemMapper();
 
 const itemController = {
 
   itemsByOrderId: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    const id = (req.params.id as unknown) as number;
-    
-    if (id === null) {
+    const id = parseInt(req.params.id, 10);
+  
+    if (id === null || isNaN(id)) {
       return next(new AppError("Invalid user ID", 400));
     }
-    
-    const items = await orderItemMapper.findByField("order_id", id);
-    
+
+    const items = await itemMapper.findByField("order_id", id);
     res.status(200).json(items);
   }),
 
   addOrderItem: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     
       const data = req.body;
-      const addOrderItemResult = await orderItemMapper.create(data);
+      const addOrderItemResult = await baseMapper.create(data);
 
       if (!addOrderItemResult) {
         return next(new AppError(`Order item not created`, 400));

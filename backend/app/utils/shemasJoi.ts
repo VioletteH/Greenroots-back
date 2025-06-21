@@ -92,6 +92,8 @@ export const orderUpdateSchema = Joi.object({
 
 // userBaseSchema
 export const userBaseSchema = Joi.object({
+  firstname: Joi.string().trim().max(255).optional(),
+  lastname: Joi.string().trim().max(255).optional(),
   email: Joi.string().email().trim().lowercase().messages({
     'string.email': 'Email invalide',
     'string.empty': 'Email requis',
@@ -102,13 +104,11 @@ export const userBaseSchema = Joi.object({
     'string.empty': 'Mot de passe requis',
     'any.required': 'Mot de passe requis',
   }),
-  role: Joi.string().optional(),
-  firstname: Joi.string().trim().max(255).optional(),
-  lastname: Joi.string().trim().max(255).optional(),
-  address: Joi.string().optional().allow(''),
-  city: Joi.string().optional().allow(''),
-  zipcode: Joi.string().optional().allow(''),
   phone: Joi.string().optional().allow(''),
+  address: Joi.string().optional().allow(''),
+  zipcode: Joi.string().optional().allow(''),
+  city: Joi.string().optional().allow(''),
+  role: Joi.string().optional(),
 });
 
 // userSchema (required fields)

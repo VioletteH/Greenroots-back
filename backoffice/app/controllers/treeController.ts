@@ -34,7 +34,7 @@ const treeController = {
       if (!tree) {
          return res.status(404).render('error/404');
       }
-      res.render('tree/show', { tree });
+      res.render('tree/show', { tree, error: null });
    }),
 
    createTreeView: catchAsync(async (req:Request, res:Response) => {        

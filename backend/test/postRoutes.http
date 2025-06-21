@@ -1,11 +1,11 @@
-#  ✅ Operational
-#  🛠️ Broken
+#  ✅ OK
+#  🛠️ KO
 
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoibWFzdGVyQGdyZWVucm9vdHMuY29tIiwiaWF0IjoxNzQ4MTE5MjM5LCJleHAiOjE3NDgxNjI0Mzl9.RhPNaB9WaXmWWHtQ62JMsAsllwITtdVXKrFxfqp4vuk
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoibWFzdGVyQGdyZWVucm9vdHMuY29tIiwiaWF0IjoxNzQ5MzEyNDA4LCJleHAiOjE3NDkzNTU2MDh9._nSo1NfGx0CyxZw-zfJqc4mgyUpo8nv5xmoElcIKQwc
 
 ### AUTHENTICATION
 
-###  ✅ Test Login
+###  ✅ routes.post("/login", authController.login);
 POST http://localhost:3000/login
 Content-Type: application/json
 
@@ -14,20 +14,19 @@ Content-Type: application/json
   "password": "masterGreenroots#1"
 }
 
-### 🛠️ Test Register
+### 🛠️ routes.post("/register", authController.register);
 POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-  "firstname": "Admin",
-  "email": "admin@gmail.com",
+  "firstname": "test",
+  "email": "test2@gmail.com",
   "password": "azertyuiop",
-  "role": "admin"
 }
 
 ### TREES
 
-### 🛠️ Test addTree
+### 🛠️ routes.post("/trees", treeController.addTree);
 POST http://localhost:3000/trees
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
@@ -45,7 +44,7 @@ Authorization: Bearer {{authToken}}
 
 ### FOREST
 
-### 🛠️ Test addForest
+### 🛠️ routes.post("/forests", forestController.addForest);
 POST http://localhost:3000/forests
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
@@ -62,26 +61,26 @@ Authorization: Bearer {{authToken}}
 
 ### USERS
 
-### ✅ Test addUser
+### ✅ routes.post("/users", userController.addUser);
 POST http://localhost:3000/users
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-    "firstname": "thibaut",
-    "lastname": "thibaut",
-    "email": "thibaut@thibaut.com",
+    "firstname": "test",
+    "lastname": "test",
+    "email": "test@gmail.com",
     "password": "azertyuiop",
     "phone": "0788888888",
     "address": "10 av du capitole",
     "zipcode": "31000",
     "city": "Washigton",
-    "role": "admin"
+    "role": "user"
 }
 
 ### ORDERS
 
-### ✅ Test addOrder
+### ✅ routes.post("/orders", orderController.addOrder);
 POST http://localhost:3000/orders
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
@@ -92,14 +91,27 @@ Authorization: Bearer {{authToken}}
     "status": 2
 }
 
-### ✅ Test addOrderItem // activer la route + controller pour le test
-# POST http://localhost:3000/orders/:id/items
-# Content-Type: application/json
+### 🛠️ routes.post("/orders/:id/items", itemController.addOrderItem);
+POST http://localhost:3000/orders/:id/items
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
-# {
-#     "order_id": 6,
-#     "tree_id": 1,
-#     "name": "sapin",
-#     "quantity": 2,
-#     "price": 50
-# }
+{
+    "order_id": 6,
+    "tree_id": 1,
+    "name": "sapin",
+    "quantity": 2,
+    "price": 50
+}
+
+### ✅ routes.post("/create-payment-intent", stripeController.intent);
+POST http://localhost:3000/create-payment-intent
+Content-Type: application/json
+
+{
+    "amount": 20000,
+    "currency": "eur",
+    "payment_method_types": ["card"]
+}
+
+		

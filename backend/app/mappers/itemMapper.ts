@@ -4,7 +4,7 @@ import { AppError } from '../middlewares/errorHandler';
 
 export default class ItemMapper extends BaseMapper<any> {
 	constructor() {
-		super('item');
+		super('order_item');
 	}
 
     async updatedStock(treeId: number, forestId: number, quantity: number): Promise<Number> {

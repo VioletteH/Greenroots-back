@@ -18,21 +18,27 @@ export default class OrderMapper extends BaseMapper<any> {
                 u.firstname,
                 u.lastname,
                 u.email,
+                oi.id AS item_id,
                 oi.name AS item_name,
                 oi.price AS item_price,
                 oi.quantity AS item_quantity
             FROM "order" o
             JOIN "user" u ON o.user_id = u.id
-            JOIN "order_item" oi ON o.id = oi.order_id
+            LEFT JOIN "order_item" oi ON o.id = oi.order_id
             WHERE o.id = $1
         `;
         
         const { rows } = await pool.query(query, [id]);
-    
+        console.log("ROWS FROM DB:", rows);
+
         if (rows.length === 0) return null;
     
         const first = snakeToCamel(rows[0]);
     
+        // const rowsCamel = rows.map(snakeToCamel);
+
+        // const first = rowsCamel[0];
+
         const order = {
             id: first.orderId,
             totalPrice: first.totalPrice,

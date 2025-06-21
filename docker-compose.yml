@@ -47,7 +47,3 @@ services:
       - ./docker.env
     volumes:
       - ./backoffice:/app/
-
-volumes:
-  pg-greenroots:
-    driver: local

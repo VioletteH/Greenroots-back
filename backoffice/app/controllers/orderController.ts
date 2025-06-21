@@ -57,7 +57,7 @@ const orderController = {
     }),
 
     order: catchAsync(async (req:Request, res:Response) => {
-        const id = req.params.id;
+        const id = parseInt(req.params.id, 10);
         const order: Order = await getOne(req, id);
         if (!order) {
             return res.status(404).render('error/404');
@@ -66,7 +66,7 @@ const orderController = {
     }),
 
     updateOrderView: catchAsync(async (req:Request, res:Response) => {
-        const id = req.params.id;
+        const id = parseInt(req.params.id, 10);
         const order = await getOne(req, id);
         if (!order) {
             return res.status(404).render('error/404');
@@ -75,7 +75,7 @@ const orderController = {
     }),
 
     updateOrder: catchAsync(async (req: Request, res: Response) => {
-        const id = req.params.id;
+        const id = parseInt(req.params.id, 10);
         const { status } = sanitizeObject(req.body);
         if (![1, 2, 3].includes(Number(status))) {
             return res.status(400).render('error/400', { message: 'Statut invalide' });

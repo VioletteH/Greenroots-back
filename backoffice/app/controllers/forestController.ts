@@ -32,7 +32,7 @@ const forestController = {
       if (!forest) {
          return res.status(404).render('error/404');
       }
-      res.render('forest/show', { forest });
+      res.render('forest/show', { forest, error: null });
    }),
 
    createForestView: catchAsync(async (req:Request, res:Response) => {

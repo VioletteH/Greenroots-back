@@ -1,18 +1,24 @@
-#  ✅ Operational
-#  🛠️ Controller to do
+#  ✅ OK
+#  🛠️ KO
 
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoibWFzdGVyQGdyZWVucm9vdHMuY29tIiwiaWF0IjoxNzQ4MTE5MjM5LCJleHAiOjE3NDgxNjI0Mzl9.RhPNaB9WaXmWWHtQ62JMsAsllwITtdVXKrFxfqp4vuk
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoibWFzdGVyQGdyZWVucm9vdHMuY29tIiwiaWF0IjoxNzUwMzYzNTQ5LCJleHAiOjE3NTA0MDY3NDl9.aRRhfZWDgyZKk9wDxyq5s2sAKp6lx0_3P9jxZsjVnPM
 
 ### TREES 
 
 ### ✅ routes.get("/trees", treeController.trees);
 GET http://localhost:3000/trees
 
+### ✅ routes.get("/trees", treeController.trees);
+GET http://localhost:3000/trees/?limit=2&offset=3
+
+### ✅ routes.get("/trees/forests", treeController.treesWithForests);
+GET http://localhost:3000/trees/forests
+
 ### ✅ routes.get("/trees/:id", treeController.treesById);
 GET http://localhost:3000/trees/1
 
-### ✅ routes.get("/trees", treeController.trees);
-GET http://localhost:3000/trees/?limit=2&offset=3
+### ✅ routes.get("/trees/:id/forests-and-stock", treeController.treeWithForestsAndStock);
+GET http://localhost:3000/trees/1/forests-and-stock
 
 ### ✅ routes.get("/forests/:id/trees", treeController.treesByForest);
 GET http://localhost:3000/forests/1/trees
@@ -31,6 +37,9 @@ GET http://localhost:3000/forests
 ### ✅ routes.get("/forests/:id", forestController.forestById);
 GET http://localhost:3000/forests/1
 
+### ✅ routes.get("/forests/:id/trees-and-stock", forestController.forestWithTreesAndStock);
+GET http://localhost:3000/forests/1/trees-and-stock
+
 ### ✅ routes.get("/trees/:id/forests", forestController.forestsByTree);
 GET http://localhost:3000/trees/1/forests
 
@@ -44,23 +53,35 @@ Authorization: Bearer {{authToken}}
 GET http://localhost:3000/users/11
 Authorization: Bearer {{authToken}}
 
+### ✅ routes.get("/users/:id/impact", userController.impactByUserId);
+GET http://localhost:3000/users/11/impact
+Authorization: Bearer {{authToken}}
+
+### 🛠️ routes.get("/users/:id/orders", userController.ordersByUserId);
+GET http://localhost:3000/users/11/orders
+Authorization: Bearer {{authToken}}
+
 ### ORDERS
 
 ### ✅ routes.get("/orders", orderController.orders);
 GET http://localhost:3000/orders
 Authorization: Bearer {{authToken}}
 
-### ✅ routes.get("/user/:id/orders", orderController.ordersByUserId);
-GET http://localhost:3000/user/1/orders
+### ✅ routes.get("/orders/:id", orderController.orderById);
+GET http://localhost:3000/orders/13
 Authorization: Bearer {{authToken}}
 
-### ✅ routes.get("/orders/:id", orderController.orderById);
-GET http://localhost:3000/orders/9
+### ✅ routes.get("/orders/:id/full", orderController.orderByIdWithUser);
+GET http://localhost:3000/orders/15/full
 Authorization: Bearer {{authToken}}
 
 ### ITEMS 
 
-### ✅ routes.get("/order/:id/items", orderItemController.itemsByOrderId);
-GET http://localhost:3000/order/8/items
+### ✅ routes.get("/orders/:id/items", orderItemController.itemsByOrderId);
+GET http://localhost:3000/orders/15/items
+Authorization: Bearer {{authToken}}
 
+### SEARCH
 
+### 🛠️ routes.get("/search", searchController);
+GET http://localhost:3000/search/Arganier

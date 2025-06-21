@@ -89,11 +89,23 @@ export default class TreeMapper extends BaseMapper<any> {
         return rows.map(snakeToCamel) as Tree[];
     }
 
-    async treesByPrice(): Promise<Tree[]> {
-        const query = `SELECT * FROM tree ORDER BY price`;
-        const { rows } = await pool.query(query);
-        if (!rows) return []; 
-        return rows.map(snakeToCamel) as Tree[];
+    async treesByPrice(limit?:number, offset?:number): Promise<{data: Tree[]; total:number}> {
+        const query = `SELECT * FROM tree ORDER BY price LIMIT $1 OFFSET $2`;
+        const count = `SELECT COUNT(*) FROM tree`;
+
+        const [dataResult, countResult] = await Promise.all([
+            pool.query(query, [limit, offset]),
+            pool.query(count),
+        ]);
+
+        const data = dataResult.rows.map(snakeToCamel) as Tree[];
+        const total = parseInt(countResult.rows[0].count, 10);
+
+        return { data, total };
+
+        // const { rows } = await pool.query(query, [limit, offset]);
+        // if (!rows) return []; 
+        // return rows.map(snakeToCamel) as Tree[];
     }
 
     // POST, PATCH & DELETE

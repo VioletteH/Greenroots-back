@@ -30,7 +30,7 @@ const orderController = {
     }
 
     if (!orders || orders.length === 0) {
-      return next(new AppError("No users found", 404)); 
+      return next(new AppError("No orders found", 404)); 
     }
 
     if (withCount) {
@@ -55,9 +55,13 @@ const orderController = {
     
     const id = parseInt(req.params.id, 10);
 
+    if (isNaN(id)) {
+      return next(new AppError("Invalid order ID", 400));
+    }
+
     const order = await orderMapper.findById(id);
     if (!order) {
-      return next(new AppError(`Order ${id} already exists `, 400));
+      return next(new AppError(`Order ${id} not found`, 404));
     }
     res.status(200).json(order);
  }),
@@ -85,7 +89,7 @@ const orderController = {
 
     const existingOrder = await orderMapper.findById(value.id);
     if (existingOrder) {
-      return next(new AppError(`Order ${value.id} already exists`, 400));
+      return next(new AppError(`Order ${value.id} already exists`, 409));
     }
 
     const newOrder = await orderMapper.create(value);

@@ -25,23 +25,19 @@ const treeController = {
 
         // Check if sortBy or withCount are defined
         if (sortBy === 'price') {
-            trees = await treeMapper.treesByPrice();
-        } else if (withCount) {
-            const result = await treeMapper.findAllWithCount(limit, offset);
+            const result = await treeMapper.treesByPrice(limit, offset);
             trees = result.data;
             total = result.total;
         } else {
-            trees = await treeMapper.findAll(limit, offset); 
+            const result = await treeMapper.findAllWithCount(limit, offset);
+            trees = result.data;
+            total = result.total; 
         }
         if (!trees || trees.length === 0) {
             return next(new AppError("No trees found", 404)); 
         }
 
-        // Send data 
-        if (withCount) {
-            return res.status(200).json({ trees, total });
-        }
-        res.status(200).json(trees);
+        res.status(200).json({trees, total});
     }),
 
     treesWithForests: catchAsync(async (req:Request, res:Response, next: NextFunction) => {

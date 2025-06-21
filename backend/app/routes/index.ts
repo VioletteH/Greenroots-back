@@ -76,17 +76,17 @@ routes.delete("/users/:id", isGranted, userController.deleteUser);
 routes.get("/orders", isGranted, orderController.orders);
 
 // one order
-routes.get("/orders/:id", isGranted, orderController.orderById);
-routes.get("/orders/:id/full", isGranted, orderController.orderByIdWithUser);
+routes.get("/orders/:id", isGranted, orderController.orderById); //
+routes.get("/orders/:id/full", isGranted, orderController.orderByIdWithUser); 
 
 // post et patch
-routes.post("/orders", isGranted, orderController.addOrder);
+routes.post("/orders", isGranted, orderController.addOrder); //
 routes.patch("/orders/:id", isGranted, orderController.updateOrder);
 
 //ORDER ITEMS
 
-routes.get("/order/:id/items", itemController.itemsByOrderId);
-routes.post("/orders/:id/items", itemController.addOrderItem); 
+routes.get("/orders/:id/items", isGranted, itemController.itemsByOrderId); //
+routes.post("/orders/:id/items", isGranted, itemController.addOrderItem); //
 
 //SEARCH
 

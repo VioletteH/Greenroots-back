@@ -1,13 +1,9 @@
 import pg from "pg";
-import debug from "debug";
 import "dotenv/config";
 
 const { Pool } = pg;
 
-// Creation of a debug instance for database operations
-const dbDebug = debug("app:db");
-
-// databse connection
+// Creation of the PostgreSQL connection pool 
 export const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -16,26 +12,26 @@ export const pool = new Pool({
   port: Number(process.env.DB_PORT),
 });
 
+// Function to test the connection (called at application startup)
 export const connectDB = async () => {
   try {
     const client = await pool.connect();
-    dbDebug("PostgreSQL is connected.");
+    console.log("PostgreSQL is connected.");
     client.release();
   } catch (error) {
-    dbDebug("Failed to connect to PostgreSQL:", error);
+    console.error("Failed to connect to PostgreSQL:", error);
     process.exit(1);
   }
 };
 
+// Utility method to execute SQL queries
 export const query = async (text: string, params?: any[]) => {
   const client = await pool.connect();
   try {
-    dbDebug(`Executing query: ${text} with params ${JSON.stringify(params)}`);
     const result = await client.query(text, params);
-    dbDebug(`Query success: ${result.rowCount} rows returned`);
     return result.rows;
   } catch (error) {
-    dbDebug("Query error:", error);
+    console.error("Query error:", error);
     throw error;
   } finally {
     client.release();

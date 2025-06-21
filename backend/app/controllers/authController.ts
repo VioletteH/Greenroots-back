@@ -10,7 +10,7 @@ import AuthMapper from '../mappers/authMapper';
 import type { User} from '../types/index';
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
-const userMapper = new AuthMapper();
+const authMapper = new AuthMapper();
 
 const authController = {   
     
@@ -26,15 +26,15 @@ const authController = {
         }
 
         // step 2 - find user
-        const user = await userMapper.findByEmail(value.email) as User;
+        const user = await authMapper.findByEmail(value.email) as User;
         if (!user) {
-            return next(new AppError ("Password or email - invalid", 400));
+            return next(new AppError ("Password or email - invalid", 401));
         }
 
         // step 3 - verify password 
         const passwordValid = await argon2.verify(user.password, value.password);
         if (!passwordValid) {
-            return next(new AppError ("Password or email - invalid", 400));
+            return next(new AppError ("Password or email - invalid", 401));
         }
 
         // step 4 - generate JWT token
@@ -62,16 +62,16 @@ const authController = {
         }
 
         // step 2 - find if user already exists
-        const user = await userMapper.findByEmail(value.email) as User;
+        const user = await authMapper.findByEmail(value.email) as User;
         if (user) {
-            return next(new AppError ("User already exists", 400));
+            return next(new AppError ("User already exists", 409));
         }
 
         // step 3 - hash password
         const hashedPassword = await argon2.hash(value.password);
 
         // step 4 - create user
-        const newUser = await userMapper.create({ ...value, password: hashedPassword });
+        const newUser = await authMapper.create({ ...value, password: hashedPassword });
 
         // step 5 - generate JWT token
         const token = jwt.sign(

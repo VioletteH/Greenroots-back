@@ -30,7 +30,7 @@ const userController = {
       if (!user) {
          return res.status(404).render('error/404', { message: 'Utilisateur non trouvé' });
       }
-      res.render('user/show', { user });
+      res.render('user/show', { user, error : null });
    }),
 
    createUserView: (req:Request, res:Response) => {
