@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Request, Response } from "express";
-import { sanitizeObject } from "../utils/sanitize";
+import { sanitizeInput } from "../utils/sanitize";
 import { catchAsync } from "../utils/catchAsync";
 
 const API_URL = process.env.API_BASE_URL;
@@ -13,7 +13,7 @@ const authController = {
 
     loginPost: catchAsync(async (req: Request, res: Response) => {
         
-        const sanitizedBody = sanitizeObject(req.body);
+        const sanitizedBody = sanitizeInput(req.body);
         const { email, password } = sanitizedBody;
 
         const response = await axios.post(`${API_URL}/login/`, { email, password });

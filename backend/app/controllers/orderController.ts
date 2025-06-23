@@ -99,8 +99,8 @@ const orderController = {
   updateOrder: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     
     const id = parseInt(req.params.id, 10);
-    
-    const { error, value } = orderUpdateSchema.validate(req.body);
+    const sanitizedBody = sanitizeInput(req.body);
+    const { error, value } = orderUpdateSchema.validate(sanitizedBody);
     
     if (error) {
       return next(new AppError(`Invalid data`, 400));

@@ -28,10 +28,26 @@ app.use(cors({
   credentials: true
 }));
 
-// Sécurité avec helmet (CSP désactivé pour éviter les conflits si tu injectes du contenu dynamique)
-// app.use(helmet({
-//   contentSecurityPolicy: false,
-// }));
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "https://js.stripe.com", // Stripe.js
+          "'unsafe-inline'" // utile si tu injectes du JS dans tes templates EJS (à désactiver si possible)
+        ],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+        imgSrc: ["'self'", "data:", "blob:", "http://localhost:3001", "http://localhost:5173", "http://localhost:5174"], // autoriser les images locales et base64
+        connectSrc: ["'self'", "https://api.stripe.com"], // Stripe API
+        frameSrc: ["'self'", "https://js.stripe.com"], // pour les iframes Stripe
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+  })
+);
 
 app.use(cookieParser());
 app.use(express.json());

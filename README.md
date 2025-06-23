@@ -49,7 +49,6 @@ todo
 
 todo
 - ajouter helmet
-- check sanitize
 - rassembler les pages erreur
 - enlever dotenv + pg (package.json + app)
 
@@ -60,8 +59,9 @@ to see
 - revoir isLogged et requiredAuth
 
 bugs
-- on ne peut pas voir ou modifier certains orders (orders avec plusieurs arbres?)
+- on ne peut pas voir ou modifier certains orders (orders avec plusieurs arbres? ex : la 13)
 - check le message d'erreur du delete user 
+- on ne peut pas modifier les arbres associés à une forêt (et inverse)
 
 ## TODO BDD
 
@@ -89,5 +89,3 @@ INSERT INTO "user" (firstname, lastname, email, password, phone, address, zipcod
 ('Grace', 'Taylor', 'grace.taylor@example.com', '$argon2id$v=19$m=65536,t=3,p=4$WoAfPvYY08I/1rPzhGnRnw$JV5qfN5VxSROUNxyiV7g6jjNmheG+VgiB1Rz6SoLxj0', '01 23 45 67 89', '890 Rue de l''Épicéa', '34567', 'Centre', 'utilisateur'), -- password9
 ('Heidi', 'Clark', 'heidi.clark@example.com', '$argon2id$v=19$m=65536,t=3,p=4$qkNfRGzV+ap+DeU7Um4bgw$M7f9yNvjTkgI79HSCvml5Uqzv3T93o9RBZn5o9VEFuM', '01 23 45 67 89', '123 Rue du Tremble', '67890', 'Colline', 'utilisateur'), -- password10
 ('Admin', '', 'master@greenroots.com', '$argon2id$v=19$m=65536,t=3,p=4$+p6idzhGlx1E5Eoxp7TTkw$Uk4xOlghkt8h2Qsr7yFjDnWdll6m33BjJULgl0mgVh0', '', '', '', '', 'admin'); -- admin123
-
-STRIPE=sk_test_51RGzPzE4bHLDpK05ParN1huD7atzPzwH74pzxvozjoTLtASaE4jcl67wfCndgDXxK6SIBOekg4R73gj3oiGT9tvb00KKisVLqp

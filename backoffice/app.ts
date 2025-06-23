@@ -12,15 +12,48 @@ import helmet from 'helmet';
 
 const app = express();
 app.use(cors());
-// app.use(helmet({
-//   contentSecurityPolicy: false, 
-// }));
-const PORT = 3000;
 
-app.use(cookieParser());
+const allowedOrigins = [
+  process.env.FRONTA,
+  process.env.FRONTB,
+];
+
+app.use('/uploads', cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.error('CORS blocked on /uploads:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
 
 app.use(express.static('public'));
 app.use('/icons', express.static(__dirname + '/node_modules/bootstrap-icons/font'));
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'" // utile si tu injectes du JS dans tes templates EJS (à désactiver si possible)
+        ],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+        fontSrc: ["'self'", "https://cdn.jsdelivr.net"],
+        imgSrc: ["'self'", "data:", "blob:", "http://localhost:3000", "http://localhost:5173", "http://localhost:5174"], // autoriser les images locales et base64
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+  })
+);
+
+const PORT = 3000;
+
+app.use(cookieParser());
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

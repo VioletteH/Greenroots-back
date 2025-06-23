@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { User } from '../types/index';
-import { sanitizeObject } from "../utils/sanitize";
+import { sanitizeInput } from "../utils/sanitize";
 import { catchAsync } from '../utils/catchAsync';
 import { getAll, getOne, create, update, remove } from '../api/user';
 
@@ -38,7 +38,7 @@ const userController = {
    },
 
    createUser: catchAsync(async (req:Request, res:Response) => {
-      const user: User = sanitizeObject(req.body);
+      const user: User = sanitizeInput(req.body);
       await create(req, user);
       res.redirect('/users');
    }),
@@ -55,7 +55,7 @@ const userController = {
    updateUser: catchAsync(async (req: Request, res: Response) => {
 
     const id = req.params.id;
-    const user: User = sanitizeObject(req.body);
+    const user: User = sanitizeInput(req.body);
   
     const filteredUser: Partial<User> = Object.fromEntries(
       Object.entries(user).filter(([_, value]) => {

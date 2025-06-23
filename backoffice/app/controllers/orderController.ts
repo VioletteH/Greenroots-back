@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getAll, getOne, update } from '../api/order';
 import { Order } from '../types/index';
-import { sanitizeObject } from "../utils/sanitize";
+import { sanitizeInput } from "../utils/sanitize";
 import { catchAsync } from '../utils/catchAsync';
 
 const statusMap: { [key: number]: string } = {
@@ -76,7 +76,7 @@ const orderController = {
 
     updateOrder: catchAsync(async (req: Request, res: Response) => {
         const id = parseInt(req.params.id, 10);
-        const { status } = sanitizeObject(req.body);
+        const { status } = sanitizeInput(req.body);
         if (![1, 2, 3].includes(Number(status))) {
             return res.status(400).render('error/400', { message: 'Statut invalide' });
         }

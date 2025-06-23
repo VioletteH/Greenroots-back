@@ -1,7 +1,7 @@
 #  ✅ OK
 #  🛠️ KO
 
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoibWFzdGVyQGdyZWVucm9vdHMuY29tIiwiaWF0IjoxNzUwMzYzNTQ5LCJleHAiOjE3NTA0MDY3NDl9.aRRhfZWDgyZKk9wDxyq5s2sAKp6lx0_3P9jxZsjVnPM
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoibWFzdGVyQGdyZWVucm9vdHMuY29tIiwiaWF0IjoxNzUwNjAwMzA0LCJleHAiOjE3NTA2NDM1MDR9.sPQvNW0WfSlJLo4hfyBujNYm7FM0AV7K9ut8jr8p5mI
 
 ### TREES 
 
@@ -38,7 +38,7 @@ GET http://localhost:3000/forests
 GET http://localhost:3000/forests/1
 
 ### ✅ routes.get("/forests/:id/trees-and-stock", forestController.forestWithTreesAndStock);
-GET http://localhost:3000/forests/1/trees-and-stock
+GET http://localhost:3000/forests/11/trees-and-stock
 
 ### ✅ routes.get("/trees/:id/forests", forestController.forestsByTree);
 GET http://localhost:3000/trees/1/forests
@@ -78,10 +78,10 @@ Authorization: Bearer {{authToken}}
 ### ITEMS 
 
 ### ✅ routes.get("/orders/:id/items", orderItemController.itemsByOrderId);
-GET http://localhost:3000/orders/15/items
+GET http://localhost:3000/orders/13/items
 Authorization: Bearer {{authToken}}
 
 ### SEARCH
 
-### 🛠️ routes.get("/search", searchController);
-GET http://localhost:3000/search/Arganier
+### ✅ routes.get("/search", searchController);
+GET http://localhost:3000/search?search=arganier

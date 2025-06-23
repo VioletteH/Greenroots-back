@@ -5,6 +5,10 @@ export function sanitizeInput(input: any): any {
     return sanitizeHtml(input);
   }
 
+  if (Array.isArray(input)) {
+    return input.map(sanitizeInput);
+  }
+
   if (typeof input === 'object' && input !== null) {
     const sanitizedObj: Record<string, any> = {};
     for (const key in input) {
