@@ -1,6 +1,5 @@
 import express from 'express';
 import routes from './app/routes/index';
-import "dotenv/config";
 import cors from 'cors';
 import methodOverride from 'method-override';
 import cookieParser from 'cookie-parser';

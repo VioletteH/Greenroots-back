@@ -64,7 +64,7 @@ const authController = {
         // step 2 - find if user already exists
         const user = await authMapper.findByEmail(value.email) as User;
         if (user) {
-            return next(new AppError ("User already exists", 409));
+            return next(new AppError ("L'utilisateur existe déjà", 409));
         }
 
         // step 3 - hash password

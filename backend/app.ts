@@ -1,6 +1,5 @@
 import express from 'express';
 import routes from './app/routes/index';
-import "dotenv/config";
 import { errorHandler } from './app/middlewares/errorHandler';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -15,7 +14,6 @@ const allowedOrigins = [
   process.env.FRONTB,
 ];
 
-// Middleware CORS
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -35,7 +33,7 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: [
           "'self'",
-          "https://js.stripe.com", // Stripe.js
+          "https://js.stripe.com", 
           "'unsafe-inline'" // utile si tu injectes du JS dans tes templates EJS (à désactiver si possible)
         ],
         styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],

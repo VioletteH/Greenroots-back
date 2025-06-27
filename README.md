@@ -39,7 +39,6 @@ bugs
 - modifier arbre > afficher message d'erreur si on sélectionner une forêt sans préciser de stock
 
 todo
-- ajouter helmet app.ts
 - vérifier les tests KO
 - vérifier les status dans le plan de test
 - vérifier les messages d'erreur (fr / en) dans le plan de test
@@ -48,7 +47,6 @@ todo
 ## TODO BO
 
 todo
-- ajouter helmet
 - rassembler les pages erreur
 - enlever dotenv + pg (package.json + app)
 
