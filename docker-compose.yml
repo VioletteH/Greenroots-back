@@ -47,3 +47,5 @@ services:
       - ./docker.env
     volumes:
       - ./backoffice:/app/
+    depends_on: 
+      - greenroots-backend

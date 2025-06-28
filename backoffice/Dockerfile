@@ -1,6 +1,14 @@
-FROM node:lts
-WORKDIR /app 
+# Étape 1 : build (optionnel si transpilation TypeScript)
+FROM node:lts AS build
+WORKDIR /app
 COPY package*.json ./
-COPY . .  
 RUN npm install
-CMD ["npm", "run", "dev"]
+COPY . .
+
+# Étape 2 : exécution
+FROM node:lts
+WORKDIR /app
+COPY --from=build /app /app
+ENV NODE_ENV=production
+EXPOSE 3001
+CMD ["npm", "start"]
