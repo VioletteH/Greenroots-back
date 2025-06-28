@@ -1,17 +1,17 @@
 BEGIN;
 
 INSERT INTO "user" (firstname, lastname, email, password, phone, address, zipcode, city, role) VALUES
-('John', 'Doe', 'john.doe@example.com', 'password1', '01 23 45 67 89', '123 Rue Principale', '12345', 'Springfield', 'utilisateur'),
-('Jane', 'Smith', 'jane.smith@example.com', 'password2', '01 23 45 67 89', '456 Rue de l''Orme', '67890', 'Metropolis', 'admin'),
-('Alice', 'Johnson', 'alice.johnson@example.com', 'password3', '01 23 45 67 89', '789 Rue du Chêne', '54321', 'Gotham', 'admin'),
-('Bob', 'Brown', 'bob.brown@example.com', 'password4', '01 23 45 67 89', '321 Rue du Pin', '98765', 'Smallville', 'utilisateur'),
-('Charlie', 'Davis', 'charlie.davis@example.com', 'password5', '01 23 45 67 89', '654 Rue du Cèdre', '45678', 'Riverdale', 'utilisateur'),
-('David', 'Wilson', 'david.wilson@example.com', 'password6', '01 23 45 67 89', '987 Rue du Bouleau', '78901', 'Starling', 'utilisateur'),
-('Eve', 'Miller', 'eve.miller@example.com', 'password7', '01 23 45 67 89', '234 Rue de l''Érable', '23456', 'Keystone', 'utilisateur'),
-('Frank', 'Moore', 'frank.moore@example.com', 'password8', '01 23 45 67 89', '567 Rue du Noyer', '89012', 'Côte', 'utilisateur'),
-('Grace', 'Taylor', 'grace.taylor@example.com', 'password9', '01 23 45 67 89', '890 Rue de l''Épicéa', '34567', 'Centre', 'utilisateur'),
-('Heidi', 'Clark', 'heidi.clark@example.com', 'password10', '01 23 45 67 89', '123 Rue du Tremble', '67890', 'Colline', 'utilisateur'),
-('Admin', '', 'master@greenroots.com', '$argon2id$v=19$m=65536,t=3,p=4$+p6idzhGlx1E5Eoxp7TTkw$Uk4xOlghkt8h2Qsr7yFjDnWdll6m33BjJULgl0mgVh0', '', '', '', '', 'admin');
+('John', 'Doe', 'john.doe@example.com', '$argon2id$v=19$m=65536,t=3,p=4$FqOpNH8Iiwc/CB9jPU95WQ$Jgt0j69li1j5bn4Pshl1n/6nThjYmF7cwiZqq+EkaTI', '01 23 45 67 89', '123 Rue Principale', '12345', 'Springfield', 'utilisateur'), -- password1
+('Jane', 'Smith', 'jane.smith@example.com', '$argon2id$v=19$m=65536,t=3,p=4$w+zAaUsziLhKSk8pm3dTtw$uKGEy95VvvPDA0VR3QchM3zZ2dvWBRydH2V2M/ed6u4', '01 23 45 67 89', '456 Rue de l''Orme', '67890', 'Metropolis', 'admin'), -- password2
+('Alice', 'Johnson', 'alice.johnson@example.com', '$argon2id$v=19$m=65536,t=3,p=4$up1cn7c+uE45b5+rU7uHHw$6t+c7lHlIDoUyGY+xpyR2fqYVgQ55pCd1OHu3ryytZ8', '01 23 45 67 89', '789 Rue du Chêne', '54321', 'Gotham', 'admin'), -- password3
+('Bob', 'Brown', 'bob.brown@example.com', '$argon2id$v=19$m=65536,t=3,p=4$5DfKX+gtNRX7U97G4PbzVA$qRYQIgG9U9RbWXrdPt5dy7D8oOLrzQJ7+MoqiX0xDYA', '01 23 45 67 89', '321 Rue du Pin', '98765', 'Smallville', 'utilisateur'), -- password4
+('Charlie', 'Davis', 'charlie.davis@example.com', '$argon2id$v=19$m=65536,t=3,p=4$DkV9xLV+2gzSuA79KZ8ScA$RdnSKwFQHQNQn4KGVqTb0qPVF6JGwuhe3d9Y8xI9G6o', '01 23 45 67 89', '654 Rue du Cèdre', '45678', 'Riverdale', 'utilisateur'), -- password5
+('David', 'Wilson', 'david.wilson@example.com', '$argon2id$v=19$m=65536,t=3,p=4$HF0ZjK6m+2JXYBgcPZEX9A$U8CnsqANz06PaxRRGgxJkGeD8nZel0M1kiKtIqSnocQ', '01 23 45 67 89', '987 Rue du Bouleau', '78901', 'Starling', 'utilisateur'), -- password6
+('Eve', 'Miller', 'eve.miller@example.com', '$argon2id$v=19$m=65536,t=3,p=4$LSMiLgMdvI6OL1TwOEDTog$6/m+8Kh6HokYiRV/ovWhmUVsMvH1nZwmeKokQVV0B6I', '01 23 45 67 89', '234 Rue de l''Érable', '23456', 'Keystone', 'utilisateur'), -- password7
+('Frank', 'Moore', 'frank.moore@example.com', '$argon2id$v=19$m=65536,t=3,p=4$jqAHmo3zrymmNKdLUqOvWw$dZtOvObDJ7wSz+y96LGgoLr0cvW8RxI7jkA/F3EXN1E', '01 23 45 67 89', '567 Rue du Noyer', '89012', 'Côte', 'utilisateur'), -- password8
+('Grace', 'Taylor', 'grace.taylor@example.com', '$argon2id$v=19$m=65536,t=3,p=4$WoAfPvYY08I/1rPzhGnRnw$JV5qfN5VxSROUNxyiV7g6jjNmheG+VgiB1Rz6SoLxj0', '01 23 45 67 89', '890 Rue de l''Épicéa', '34567', 'Centre', 'utilisateur'), -- password9
+('Heidi', 'Clark', 'heidi.clark@example.com', '$argon2id$v=19$m=65536,t=3,p=4$qkNfRGzV+ap+DeU7Um4bgw$M7f9yNvjTkgI79HSCvml5Uqzv3T93o9RBZn5o9VEFuM', '01 23 45 67 89', '123 Rue du Tremble', '67890', 'Colline', 'utilisateur'), -- password10
+('Admin', '', 'master@greenroots.com', '$argon2id$v=19$m=65536,t=3,p=4$+p6idzhGlx1E5Eoxp7TTkw$Uk4xOlghkt8h2Qsr7yFjDnWdll6m33BjJULgl0mgVh0', '', '', '', '', 'admin'); -- admin123
 
 INSERT INTO "tree" (name, scientific_name, image, category, description, co2, o2, price) VALUES
 ('Acacia', 'Acacia spp.', '/uploads/trees/acacia.webp', 'Résineux', 'Utilisé pour la stabilisation des sols et l’alimentation du bétail.', 12, 25, 70),
