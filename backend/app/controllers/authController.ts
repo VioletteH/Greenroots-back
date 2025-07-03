@@ -22,19 +22,19 @@ const authController = {
         const sanitizedBody = sanitizeInput(req.body);
         const { error, value } = loginSchema.validate(sanitizedBody);
         if (error) {
-            return next(new AppError ("Password or email - invalid", 400));
+            return next(new AppError ("Email ou mot de passe invalide", 400));
         }
 
         // step 2 - find user
         const user = await authMapper.findByEmail(value.email) as User;
         if (!user) {
-            return next(new AppError ("Password or email - invalid", 401));
+            return next(new AppError ("Email ou mot de passe invalide", 401));
         }
 
         // step 3 - verify password 
         const passwordValid = await argon2.verify(user.password, value.password);
         if (!passwordValid) {
-            return next(new AppError ("Password or email - invalid", 401));
+            return next(new AppError ("Email ou mot de passe invalide", 401));
         }
 
         // step 4 - generate JWT token

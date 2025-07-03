@@ -22,9 +22,13 @@ const itemController = {
   }),
 
   addOrderItem: catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    
-      const data = req.body;
+    console.log("ORDER ITEM BODY", req.body);
+      // const data = req.body;
+      const orderId = Number(req.params.id);
+      const data = { ...req.body, order_id: orderId };
+      
       const addOrderItemResult = await baseMapper.create(data);
+      console.log("RESULT INSERT ORDER ITEM", addOrderItemResult);
 
       if (!addOrderItemResult) {
         return next(new AppError(`Order item not created`, 400));

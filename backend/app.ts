@@ -34,12 +34,12 @@ app.use(
         scriptSrc: [
           "'self'",
           "https://js.stripe.com", 
-          "'unsafe-inline'" // utile si tu injectes du JS dans tes templates EJS (à désactiver si possible)
+          "'unsafe-inline'" 
         ],
         styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
         imgSrc: ["'self'", "data:", "blob:", "http://localhost:3001", "http://localhost:5173", "http://localhost:5174"], // autoriser les images locales et base64
-        connectSrc: ["'self'", "https://api.stripe.com"], // Stripe API
-        frameSrc: ["'self'", "https://js.stripe.com"], // pour les iframes Stripe
+        connectSrc: ["'self'", "https://api.stripe.com"], 
+        frameSrc: ["'self'", "https://js.stripe.com"], 
         objectSrc: ["'none'"],
         upgradeInsecureRequests: [],
       },

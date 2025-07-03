@@ -29,19 +29,14 @@ export default class OrderMapper extends BaseMapper<any> {
         `;
         
         const { rows } = await pool.query(query, [id]);
-        console.log("ROWS FROM DB:", rows);
-
+        console.log('ROWS FULL ORDER', rows);
         if (rows.length === 0) return null;
-    
+        
         const first = snakeToCamel(rows[0]);
-    
-        // const rowsCamel = rows.map(snakeToCamel);
-
-        // const first = rowsCamel[0];
 
         const order = {
             id: first.orderId,
-            totalPrice: first.totalPrice,
+            totalPrice: parseFloat(first.totalPrice),
             status: first.status,
             createdAt: first.createdAt,
             updatedAt: first.updatedAt,
@@ -50,10 +45,10 @@ export default class OrderMapper extends BaseMapper<any> {
                 lastname: first.lastname,
                 email: first.email
             },
-            items: rows.map(row => ({
-                name: row.oi_name || row.item_name,
-                price: row.oi_price || row.item_price,
-                quantity: row.oi_quantity || row.item_quantity
+            items : rows.map(row => ({
+                name: row.item_name,
+                price: row.item_price,
+                quantity: row.item_quantity
             }))
         };
     

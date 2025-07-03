@@ -41,11 +41,8 @@ const treeController = {
     }),
 
     treesWithForests: catchAsync(async (req:Request, res:Response, next: NextFunction) => {
-        
-        const limit = parseInt(req.query.limit as string, 10) || 10;
-        const offset = parseInt(req.query.offset as string, 10) || 0;
-        
-        const trees = await treeMapper.treesWithForests(limit, offset);
+                
+        const trees = await treeMapper.treesWithForests();
         if (!trees || trees.length === 0) {
             return next(new AppError("No trees found", 404));
         }

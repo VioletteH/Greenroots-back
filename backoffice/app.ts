@@ -44,6 +44,7 @@ app.use(
         fontSrc: ["'self'", "https://cdn.jsdelivr.net"],
         imgSrc: ["'self'", "data:", "blob:", "http://localhost:3000", "http://localhost:5173", "http://localhost:5174"], // autoriser les images locales et base64
         objectSrc: ["'none'"],
+        scriptSrcAttr: null,
         upgradeInsecureRequests: [],
       },
     },

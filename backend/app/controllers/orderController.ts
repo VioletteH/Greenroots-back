@@ -93,6 +93,7 @@ const orderController = {
     }
 
     const newOrder = await orderMapper.create(value);
+    console.log("Value:", value);
     res.status(201).json(newOrder);
   }),
 

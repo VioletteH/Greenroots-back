@@ -25,9 +25,7 @@ const stripeController = {
                     enabled: true,
                 },
             });
-            res.status(200).json({
-                clientSecret: paymentIntent.client_secret,
-              });
+            res.status(200).json({clientSecret: paymentIntent.client_secret,});
         } catch (error) {
             return next(new AppError(`Payment intent creation failed: ${(error as Error).message}`, 500));
           }

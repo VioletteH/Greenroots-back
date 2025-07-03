@@ -86,7 +86,7 @@ routes.patch("/orders/:id", isGranted, orderController.updateOrder);
 //ORDER ITEMS
 
 routes.get("/orders/:id/items", isGranted, itemController.itemsByOrderId); //
-routes.post("/orders/:id/items", isGranted, itemController.addOrderItem); //
+routes.post("/orders/:id/items", itemController.addOrderItem); 
 
 //SEARCH
 

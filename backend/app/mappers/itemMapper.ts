@@ -15,7 +15,7 @@ export default class ItemMapper extends BaseMapper<any> {
             `;
             const values = [quantity, treeId, forestId];
             const { rowCount } = await pool.query(query, values);
-
+            
             if (rowCount === 0){
                 throw new AppError('Stock not updated', 400);
             } 

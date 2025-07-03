@@ -11,9 +11,9 @@ export const isGranted = catchAsync(async (req: Request, res: Response, next: Ne
     // Get user role from token
     const token = req.headers.authorization?.split(' ')[1];
     
-    // If token is not found, return unauthorized
+    // If token is not found, return forbidden
     if (!token) {
-        res.status(401).json({ message: "Unauthorized" });
+        res.status(401).json({ message: "Non autorisé" });
         return;
     }
     const decodedToken = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
@@ -22,7 +22,7 @@ export const isGranted = catchAsync(async (req: Request, res: Response, next: Ne
 
     // If user role is not found, return forbidden
     if (!userRole) {
-        res.status(403).json({ message: "Forbidden" });
+        res.status(403).json({ message: "Non autorisé" });
         return;
     }
 
@@ -32,6 +32,8 @@ export const isGranted = catchAsync(async (req: Request, res: Response, next: Ne
         return;
     }
 
+    // Routes available to the authenticated user
+    
     // If user role is user, check if the user ID matches the token ID
     if (userRole === "user") {
 
@@ -44,7 +46,7 @@ export const isGranted = catchAsync(async (req: Request, res: Response, next: Ne
                 next();
                 return;
             } else {
-                res.status(403).json({ message: "Forbidden: user_id mismatch" });
+                res.status(403).json({ message: "Non autorisé" });
                 return;
             }
         }
@@ -56,7 +58,7 @@ export const isGranted = catchAsync(async (req: Request, res: Response, next: Ne
             if (order && order.user_id === tokenId) {
                 return next();
             } else {
-                res.status(403).json({ message: "Forbidden: not your order" });
+                res.status(403).json({ message: "Non autorisé" });
                 return;
             }
         }
@@ -64,7 +66,7 @@ export const isGranted = catchAsync(async (req: Request, res: Response, next: Ne
         else{
             const id = parseInt(req.params.id, 10);
             if (id && id !== tokenId) {
-                res.status(403).json({ message: "Forbidden" });
+                res.status(403).json({ message: "Non autorisé" });
                 return;
             }
             next();

@@ -102,10 +102,6 @@ export default class TreeMapper extends BaseMapper<any> {
         const total = parseInt(countResult.rows[0].count, 10);
 
         return { data, total };
-
-        // const { rows } = await pool.query(query, [limit, offset]);
-        // if (!rows) return []; 
-        // return rows.map(snakeToCamel) as Tree[];
     }
 
     // POST, PATCH & DELETE
@@ -139,7 +135,7 @@ export default class TreeMapper extends BaseMapper<any> {
     // Update tree associations to forests, adding or updating stock values and removing obsolete associations
     async updateTreeToForests(treeId: number, forestAssociations: { forestId: number, stock: number }[]): Promise<void> {
         
-        // SQL query to insert a new tree-forest association or update stock if the association already exists
+        // we insert a new tree-forest association or update stock if the association already exists
         const insertQuery = `
             INSERT INTO forest_tree (tree_id, forest_id, stock)
             VALUES ($1, $2, $3)
