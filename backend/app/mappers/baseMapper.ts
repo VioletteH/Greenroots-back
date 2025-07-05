@@ -13,7 +13,7 @@ export default class BaseMapper <T> {
 	}
 
 	async findAll(limit?:number, offset?:number) : Promise<T[]> {
-		const query = `SELECT * FROM "${this.tableName}" ORDER BY created_at DESC LIMIT $1 OFFSET $2`;
+		const query = `SELECT * FROM "${this.tableName}" ORDER BY updated_at DESC LIMIT $1 OFFSET $2`;
 		const values = [limit, offset];
 		const { rows } = await pool.query(query, values);
 		const rowsCamel = rows.map(snakeToCamel)as T[];
@@ -22,7 +22,7 @@ export default class BaseMapper <T> {
 	}
 
 	async findAllWithCount(limit?: number, offset?: number): Promise<{ data: T[]; total: number }> {
-		const queryData = `SELECT * FROM "${this.tableName}" ORDER BY created_at DESC LIMIT $1 OFFSET $2`;
+		const queryData = `SELECT * FROM "${this.tableName}" ORDER BY updated_at DESC LIMIT $1 OFFSET $2`;
 		const queryCount = `SELECT COUNT(*) FROM "${this.tableName}"`;
 		const [dataResult, countResult] = await Promise.all([
 				pool.query(queryData, [limit, offset]),

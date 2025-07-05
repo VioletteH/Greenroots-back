@@ -9,12 +9,10 @@ export function isLogged(req: Request, res: Response, next: NextFunction) {
       res.locals.currentUser = user;
       return next();
     } catch (e) {
-      // Cookie corrompu
       res.locals.currentUser = null;
     }
   }
 
-  // Pas connecté
   res.locals.currentUser = null;
   return next();
 };

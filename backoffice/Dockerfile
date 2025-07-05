@@ -1,11 +1,11 @@
-# Étape 1 : build (optionnel si transpilation TypeScript)
+# step 1 : build 
 FROM node:lts AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
 
-# Étape 2 : exécution
+# step 2 : execution
 FROM node:lts
 WORKDIR /app
 COPY --from=build /app /app

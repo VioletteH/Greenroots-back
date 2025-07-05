@@ -18,7 +18,7 @@ routes.get("/logout", authController.logout);
 // PROTECTED ROUTES
 routes.use(requireAuth);
 
-// ACCUEIL
+// HOME
 routes.get("/", (req, res) => {
   res.render("index");
 });

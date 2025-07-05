@@ -38,11 +38,11 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: [
           "'self'",
-          "'unsafe-inline'" // utile si tu injectes du JS dans tes templates EJS (à désactiver si possible)
+          "'unsafe-inline'" 
         ],
         styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
         fontSrc: ["'self'", "https://cdn.jsdelivr.net"],
-        imgSrc: ["'self'", "data:", "blob:", "http://localhost:3000", "http://localhost:5173", "http://localhost:5174"], // autoriser les images locales et base64
+        imgSrc: ["'self'", "data:", "blob:", "http://localhost:3000", "http://localhost:5173", "http://localhost:5174"], 
         objectSrc: ["'none'"],
         scriptSrcAttr: null,
         upgradeInsecureRequests: [],
