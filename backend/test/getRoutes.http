@@ -1,7 +1,7 @@
 #  ✅ OK
 #  🛠️ KO
 
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoibWFzdGVyQGdyZWVucm9vdHMuY29tIiwiaWF0IjoxNzUxNDk1ODczLCJleHAiOjE3NTE1MzkwNzN9.mVv6BfsySae_WRS0SREbwdlAcJNvVxTJCbP_a5dAkp4
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoibWFzdGVyQGdyZWVucm9vdHMuY29tIiwiaWF0IjoxNzU0NTU3ODY0LCJleHAiOjE3NTQ2MDEwNjR9.3cxNeBD1R09GMtT1lFHu2u7JC3Cb9fPH3BOjBaozgGs
 
 ### TREES 
 
@@ -68,7 +68,7 @@ GET http://localhost:3000/orders
 Authorization: Bearer {{authToken}}
 
 ### ✅ routes.get("/orders/:id", orderController.orderById);
-GET http://localhost:3000/orders/9
+GET http://localhost:3000/orders/84
 Authorization: Bearer {{authToken}}
 
 ### ✅ routes.get("/orders/:id/full", orderController.orderByIdWithUser);
@@ -78,7 +78,7 @@ Authorization: Bearer {{authToken}}
 ### ITEMS 
 
 ### ✅ routes.get("/orders/:id/items", orderItemController.itemsByOrderId);
-GET http://localhost:3000/orders/7/items
+GET http://localhost:3000/orders/84/items
 Authorization: Bearer {{authToken}}
 
 ### SEARCH

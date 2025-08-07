@@ -55,7 +55,7 @@ export const isGranted = catchAsync(async (req: Request, res: Response, next: Ne
         else if ((method === "GET" || method === "POST") && /^\/(orders|order)\/\d+(\/items)?$/.test(path)) {
             const orderId = parseInt(req.params.id, 10);
             const order = await orderMapper.findById(orderId);
-            if (order && order.user_id === tokenId) {
+            if (order && order.userId === Number(tokenId)) {
                 return next();
             } else {
                 res.status(403).json({ message: "Non autorisé" });
