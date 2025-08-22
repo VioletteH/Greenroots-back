@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import routes from './app/routes/index';
 import { errorHandler } from './app/middlewares/errorHandler';
 import cors from 'cors';
@@ -12,7 +13,7 @@ const allowedOrigins = [
   process.env.BACKOFFICE,
   process.env.FRONTA,
   process.env.FRONTB,
-];
+].filter(Boolean);
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -26,6 +27,18 @@ app.use(cors({
   credentials: true
 }));
 
+// CORS on pictures in /uploads
+app.use('/uploads', cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.error(`CORS blocked on /uploads: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}), express.static(path.join(__dirname, 'public', 'uploads'))); 
+
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -37,7 +50,7 @@ app.use(
           "'unsafe-inline'" 
         ],
         styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
-        imgSrc: ["'self'", "data:", "blob:", "http://localhost:3001", "http://localhost:5173", "http://localhost:5174"], // autoriser les images locales et base64
+        imgSrc: ["'self'", "data:", "blob:", "http://localhost:3001", "http://localhost:5173", "http://localhost:5174", "https://greenroots-backend-no-docker.onrender.com", "https://greenrooters.netlify.app"], // autoriser les images locales et base64
         connectSrc: ["'self'", "https://api.stripe.com"], 
         frameSrc: ["'self'", "https://js.stripe.com"], 
         objectSrc: ["'none'"],
